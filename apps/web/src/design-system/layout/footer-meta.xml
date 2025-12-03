@@ -1,0 +1,280 @@
+<frame id="534:646" name="footer" x="0" y="10426.5" width="1920" height="1017">
+  <rounded-rectangle id="153:3" name="Rectangle 45" x="1920" y="10426.5" width="1920" height="1017" />
+  <rounded-rectangle id="153:4" name="image 3" x="0" y="10506.5" width="1920" height="771" />
+  <rounded-rectangle id="153:5" name="image 5" x="0" y="10506.5" width="1920" height="771" />
+  <frame id="153:189" name="Group 94" x="1781" y="11104.5" width="54" height="54">
+    <ellipse id="153:190" name="Ellipse 44" x="1781" y="11104.5" width="54" height="54" />
+    <frame id="153:191" name="Group 56" x="1797.2001953125" y="11142.2998046875" width="21.600000381469727" height="21.600000381469727">
+      <frame id="153:192" name="Mask group" x="1797.2001953125" y="11142.2998046875" width="21.600000381469727" height="21.600000381469727">
+        <rounded-rectangle id="153:193" name="Rectangle 32" x="1797.2001953125" y="11142.2998046875" width="21.600000381469727" height="21.600000381469727" />
+        <frame id="153:194" name="Group 35" x="1799.16259765625" y="11142.2998046875" width="17.672725677490234" height="21.600000381469727">
+          <frame id="153:195" name="Layer_1" x="1799.16259765625" y="11142.2998046875" width="17.672725677490234" height="21.600000381469727" />
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <rounded-rectangle id="153:199" name="Rectangle 52" x="240" y="10576.5" width="215" height="173" />
+  <rounded-rectangle id="153:200" name="Rectangle 53" x="485" y="10576.5" width="215" height="173" />
+  <rounded-rectangle id="153:202" name="Rectangle 55" x="975" y="10576.5" width="215" height="173" />
+  <rounded-rectangle id="153:203" name="Rectangle 56" x="1220" y="10576.5" width="215" height="173" />
+  <rounded-rectangle id="153:404" name="Rectangle 58" x="1465" y="10576.5" width="215" height="173" />
+  <line id="153:19" name="Line 2" x="1150" y="11042.5" width="511" height="0" />
+  <line id="153:20" name="Line 5" x="1150" y="11348.5" width="511" height="0" />
+  <frame id="153:22" name="Frame 81" x="1150" y="11102.5" width="528" height="181">
+    <frame id="153:23" name="Frame 78" x="0" y="0" width="87" height="181">
+      <text id="153:24" name="Explore" x="0" y="0" width="87" height="17" />
+      <frame id="153:25" name="Frame 75" x="0" y="53" width="87" height="128">
+        <frame id="153:26" name="Frame 63" x="0" y="0" width="68" height="14">
+          <frame id="153:27" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:28" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:29" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:30" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:31" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:34" name="Home" x="24" y="1.5" width="44" height="11" />
+        </frame>
+        <frame id="153:35" name="Frame 64" x="0" y="38" width="87" height="14">
+          <frame id="153:36" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:37" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:38" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:39" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:40" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:43" name="services" x="24" y="1.5" width="63" height="11" />
+        </frame>
+        <frame id="153:44" name="Frame 65" x="0" y="76" width="87" height="14">
+          <frame id="153:45" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:46" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:47" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:48" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:49" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:52" name="Projects" x="24" y="1.5" width="61" height="11" />
+        </frame>
+        <frame id="153:53" name="Frame 66" x="0" y="114" width="56" height="14">
+          <frame id="153:54" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:55" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:56" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:57" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:58" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:61" name="Blog" x="24" y="1.5" width="32" height="11" />
+        </frame>
+      </frame>
+    </frame>
+    <frame id="153:62" name="Frame 79" x="165" y="0" width="115" height="181">
+      <text id="153:63" name="Company" x="0" y="0" width="115" height="17" />
+      <frame id="153:64" name="Frame 76" x="0" y="53" width="115" height="128">
+        <frame id="153:65" name="Frame 67" x="0" y="0" width="70" height="14">
+          <frame id="153:66" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:67" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:68" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:69" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:70" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:73" name="About" x="24" y="1.5" width="46" height="11" />
+        </frame>
+        <frame id="153:74" name="Frame 68" x="0" y="38" width="115" height="14">
+          <frame id="153:75" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:76" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:77" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:78" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:79" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:82" name="Our Process" x="24" y="1.5" width="91" height="11" />
+        </frame>
+        <frame id="153:83" name="Frame 69" x="0" y="76" width="64" height="14">
+          <frame id="153:84" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:85" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:86" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:87" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:88" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:91" name="Team" x="24" y="1.5" width="40" height="11" />
+        </frame>
+        <frame id="153:92" name="Frame 70" x="0" y="114" width="82" height="14">
+          <frame id="153:93" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:94" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:95" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:96" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:97" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:100" name="Careers" x="24" y="1.5" width="58" height="11" />
+        </frame>
+      </frame>
+    </frame>
+    <frame id="153:101" name="Frame 80" x="358" y="0" width="170" height="181">
+      <text id="153:102" name="Support" x="0" y="0" width="170" height="17" />
+      <frame id="153:103" name="Frame 77" x="0" y="53" width="170" height="128">
+        <frame id="153:104" name="Frame 71" x="0" y="0" width="85" height="14">
+          <frame id="153:105" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:106" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:107" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:108" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:109" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:112" name="Contact" x="24" y="1.5" width="61" height="11" />
+        </frame>
+        <frame id="153:113" name="Frame 72" x="0" y="38" width="113" height="14">
+          <frame id="153:114" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:115" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:116" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:117" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:118" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:121" name="Help Center" x="24" y="1.5" width="89" height="11" />
+        </frame>
+        <frame id="153:122" name="Frame 73" x="0" y="76" width="170" height="14">
+          <frame id="153:123" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:124" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:125" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:126" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:127" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:130" name="Terms &amp; Conditions" x="24" y="1.5" width="146" height="11" />
+        </frame>
+        <frame id="153:131" name="Frame 74" x="0" y="114" width="126" height="14">
+          <frame id="153:132" name="Group 56" x="0" y="0" width="14" height="14">
+            <frame id="153:133" name="Mask group" x="0" y="0" width="14" height="14">
+              <rounded-rectangle id="153:134" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+              <frame id="153:135" name="Group 35" x="0" y="1.2730034589767456" width="14" height="11.454545974731445">
+                <frame id="153:136" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+              </frame>
+            </frame>
+          </frame>
+          <text id="153:139" name="Privacy Policy" x="24" y="1.5" width="102" height="11" />
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <frame id="153:141" name="Frame 83" x="1150" y="11383.5" width="522" height="11">
+    <text id="153:142" name="Copyright" x="0" y="0" width="74" height="11" />
+    <text id="153:143" name="terms &amp; conditions" x="174" y="0" width="146" height="11" />
+    <text id="153:144" name="Privacy Policy" x="420" y="0" width="102" height="11" />
+  </frame>
+  <line id="153:431" name="Line 7" x="240" y="10799.5" width="1438" height="0" />
+  <frame id="153:436" name="Group 1000002435" x="239" y="10857.5" width="587" height="546">
+    <text id="153:6" name="Let’s Build What’s Next" x="239" y="10857.5" width="587" height="187" />
+    <frame id="153:435" name="Group 1000002434" x="239" y="11225.5" width="319" height="178">
+      <line id="153:21" name="Line 6" x="240" y="11352.5" width="309" height="0" />
+      <text id="153:140" name="© 2025 TechAI Agency. All rights reserved." x="239" y="11392.5" width="319" height="11" />
+      <frame id="153:424" name="Frame 141" x="239" y="11301.5" width="132" height="24">
+        <frame id="153:147" name="Group 79" x="0" y="0" width="24" height="24">
+          <ellipse id="153:148" name="Ellipse 40" x="0" y="0" width="24" height="24" />
+          <frame id="153:149" name="Group 24" x="5" y="5" width="14" height="14">
+            <frame id="153:150" name="Mask group" x="5" y="5" width="14" height="14">
+              <rounded-rectangle id="153:151" name="Rectangle 14" x="5" y="5" width="14" height="14" />
+              <frame id="153:152" name="Group 23" x="8.5" y="5.875" width="7" height="13.14823055267334">
+                <frame id="153:153" name="OBJECT" x="8.5" y="5.875" width="7" height="13.14823055267334" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="153:155" name="Group 80" x="36" y="0" width="24" height="24">
+          <ellipse id="153:156" name="Ellipse 41" x="36" y="0" width="24" height="24" />
+          <frame id="153:157" name="Group 18" x="41" y="5" width="14" height="14">
+            <frame id="153:158" name="Mask group" x="41" y="5" width="14" height="14">
+              <rounded-rectangle id="153:159" name="Rectangle 11" x="41" y="5" width="14" height="14" />
+              <frame id="153:160" name="Group 17" x="41.875" y="5.875" width="12.25" height="12.25">
+                <frame id="153:161" name="OBJECT" x="41.875" y="5.875" width="12.25" height="12.25" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="153:165" name="Group 81" x="72" y="0" width="24" height="24">
+          <ellipse id="153:166" name="Ellipse 42" x="72" y="0" width="24" height="24" />
+          <frame id="153:167" name="Group 20" x="77" y="5" width="14" height="14">
+            <frame id="153:168" name="Mask group" x="77" y="5" width="14" height="14">
+              <rounded-rectangle id="153:169" name="Rectangle 12" x="77" y="5" width="14" height="14" />
+              <frame id="153:170" name="Group 19" x="78.75" y="6.75" width="10.5" height="10.5">
+                <frame id="153:171" name="OBJECT" x="78.75" y="6.75" width="10.5" height="10.500000953674316" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="153:173" name="Group 82" x="108" y="0" width="24" height="24">
+          <ellipse id="153:174" name="Ellipse 43" x="108" y="0" width="24" height="24" />
+          <frame id="153:175" name="Group 22" x="113" y="5" width="14" height="14">
+            <frame id="153:176" name="Mask group" x="113" y="5" width="14" height="14">
+              <rounded-rectangle id="153:177" name="Rectangle 13" x="113" y="5" width="14" height="14" />
+              <frame id="153:178" name="Group 21" x="113.875" y="5.875" width="12.25" height="12.25">
+                <frame id="153:179" name="OBJECT" x="113.875" y="5.875" width="12.25" height="12.25" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+      <frame id="153:183" name="Group 9" x="239" y="11225.5" width="140.95166015625" height="40.566532135009766">
+        <frame id="153:184" name="Frame 1" x="239" y="11225.5" width="140.95166015625" height="40.566532135009766">
+          <frame id="153:185" name="Group 29" x="0" y="0.2832660675048828" width="40" height="40">
+            <frame id="153:186" name="Layer_1" x="0" y="0.2832660675048828" width="40" height="40" />
+          </frame>
+          <text id="153:188" name="TechAI" x="52" y="8.283266067504883" width="109" height="24" />
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <vector id="153:198" name="Vector" x="772" y="10974.5" width="19.999366760253906" height="19.999366760253906" />
+  <frame id="153:447" name="Group 1000002442" x="730" y="10576.5" width="215" height="173">
+    <rounded-rectangle id="153:201" name="Rectangle 54" x="730" y="10576.5" width="215" height="173" />
+    <frame id="153:446" name="Group 1000002441" x="813" y="10638.5" width="50" height="50">
+      <ellipse id="153:445" name="Ellipse 37" x="813" y="10638.5" width="50" height="50" />
+      <frame id="153:414" name="Group 83" x="826" y="10651.5" width="23.33333396911621" height="23.33333396911621">
+        <frame id="153:416" name="Group 18" x="826" y="10651.5" width="23.33333396911621" height="23.33333396911621">
+          <frame id="153:417" name="Mask group" x="826" y="10651.5" width="23.33333396911621" height="23.33333396911621">
+            <rounded-rectangle id="153:418" name="Rectangle 11" x="826" y="10651.5" width="23.33333396911621" height="23.33333396911621" />
+            <frame id="153:419" name="Group 17" x="827.458740234375" y="10652.958984375" width="20.41666603088379" height="20.41666603088379">
+              <frame id="153:420" name="OBJECT" x="827.458740234375" y="10652.958984375" width="20.41666603088379" height="20.41666603088379" />
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <frame id="153:460" name="Group 1000002443" x="1148" y="10868.5" width="443" height="114">
+    <frame id="41:5" name="Group 30" x="1148" y="10917.5" width="443" height="65">
+      <frame id="70:1125" name="Group 67" x="1148" y="10917.5" width="443" height="65">
+        <frame id="24:2200" name="Input" x="1148" y="10917.5" width="443" height="65">
+          <text id="24:2202" name="Enter your email address" x="27" y="27" width="187" height="11" />
+          <frame id="70:1116" name="Frame 17" x="247" y="5" width="190" height="54">
+            <text id="70:1117" name="subscribe" x="44.5" y="22" width="67" height="10" />
+            <frame id="95:942" name="Group 100" x="121.5" y="15" width="24" height="24">
+              <ellipse id="95:934" name="Ellipse 46" x="121.5" y="15" width="24" height="24" />
+              <frame id="95:935" name="Group 99" x="127.5" y="21" width="12" height="12">
+                <frame id="95:936" name="Mask group" x="127.5" y="21" width="12" height="12">
+                  <rounded-rectangle id="95:937" name="Rectangle 32" x="127.5" y="21" width="12" height="12" />
+                  <frame id="95:938" name="Group 35" x="127.5" y="22.090890049934387" width="12" height="9.818181037902832">
+                    <frame id="95:939" name="Layer_1" x="127.5" y="22.090890049934387" width="12" height="9.818181037902832" />
+                  </frame>
+                </frame>
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <text id="153:459" name="Newsletter" x="1148" y="10868.5" width="122" height="17" />
+  </frame>
+</frame>

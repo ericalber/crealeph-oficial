@@ -1,0 +1,15 @@
+<frame id="534:651" name="who we are" x="43" y="2796" width="394" height="324">
+  <frame id="481:1251" name="Frame 27" x="168" y="2796" width="145" height="24">
+    <frame id="481:1252" name="Group 32" x="0" y="0" width="24" height="24">
+      <frame id="481:1253" name="Mask group" x="0" y="0" width="24" height="24">
+        <rounded-rectangle id="481:1254" name="Rectangle 18" x="0" y="0" width="24" height="24" />
+        <frame id="481:1255" name="Group 31" x="3" y="2.4000000953674316" width="18" height="19.200000762939453">
+          <frame id="481:1256" name="Layer_1" x="3" y="2.4000000953674316" width="18" height="19.200000762939453" />
+        </frame>
+      </frame>
+    </frame>
+    <text id="481:1258" name="Who We Are" x="32" y="6.5" width="113" height="11" />
+  </frame>
+  <text id="481:1259" name="We’re a passionate team of developers, designers, and strategists building future ready products clean execution gave us a major edge." x="43" y="2844" width="394" height="276" />
+  <line id="481:1260" name="Line 2" x="214" y="2877" width="0.0000014424758774111979" height="33" />
+</frame>

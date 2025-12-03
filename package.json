@@ -1,0 +1,35 @@
+{
+  "name": "crealeph-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.10.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "infra/scripts"
+  ],
+  "scripts": {
+    "predev": "node ./infra/scripts/free-ports.mjs",
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "prisma:generate": "pnpm --filter @crealeph/db exec prisma generate",
+    "prisma:migrate:dev": "pnpm --filter @crealeph/db exec prisma migrate dev",
+    "seed": "pnpm --filter @crealeph/db run seed"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.7.0",
+    "prettier": "^3.3.2",
+    "tsx": "^4.16.2",
+    "turbo": "^2.1.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "lucide-react": "^0.552.0"
+  }
+}

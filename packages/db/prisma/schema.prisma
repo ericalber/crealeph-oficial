@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  role      Role     @default(viewer)
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Robot {
+  id        String   @id @default(cuid())
+  tenantId  String
+  name      String
+  type      String
+  config    Json
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vertical {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  templates AgentTemplate[]
+}
+
+model AgentTemplate {
+  id          String   @id @default(cuid())
+  verticalId  String
+  name        String
+  type        String
+  description String
+  config      Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  vertical    Vertical @relation(fields: [verticalId], references: [id])
+}
+
+model TemplatePack {
+  id          String   @id @default(cuid())
+  verticalId  String
+  name        String
+  description String
+  config      Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  vertical    Vertical @relation(fields: [verticalId], references: [id])
+}
+
+model RobotRun {
+  id        String   @id @default(cuid())
+  robotId   String
+  createdAt DateTime @default(now())
+  result    Json
+  robot     Robot    @relation(fields: [robotId], references: [id])
+}
+
+model RobotIdea {
+  id        String   @id @default(cuid())
+  robotId   String
+  createdAt DateTime @default(now())
+  result    Json
+  robot     Robot    @relation(fields: [robotId], references: [id])
+}
+
+model RobotCopy {
+  id        String   @id @default(cuid())
+  robotId   String
+  createdAt DateTime @default(now())
+  result    Json
+  robot     Robot    @relation(fields: [robotId], references: [id])
+}
+
+model MarketTwinEntry {
+  id        String   @id @default(cuid())
+  robotId   String
+  createdAt DateTime @default(now())
+  data      Json
+  robot     Robot    @relation(fields: [robotId], references: [id])
+}
+
+model RobotPlaybook {
+  id        String   @id @default(cuid())
+  robotId   String
+  createdAt DateTime @default(now())
+  actions   Json
+  robot     Robot    @relation(fields: [robotId], references: [id])
+}
+
+enum Role {
+  admin
+  editor
+  viewer
+}

@@ -1,0 +1,56 @@
+<frame id="534:644" name="testimonial" x="0" y="2182.5" width="1920" height="530">
+  <frame id="137:2253" name="Group 1000002415" x="0" y="2182.5" width="1920" height="530">
+    <rounded-rectangle id="34:14" name="Rectangle 10" x="0" y="2182.5" width="1920" height="529" />
+    <frame id="137:2248" name="Group 1000002410" x="1025" y="2304.5" width="655" height="286">
+      <frame id="34:13" name="Frame 9" x="1025" y="2497.5" width="632" height="93">
+        <frame id="34:12" name="Frame 8" x="0" y="0" width="134" height="93">
+          <text id="31:5496" name="4.8" x="0" y="0" width="134" height="24" />
+          <frame id="34:11" name="Frame 7" x="0" y="48" width="134" height="45">
+            <frame id="34:10" name="Group 13" x="0" y="0" width="87" height="16">
+              <frame id="34:2" name="star" x="0" y="0" width="87" height="16">
+                <frame id="34:3" name="67d270fb698a3e550219c6f8_star.svg fill" x="0" y="0" width="87" height="16">
+                  <frame id="34:4" name="67d270fb698a3e550219c6f8_star.svg" x="0" y="0" width="87" height="16" />
+                </frame>
+              </frame>
+            </frame>
+            <text id="31:5497" name="Customer Rating" x="0" y="34" width="134" height="11" />
+          </frame>
+        </frame>
+        <frame id="31:5494" name="Frame 6" x="226" y="4" width="167" height="85">
+          <text id="31:5486" name="450+" x="0" y="0" width="167" height="24" />
+          <text id="31:5487" name="Creative team to care for projects." x="0" y="48" width="167" height="37" />
+        </frame>
+        <frame id="137:2245" name="Frame 9" x="485" y="4" width="147" height="85">
+          <text id="137:2246" name="100+" x="0" y="0" width="147" height="24" />
+          <text id="137:2247" name="Prroject completed for my clients." x="0" y="48" width="147" height="37" />
+        </frame>
+      </frame>
+      <frame id="55:18" name="Group 58" x="1025" y="2304.5" width="655" height="122">
+        <frame id="43:141" name="Group 48" x="1419" y="2353.5" width="19.895706176757812" height="19.895706176757812">
+          <frame id="43:142" name="Layer_1" x="1419" y="2353.5" width="19.895706176757812" height="19.895706176757812" />
+        </frame>
+        <text id="43:139" name="25k+ Customer Build &amp; Launch &amp; Faster" x="1025" y="2304.5" width="655" height="122" />
+      </frame>
+    </frame>
+    <rounded-rectangle id="72:71" name="Rectangle 38" x="0" y="2182.5" width="959" height="530" />
+    <frame id="72:72" name="Group 75" x="240" y="2312.5" width="583" height="271">
+      <frame id="74:82" name="Group 78" x="240" y="2312.5" width="583" height="271">
+        <text id="72:55" name="Working with TechAI felt like adding a high performance engine to our startup. Their UX thinking and clean execution gave us a major edge in the market." x="240" y="2312.5" width="583" height="119" />
+        <frame id="74:81" name="Group 77" x="240" y="2483.5" width="260" height="100">
+          <frame id="72:64" name="Frame 50" x="240" y="2483.5" width="260" height="50">
+            <ellipse id="72:62" name="Ellipse 39" x="0" y="0" width="50" height="50" />
+            <frame id="72:63" name="Frame 49" x="70" y="0" width="190" height="40">
+              <text id="72:56" name="Alex Morgan" x="0" y="0" width="125" height="15" />
+              <text id="72:60" name="CTO, BrightSync Technologies" x="0" y="30" width="190" height="10" />
+            </frame>
+          </frame>
+          <frame id="72:70" name="Frame 51" x="240" y="2573.5" width="54" height="10">
+            <rounded-rectangle id="72:66" name="Button - Show slide 1 of 3" x="0" y="0" width="10" height="10" />
+            <rounded-rectangle id="72:69" name="Rectangle 37" x="16" y="2" width="22" height="6" />
+            <rounded-rectangle id="72:67" name="Button - Show slide 2 of 3" x="44" y="0" width="10" height="10" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+</frame>

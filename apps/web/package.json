@@ -1,0 +1,29 @@
+{
+  "name": "@crealeph/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3003",
+    "build": "next build",
+    "start": "next start -p 3003",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo ok",
+    "test": "echo ok"
+  },
+  "dependencies": {
+    "@crealeph/ui": "workspace:*",
+    "clsx": "^2.1.1",
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/react": "19.2.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.4.5"
+  }
+}

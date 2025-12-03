@@ -1,0 +1,46 @@
+@tailwind components;
+@layer components {
+  @keyframes like-burst-kf {
+    0% { transform: scale(0.8); opacity: 0.0; box-shadow: 0 0 0 rgba(214,40,40,0.0), 0 0 0 rgba(214,40,40,0.0); }
+    40% { transform: scale(1.02); opacity: 0.6; box-shadow: 0 0 0 6px rgba(214,40,40,0.18), 0 0 0 0 rgba(214,40,40,0.0); }
+    100% { transform: scale(1.0); opacity: 1; box-shadow: 0 0 0 0 rgba(214,40,40,0.0), 0 0 0 0 rgba(214,40,40,0.0); }
+  }
+
+  .like-burst {
+    position: relative;
+    isolation: isolate;
+  }
+  .like-burst::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+  .like-burst.like-burst--active::after {
+    opacity: 1;
+    animation: like-burst-kf 400ms ease-out 1;
+  }
+
+  /* (rollback) removed SectionShine local palette & wrappers */
+}
+/* --- SectionShine (wrapper-only, local palette; keep existing styles unchanged) --- */
+.section-shine { position: relative; }
+.section-shine::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(600px 300px at 20% -10%, var(--glow1), transparent 60%),
+    radial-gradient(600px 300px at 80% 120%, var(--glow2), transparent 60%),
+    linear-gradient(transparent, transparent);
+  opacity: .28;
+}
+.section-shine::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 50%, transparent 70%);
+  mask-image: radial-gradient(ellipse at center, black 50%, transparent 70%);
+  background: transparent;
+}
+.section-shine.crimson { --glow1: rgba(214,40,40,.28); --glow2: rgba(255,120,120,.18); }
+.section-shine.sky { --glow1: rgba(56,189,248,.22); --glow2: rgba(99,179,237,.16); }

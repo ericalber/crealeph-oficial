@@ -1,0 +1,255 @@
+<frame id="534:666" name="pricing plan" x="-49" y="8181" width="1729" height="1020">
+  <frame id="373:287" name="Group 1000008872" x="240" y="8181" width="409" height="176">
+    <frame id="373:110" name="Group 1000008702" x="240" y="8181" width="409" height="176">
+      <frame id="373:111" name="Group 61" x="240" y="8181" width="409" height="176">
+        <frame id="373:112" name="Group 1000008740" x="240" y="8181" width="409" height="176">
+          <frame id="420:144" name="Group 1000008910" x="240" y="8181" width="409" height="176">
+            <frame id="373:113" name="Frame 35" x="240" y="8181" width="237" height="24">
+              <frame id="373:114" name="Group 32" x="0" y="0" width="24" height="24">
+                <frame id="373:115" name="Mask group" x="0" y="0" width="24" height="24">
+                  <rounded-rectangle id="373:116" name="Rectangle 18" x="0" y="0" width="24" height="24" />
+                  <frame id="373:117" name="Group 31" x="3" y="2.4000000953674316" width="18" height="19.200000762939453">
+                    <frame id="373:118" name="Layer_1" x="3" y="2.4000000953674316" width="18" height="19.200000762939453" />
+                  </frame>
+                </frame>
+              </frame>
+              <text id="373:120" name="Simple &amp; Transparent" x="32" y="6.5" width="205" height="11" />
+            </frame>
+            <text id="373:121" name="Flexible Pricing Plans" x="240" y="8235" width="409" height="122" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <vector id="373:122" name="Vector" x="610" y="8312" width="19.999366760253906" height="19.999366760253906" />
+  </frame>
+  <frame id="420:138" name="Group 1000008871" x="240" y="8432" width="290" height="64">
+    <frame id="420:139" name="Frame 427321079" x="240" y="8432" width="290" height="64">
+      <text id="420:140" name="Yearly" x="192" y="27" width="40" height="10" />
+    </frame>
+    <frame id="420:141" name="Frame 427321078" x="247" y="8439" width="145" height="50">
+      <text id="420:142" name="Monthly" x="45.5" y="20" width="54" height="10" />
+    </frame>
+  </frame>
+  <rounded-rectangle id="420:398" name="Rectangle 3468184" x="853" y="8181" width="827" height="320" />
+  <rounded-rectangle id="424:251" name="Rectangle 3468185" x="853" y="8531" width="827" height="320" />
+  <frame id="423:132" name="Frame 427321113" x="915" y="8282.5" width="169" height="90">
+    <text id="420:407" name="Basic" x="0" y="0" width="169" height="24" />
+    <text id="420:408" name="Perfect for startups &amp; small websites" x="0" y="53" width="185" height="37" />
+  </frame>
+  <frame id="423:119" name="Frame 427321112" x="1164" y="8260" width="205" height="162">
+    <frame id="423:86" name="Frame 427321107" x="0" y="0" width="96" height="14">
+      <frame id="423:80" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="423:81" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="423:82" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="423:83" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="423:79" name="1 Website" x="25" y="1.5" width="71" height="11" />
+    </frame>
+    <frame id="423:87" name="Frame 427321108" x="0" y="37" width="205" height="14">
+      <frame id="423:88" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="423:89" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="423:90" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="423:91" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="423:94" name="Basic Keyword Research" x="25" y="1.5" width="180" height="11" />
+    </frame>
+    <frame id="423:95" name="Frame 427321109" x="0" y="74" width="165" height="14">
+      <frame id="423:96" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="423:97" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="423:98" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="423:99" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="423:102" name="Monthly SEO Audit" x="25" y="1.5" width="140" height="11" />
+    </frame>
+    <frame id="423:103" name="Frame 427321110" x="0" y="111" width="174" height="14">
+      <frame id="423:104" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="423:105" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="423:106" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="423:107" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="423:110" name="5 Keywords Tracked" x="25" y="1.5" width="149" height="11" />
+    </frame>
+    <frame id="423:111" name="Frame 427321111" x="0" y="148" width="169" height="14">
+      <frame id="423:112" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="423:113" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="423:114" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="423:115" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="423:118" name="Standard Reporting" x="25" y="1.5" width="144" height="11" />
+    </frame>
+  </frame>
+  <frame id="423:133" name="Frame 427321114" x="1420" y="8282" width="217" height="110">
+    <text id="423:120" name="$19/Month" x="19" y="0" width="179" height="24" />
+    <frame id="423:121" name="Frame 427321078" x="0" y="56" width="217" height="54">
+      <text id="423:122" name="Buy This Plan" x="46" y="22" width="91" height="10" />
+      <frame id="423:123" name="Group 100" x="147" y="15" width="24" height="24">
+        <ellipse id="423:124" name="Ellipse 46" x="147" y="15" width="24" height="24" />
+        <frame id="423:125" name="Group 99" x="153" y="21" width="12" height="12">
+          <frame id="423:126" name="Mask group" x="153" y="21" width="12" height="12">
+            <rounded-rectangle id="423:127" name="Rectangle 32" x="153" y="21" width="12" height="12" />
+            <frame id="423:128" name="Group 35" x="153" y="22.090890049934387" width="12" height="9.818181037902832">
+              <frame id="423:129" name="Layer_1" x="153" y="22.090890049934387" width="12" height="9.818181037902832" />
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <frame id="424:254" name="Frame 427321113" x="915" y="8633" width="198" height="90">
+    <text id="424:255" name="Standard" x="0" y="0" width="147" height="24" />
+    <text id="424:256" name="Best for growing businesses" x="0" y="53" width="185" height="37" />
+  </frame>
+  <frame id="424:257" name="Frame 427321112" x="1164" y="8610" width="205" height="162">
+    <frame id="424:258" name="Frame 427321107" x="0" y="0" width="108" height="14">
+      <frame id="424:259" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="424:260" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="424:261" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="424:262" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="424:265" name="5 Websites" x="25" y="1.5" width="83" height="11" />
+    </frame>
+    <frame id="424:266" name="Frame 427321108" x="0" y="37" width="205" height="14">
+      <frame id="424:267" name="Mask group" x="0.5" y="0" width="14" height="14">
+        <rounded-rectangle id="424:268" name="Rectangle 32" x="0.5" y="0" width="14" height="14" />
+        <frame id="424:269" name="Group 35" x="0.5" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="424:270" name="Layer_1" x="0.5" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="424:273" name="depth Keyword Analysis" x="25.5" y="1.5" width="179" height="11" />
+    </frame>
+    <frame id="424:274" name="Frame 427321109" x="0" y="74" width="190" height="14">
+      <frame id="424:275" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="424:276" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="424:277" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="424:278" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="424:281" name="On-page Optimization" x="25" y="1.5" width="165" height="11" />
+    </frame>
+    <frame id="424:282" name="Frame 427321110" x="0" y="111" width="184" height="14">
+      <frame id="424:283" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="424:284" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="424:285" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="424:286" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="424:289" name="20 Keywords Tracked" x="25" y="1.5" width="159" height="11" />
+    </frame>
+    <frame id="424:290" name="Frame 427321111" x="0" y="148" width="174" height="14">
+      <frame id="424:291" name="Mask group" x="0" y="0" width="14" height="14">
+        <rounded-rectangle id="424:292" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+        <frame id="424:293" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+          <frame id="424:294" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+        </frame>
+      </frame>
+      <text id="424:297" name="Performance Report" x="25" y="1.5" width="149" height="11" />
+    </frame>
+  </frame>
+  <frame id="424:298" name="Frame 427321114" x="1420" y="8632" width="217" height="110">
+    <text id="424:299" name="$49/Month" x="0" y="0" width="217" height="24" />
+    <frame id="424:369" name="Frame 17" x="0" y="56" width="217" height="54">
+      <text id="424:370" name="Buy This Plan" x="46" y="22" width="91" height="10" />
+      <frame id="424:371" name="Group 100" x="147" y="15" width="24" height="24">
+        <ellipse id="424:372" name="Ellipse 46" x="147" y="15" width="24" height="24" />
+        <frame id="424:373" name="Group 99" x="153" y="21" width="12" height="12">
+          <frame id="424:374" name="Mask group" x="153" y="21" width="12" height="12">
+            <rounded-rectangle id="424:375" name="Rectangle 32" x="153" y="21" width="12" height="12" />
+            <frame id="424:376" name="Group 35" x="153" y="22.090890049934387" width="12" height="9.818181037902832">
+              <frame id="424:377" name="Layer_1" x="153" y="22.090890049934387" width="12" height="9.818181037902832" />
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <frame id="437:84" name="Group 1000008933" x="853" y="8881" width="827" height="320">
+    <rounded-rectangle id="424:252" name="Rectangle 3468186" x="853" y="8881" width="827" height="320" />
+    <frame id="424:312" name="Frame 427321113" x="915" y="8983" width="198" height="90">
+      <text id="424:313" name="Premium" x="0" y="0" width="139" height="24" />
+      <text id="424:314" name="All-in SEO solution for scale" x="0" y="53" width="198" height="37" />
+    </frame>
+    <frame id="424:315" name="Frame 427321112" x="1164" y="8960" width="205" height="162">
+      <frame id="424:316" name="Frame 427321107" x="0" y="0" width="169" height="14">
+        <frame id="424:317" name="Mask group" x="0" y="0" width="14" height="14">
+          <rounded-rectangle id="424:318" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+          <frame id="424:319" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+            <frame id="424:320" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+          </frame>
+        </frame>
+        <text id="424:323" name="Unlimited Websites" x="25" y="1.5" width="144" height="11" />
+      </frame>
+      <frame id="424:324" name="Frame 427321108" x="0" y="37" width="205" height="14">
+        <frame id="424:325" name="Mask group" x="0.5" y="0" width="14" height="14">
+          <rounded-rectangle id="424:326" name="Rectangle 32" x="0.5" y="0" width="14" height="14" />
+          <frame id="424:327" name="Group 35" x="0.5" y="1.2725151777267456" width="14" height="11.454545974731445">
+            <frame id="424:328" name="Layer_1" x="0.5" y="1.272569431195734" width="14" height="11.454545974731445" />
+          </frame>
+        </frame>
+        <text id="424:331" name="Full Technical SEO" x="25.5" y="1.5" width="179" height="11" />
+      </frame>
+      <frame id="424:332" name="Frame 427321109" x="0" y="74" width="176" height="14">
+        <frame id="424:333" name="Mask group" x="0" y="0" width="14" height="14">
+          <rounded-rectangle id="424:334" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+          <frame id="424:335" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+            <frame id="424:336" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+          </frame>
+        </frame>
+        <text id="424:339" name="Competitor Analysis" x="25" y="1.5" width="151" height="11" />
+      </frame>
+      <frame id="424:340" name="Frame 427321110" x="0" y="111" width="194" height="14">
+        <frame id="424:341" name="Mask group" x="0" y="0" width="14" height="14">
+          <rounded-rectangle id="424:342" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+          <frame id="424:343" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+            <frame id="424:344" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+          </frame>
+        </frame>
+        <text id="424:347" name="50+ Keywords Tracked" x="25" y="1.5" width="169" height="11" />
+      </frame>
+      <frame id="424:348" name="Frame 427321111" x="0" y="148" width="124" height="14">
+        <frame id="424:349" name="Mask group" x="0" y="0" width="14" height="14">
+          <rounded-rectangle id="424:350" name="Rectangle 32" x="0" y="0" width="14" height="14" />
+          <frame id="424:351" name="Group 35" x="0" y="1.2725151777267456" width="14" height="11.454545974731445">
+            <frame id="424:352" name="Layer_1" x="0" y="1.272569431195734" width="14" height="11.454545974731445" />
+          </frame>
+        </frame>
+        <text id="424:355" name="SEO Manager" x="25" y="1.5" width="99" height="11" />
+      </frame>
+    </frame>
+    <frame id="424:356" name="Frame 427321114" x="1420" y="8982" width="217" height="110">
+      <text id="424:357" name="$99/Month" x="0" y="0" width="217" height="24" />
+      <frame id="424:358" name="Frame 427321078" x="0" y="56" width="217" height="54">
+        <text id="424:359" name="Buy This Plan" x="46" y="22" width="91" height="10" />
+        <frame id="424:360" name="Group 100" x="147" y="15" width="24" height="24">
+          <ellipse id="424:361" name="Ellipse 46" x="147" y="15" width="24" height="24" />
+          <frame id="424:362" name="Group 99" x="153" y="21" width="12" height="12">
+            <frame id="424:363" name="Mask group" x="153" y="21" width="12" height="12">
+              <rounded-rectangle id="424:364" name="Rectangle 32" x="153" y="21" width="12" height="12" />
+              <frame id="424:365" name="Group 35" x="153" y="22.090890049934387" width="12" height="9.818181037902832">
+                <frame id="424:366" name="Layer_1" x="153" y="22.090890049934387" width="12" height="9.818181037902832" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <frame id="426:131" name="Group 1000008912" x="-49" y="8720" width="481" height="480.8202819824219">
+    <frame id="426:120" name="Calque_1" x="-49" y="8719.99978225294" width="481" height="480.8202819824219">
+      <vector id="426:121" name="Vector" x="0" y="0" width="121.56781005859375" height="121.56781005859375" />
+      <vector id="426:122" name="Vector" x="179.7001953125" y="0" width="121.56779479980469" height="121.56781005859375" />
+      <vector id="426:123" name="Vector" x="359.40234375" y="0" width="121.59777069091797" height="121.56781005859375" />
+      <vector id="426:124" name="Vector" x="-1.8189894035458565e-12" y="179.61148071289062" width="121.56781005859375" height="121.59774780273438" />
+      <vector id="426:125" name="Vector" x="179.7001953125" y="179.611328125" width="121.56779479980469" height="121.59774780273438" />
+      <vector id="426:126" name="Vector" x="359.40234375" y="179.611328125" width="121.59777069091797" height="121.59774780273438" />
+      <vector id="426:127" name="Vector" x="-1.8189894035458565e-12" y="359.2525329589844" width="121.56781005859375" height="121.56779479980469" />
+      <vector id="426:128" name="Vector" x="179.7001953125" y="359.25244140625" width="121.56779479980469" height="121.56779479980469" />
+      <vector id="426:129" name="Vector" x="359.40234375" y="359.25244140625" width="121.59777069091797" height="121.56779479980469" />
+    </frame>
+  </frame>
+</frame>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" aria-hidden="true">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#A4161A"/>
+      <stop offset="50%" stop-color="#E02020"/>
+      <stop offset="100%" stop-color="#7A1114"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF4D4D" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FF4D4D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="none"/>
+  <g filter="url(#f)">
+    <circle cx="420" cy="360" r="260" fill="url(#glow)"/>
+    <path d="M140 520 C 260 360, 540 360, 660 520 C 540 680, 260 680, 140 520 Z" fill="url(#grad)" opacity="0.9"/>
+    <path d="M210 300 C 300 220, 500 220, 590 300 C 500 380, 300 380, 210 300 Z" fill="#ffffff" opacity="0.06"/>
+  </g>
+  <filter id="f">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="0"/>
+  </filter>
+</svg>
+

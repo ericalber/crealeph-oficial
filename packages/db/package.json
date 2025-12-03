@@ -1,0 +1,25 @@
+{
+  "name": "@crealeph/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "prisma": { "schema": "prisma/schema.prisma" },
+  "exports": { ".": { "types": "./src/index.ts", "default": "./src/index.ts" } },
+  "files": ["src", "prisma"],
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
+    "seed": "tsx src/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.17.0",
+    "bcryptjs": "^2.4.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "prisma": "^5.17.0",
+    "tsx": "^4.16.2",
+    "typescript": "^5.4.5"
+  }
+}
+

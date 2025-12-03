@@ -1,0 +1,56 @@
+:root {
+  --bg: #f8f9fc;
+  --surface: #ffffff;
+  --surface-muted: #f3f4f6;
+  --ink: #0c0c0e;
+  --muted: #4b5563;
+  --line: #e5e7eb;
+  --brand: #d62828;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #0ea5e9;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  --shadow-xs: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 18px 46px rgba(0, 0, 0, 0.18);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  --cre-line: 1px solid var(--line);
+  --cre-divider: linear-gradient(90deg, rgba(214, 40, 40, 0.5), rgba(214, 40, 40, 0.15));
+
+  --chart-1: var(--brand);
+  --chart-2: var(--info);
+  --chart-3: var(--success);
+  --chart-4: var(--warning);
+  --chart-5: var(--muted);
+}
+
+[data-theme="dark"] {
+  --bg: #0c0c0e;
+  --surface: #111216;
+  --surface-muted: #17181d;
+  --ink: #f3f4f6;
+  --muted: #9ca3af;
+  --line: #1f2026;
+  --brand: #d62828;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #0ea5e9;
+}

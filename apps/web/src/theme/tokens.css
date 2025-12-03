@@ -1,0 +1,46 @@
+:root {
+  /* base (legacy HEX kept for backward compat) */
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --line: #e5e7eb;
+  --ink: #0c0c0e;
+  --ink-2: #121316;
+  --text: #0b0f1a;
+  --muted: #4b5563;
+
+  /* shadcn/tailwind HSL tokens (authoritative) */
+  --background: 0 0% 100%; /* light bg */
+  --foreground: 222 22% 10%; /* dark text */
+  --card: 0 0% 100%;
+  --card-foreground: 222 22% 12%;
+  /* accents (tech glow default: cyan/teal) */
+  --accent: 190 95% 42%;
+  --accent-2: 210 90% 55%;
+
+  /* brand CreAleph (HEX legacy) */
+  --brand: #e02020;
+  --brand-600: #a4161a;
+
+  /* typography */
+  --h1: clamp(40px, 6vw, 56px);
+  --h2: clamp(28px, 4.5vw, 44px);
+  --h3: clamp(20px, 3vw, 32px);
+  --body: 16px;
+  --leading: 26px;
+
+  /* radius & shadows */
+  --radius: 12px;
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 18px 46px rgba(0, 0, 0, 0.2);
+  --glow: 0 0 0 1px rgba(224, 32, 32, 0.25), 0 8px 24px rgba(224, 32, 32, 0.2);
+}
+
+.dark {
+  /* shadcn/tailwind HSL tokens in dark */
+  --background: 220 14% 7%; /* near-ink background */
+  --foreground: 210 40% 98%; /* light text */
+  --card: 222 16% 12%;
+  --card-foreground: 210 40% 96%;
+  --accent: 190 95% 50%;
+  --accent-2: 210 90% 62%;
+}

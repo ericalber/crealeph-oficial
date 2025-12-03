@@ -1,0 +1,14 @@
+node_modules
+dist
+.next
+coverage
+test-results
+e2e-results
+.env
+apps/**/.env
+packages/**/.env
+pnpm-lock.yaml
+.prisma
+docker-data
+.DS_Store
+

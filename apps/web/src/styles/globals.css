@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens HSL são definidos em tokens.css. Mantemos apenas extras aqui. */
+/* Importante: não sobrescrever --muted já usado no tema */
+:root{
+  --muted-foreground: 215.4 16.3% 46.9%;
+}
+.dark{
+  --muted-foreground: 215 20.2% 65.1%;
+}
+
+html,
+body {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(224, 32, 32, 0.06), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(12, 12, 14, 0.08), transparent 50%),
+    var(--surface);
+  color: var(--text);
+  font-size: var(--body);
+  line-height: var(--leading);
+}
+
+body {
+  margin: 0;
+}
+
+/* Não force a cor do link globalmente para evitar sobrescrever utilitários Tailwind */
+a {
+  text-decoration: none;
+}
+
+/* Home background: expõe gradiente vermelho escuro atrás das seções */
+.home-bg {
+  /* Fundo alinhado ao CTA (#E02020) com toques do brand-600 (#A4161A) */
+  background:
+    radial-gradient(circle at 18% 12%, rgba(224, 32, 32, 0.18), transparent 44%),
+    radial-gradient(circle at 82% 78%, rgba(164, 22, 26, 0.16), transparent 56%),
+    linear-gradient(180deg, #0C0C0E 0%, rgba(224, 32, 32, 0.12) 40%, rgba(164, 22, 26, 0.14) 70%, #0C0C0E 100%);
+}
+
+/* Fundo vermelho consistente para páginas/landing com variações de cards */
+.page-red {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(224, 32, 32, 0.16), transparent 44%),
+    radial-gradient(circle at 82% 78%, rgba(164, 22, 26, 0.14), transparent 56%),
+    linear-gradient(180deg, #A4161A 0%, #E02020 50%, #A4161A 100%);
+}
+
+/* Inverte tokens de cor para textos claros em áreas escuras/red */
+.theme-invert {
+  --ink: #ffffff;
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.75);
+  --line: rgba(255, 255, 255, 0.15);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
+}
+
+/* ---- Icon alignment utilities (non-destructive) ---- */
+@layer components {
+  .icon-row {
+    @apply inline-flex items-center gap-2 align-middle;
+  }
+  .icon {
+    @apply inline-block shrink-0 align-middle;
+  }
+  .icon-5 {
+    @apply h-5 w-5;
+  }
+  .icon-6 {
+    @apply h-6 w-6;
+  }
+  .link-cta {
+    @apply underline underline-offset-4 decoration-white/30 hover:decoration-white;
+  }
+  .link-cta:has(svg) {
+    @apply inline-flex items-center gap-2 align-middle;
+  }
+  .link-cta svg {
+    @apply icon icon-5;
+  }
+  .link-cta[data-icon] {
+    @apply inline-flex items-center gap-2 align-middle;
+  }
+}
+
+/* Typography-rich blocks: keep SVG inline and aligned */
+.prose :where(svg) {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+}
+
+/* Lighting System utilities */
+.ts-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, hsl(var(--foreground) / 0.06) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.06) 0 1px, transparent 1px 48px);
+}
+.ts-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,.55));
+}
+.ts-noise::after {
+  /* When combined with ::before, prefer stacking via z-index if needed */
+  background-image: var(--noise-src, none);
+  background-size: 200px 200px;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
