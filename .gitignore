@@ -12,3 +12,4 @@ pnpm-lock.yaml
 docker-data
 .DS_Store
 
+.turbo
