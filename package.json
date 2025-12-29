@@ -20,6 +20,12 @@
     "prisma:migrate:dev": "pnpm --filter @crealeph/db exec prisma migrate dev",
     "seed": "pnpm --filter @crealeph/db run seed"
   },
+  "pnpm": {
+    "overrides": {
+      "fastify": "4.29.1",
+      "@fastify/cors": "8.4.0"
+    }
+  },
   "devDependencies": {
     "@types/node": "^20.14.10",
     "dotenv": "^16.4.5",

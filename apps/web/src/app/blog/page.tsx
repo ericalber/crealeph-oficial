@@ -3,16 +3,19 @@ const articles = [
     title: "Como automatizar o handoff entre Figma e código",
     date: "Jun 2025",
     tags: ["Design Ops", "Automation"],
+    href: "#",
   },
   {
     title: "Framework de discovery em 4 semanas",
     date: "May 2025",
     tags: ["Product Strategy"],
+    href: "#",
   },
   {
     title: "Copilotos de IA para marketing de performance",
     date: "Apr 2025",
     tags: ["AI", "Growth"],
+    href: "#",
   },
 ];
 

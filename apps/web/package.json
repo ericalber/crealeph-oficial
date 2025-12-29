@@ -12,9 +12,14 @@
     "test": "echo ok"
   },
   "dependencies": {
+    "@crealeph/db": "workspace:*",
     "@crealeph/ui": "workspace:*",
+    "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
+    "framer-motion": "^11.18.2",
     "next": "^14.2.5",
+    "next-auth": "^4.24.7",
+    "openai": "^6.15.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

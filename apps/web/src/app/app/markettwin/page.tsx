@@ -28,7 +28,7 @@ type RegionRow = {
   priceRange: string;
   sov: string;
   approval: string;
-  status: "Strong" | "Neutral" | "Critical";
+  status: "Strong" | "Neutral" | "Critical" | "Forte" | "Crítico";
   lastUpdate: string;
   lastUpdateDate: Date;
 };

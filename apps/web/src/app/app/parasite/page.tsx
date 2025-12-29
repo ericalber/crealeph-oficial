@@ -79,7 +79,62 @@ export default function ParasitePage() {
         <GhostButton onClick={() => eventBus.emit("parasite.signal.created", { botId: bot.id, region: bot.region, type: "manual_trigger" })}>
           Create Signal
         </GhostButton>
-        <GhostButton onClick={() => eventBus.emit("builder.page.published", { source: "PARASITE", botId: bot.id, region: bot.region })}>
+        <GhostButton
+          onClick={async () => {
+            try {
+              const payload = {
+                robotId: bot.id,
+                objective_type: "site_plan",
+                objective_payload: {
+                  page: "home",
+                  niche: bot.niche,
+                  region: bot.region,
+                  modes: bot.modes,
+                },
+                constraints: {
+                  niche: bot.niche,
+                  region: bot.region,
+                },
+                coherence_policy: { on_stale: "block", on_partial: "draft_only" },
+                dryRun: true,
+                workflowVersion: "builder-ui-1.0.0",
+                agentVersion: "agent-bridge-v1",
+                attempt: 1,
+              };
+
+              const res = await fetch("/api/builder/run", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+
+              const json = await res.json().catch(() => null);
+              if (!res.ok || !json?.ok) {
+                const message =
+                  json?.error ??
+                  json?.blocking_reason ??
+                  json?.message ??
+                  `HTTP ${res.status}`;
+                throw new Error(message);
+              }
+
+              const artifactIds = Array.isArray(json?.artifacts)
+                ? json.artifacts
+                    .map((artifact: { id?: string }) => artifact.id)
+                    .filter((id): id is string => typeof id === "string")
+                : [];
+
+              console.log("builder.run", {
+                executionId: json.executionId,
+                state: json.state,
+                artifacts: artifactIds,
+              });
+            } catch (error) {
+              console.error("builder.run failed", error);
+              throw error;
+            }
+          }}
+        >
           Apply to Builder
         </GhostButton>
       </div>

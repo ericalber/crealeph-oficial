@@ -14,7 +14,7 @@ type Plan = {
 const plans: Plan[] = [
   {
     name: "Starter",
-    price: "BRL 4,900/mo",
+    price: "USD 4,900/mo",
     description: "For local businesses that need a site and integrated media.",
     features: [
       "Modular website (up to 8 pages)",
@@ -25,7 +25,7 @@ const plans: Plan[] = [
   },
   {
     name: "Pro",
-    price: "BRL 8,900/mo",
+    price: "USD 8,900/mo",
     description: "For regional or multi-location operations seeking scale.",
     features: [
       "Website plus unlimited landing pages",
@@ -95,7 +95,7 @@ export default function PricingPage() {
             {plans.map((plan) => (
               <article
                 key={plan.name}
-                className={`flex h-full flex-col rounded-[--radius] border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${plan.featured ? "border-brand shadow-[var(--shadow-lg)]" : ""}`}
+                className={`flex h-full flex-col rounded-[var(--radius-card)] border border-line bg-white p-6 shadow-[var(--shadow-soft)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-elevated)] ${plan.featured ? "border-brand" : ""}`}
               >
                 <div className="space-y-2">
                   <span className="text-sm font-semibold uppercase tracking-[0.3em] text-brand">

@@ -20,6 +20,8 @@
   /* brand CreAleph (HEX legacy) */
   --brand: #e02020;
   --brand-600: #a4161a;
+  --ink-strong: #0b0b0e;
+  --ink-soft: #1a1a1f;
 
   /* typography */
   --h1: clamp(40px, 6vw, 56px);
@@ -33,6 +35,37 @@
   --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 18px 46px rgba(0, 0, 0, 0.2);
   --glow: 0 0 0 1px rgba(224, 32, 32, 0.25), 0 8px 24px rgba(224, 32, 32, 0.2);
+
+  /* gradients */
+  --gradient-brand-crimson: linear-gradient(130deg, rgba(224, 32, 32, 0.94), rgba(164, 22, 26, 0.9));
+  --gradient-brand-charcoal: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.05), transparent 30%), radial-gradient(circle at 80% 0%, rgba(224, 32, 32, 0.16), transparent 40%), linear-gradient(145deg, #0b0b0e, #0c0c12 40%, #0b0b0e 90%);
+  --gradient-brand-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  --grad-hero: linear-gradient(135deg, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.65));
+  --grad-section-dark: linear-gradient(135deg, #0b0b0e, #0f1118);
+  --grad-section-light: linear-gradient(135deg, #ffffff, #f8fafc);
+
+  /* spacing scale */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* motion tokens */
+  --motion-duration-sm: 240ms;
+  --motion-duration-md: 420ms;
+  --motion-duration-lg: 700ms;
+  --motion-ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* depth */
+  --depth-1: 0 10px 26px rgba(0, 0, 0, 0.16);
+  --depth-2: 0 14px 38px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --depth-3: 0 24px 80px rgba(224, 32, 32, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.12);
+  --shadow-elevated: 0 18px 46px rgba(0, 0, 0, 0.18);
+  --radius-card: 16px;
+  --radius-lg: 20px;
 }
 
 .dark {

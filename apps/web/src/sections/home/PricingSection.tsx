@@ -1,39 +1,36 @@
 const plans = [
   {
-    name: "Basic",
-    price: "$19/Month",
-    description: "Perfect for startups & small websites",
+    name: "Starter",
+    price: "USD 4,900/mo",
+    description: "For local operations that need a modular site and managed media.",
     features: [
-      "1 Website",
-      "Basic Keyword Research",
-      "Monthly SEO Audit",
-      "5 Keywords Tracked",
-      "Standard Reporting",
+      "Modular website (up to 8 pages)",
+      "Managed Google & Meta campaigns",
+      "Access to AQUA Insights",
+      "Automated weekly reports",
     ],
   },
   {
-    name: "Standard",
-    price: "$49/Month",
-    description: "Best for growing businesses",
+    name: "Pro",
+    price: "USD 8,900/mo",
+    description: "For multi-location teams that need velocity and visibility.",
     featured: true,
     features: [
-      "5 Websites",
-      "In-depth Keyword Analysis",
-      "On-page Optimization",
-      "20 Keywords Tracked",
-      "Performance Report",
+      "Unlimited landing pages",
+      "Scout + Market Twin™ included",
+      "Dedicated CRO and automation squad",
+      "/app dashboard with up to 10 seats",
     ],
   },
   {
-    name: "Premium",
-    price: "$99/Month",
-    description: "All-in SEO solution for scale",
+    name: "Enterprise",
+    price: "Custom quote",
+    description: "For national networks and regulated industries.",
     features: [
-      "Unlimited Websites",
-      "Full Technical SEO",
-      "Competitor Analysis",
-      "50+ Keywords Tracked",
-      "Dedicated SEO Manager",
+      "Custom projects in the CMS/tool of your choice",
+      "Advanced integrations via Bridge",
+      "24/7 support and continuous innovation squad",
+      "Unlimited InsightScore™",
     ],
   },
 ];
@@ -47,11 +44,10 @@ export function PricingSection() {
             Simple & Transparent
           </span>
           <h2 className="text-h2 font-semibold text-ink">
-            Flexible Pricing Plans
+            Pricing for momentum
           </h2>
           <p className="text-base text-muted">
-            No surprises: escolha o plano que combina com o estágio do seu
-            produto e evolua conforme precisar escalar.
+            No surprises. Pick the plan that matches your stage and scale with clear SLAs.
           </p>
         </div>
 
@@ -67,7 +63,7 @@ export function PricingSection() {
           {plans.map((plan) => (
             <article
               key={plan.name}
-              className={`flex h-full flex-col rounded-[--radius] border border-line bg-surface p-6 transition hover:shadow-lg ${plan.featured ? "border-brand shadow-[var(--shadow-lg)]" : ""}`}
+              className={`flex h-full flex-col rounded-[var(--radius-card)] border border-line bg-surface p-6 shadow-[var(--shadow-soft)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-elevated)] ${plan.featured ? "border-brand" : ""}`}
             >
               <div className="space-y-3">
                 <span className="text-sm font-semibold uppercase tracking-[0.3em] text-brand">

@@ -1,8 +1,9 @@
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionSeparator } from "@/components/ui/SectionSeparator";
 import { CTAButton } from "@/components/ui/CTAButton";
-import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
 import { SeeAlso } from "@/components/ui/SeeAlso";
+import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
+import { Reveal } from "@/components/motion/Reveal";
 import Link from "next/link";
 
 export default function AutomotiveIndustryPage() {
@@ -11,23 +12,23 @@ export default function AutomotiveIndustryPage() {
       <PageHero
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Indústrias", href: "/industries" },
-          { label: "Automotivo & Náutico" },
+          { label: "Industries", href: "/industries" },
+          { label: "Automotive & Marine" },
         ]}
-        subtitle="Automotivo & Náutico"
-        title="Marketing e automação para revendas premium, oficinas e marinas."
-        body="Posicionamento sensível a preço e disponibilidade. Market Twin™ mostra percentis por região e tipo de veículo, Bridge integra estoque e faturamento, enquanto Scout alerta sobre novas campanhas dos concorrentes. Websites exibem vitrines dinâmicas e formulários com orçamento instantâneo."
+        subtitle="Automotive & Marine"
+        title="Marketing and automation for premium dealers, shops, and marinas."
+        body="Positioning sensitive to price and availability. Market Twin™ shows percentiles by region and vehicle type, Bridge integrates inventory and billing, and Scout alerts you to new competitor campaigns. Websites display dynamic showcases and instant quote forms."
         ctas={[
           {
-            label: "Ver case Marina Vox",
-            href: "/projects/case-marina-vox?utm_source=industries-automotive&utm_campaign=cta-primary",
-            ariaLabel: "Ver case Marina Vox",
+            label: "Request diagnosis",
+            href: "/contact?utm_source=industries-automotive&utm_campaign=cta-primary",
+            ariaLabel: "Request automotive diagnosis",
             campaign: "cta-primary",
           },
           {
-            label: "Solicitar diagnóstico",
-            href: "/contact?utm_source=industries-automotive&utm_campaign=cta-secondary",
-            ariaLabel: "Solicitar diagnóstico automotivo",
+            label: "View projects",
+            href: "/projects?utm_source=industries-automotive&utm_campaign=cta-secondary",
+            ariaLabel: "View automotive projects",
             variant: "secondary",
             campaign: "cta-secondary",
           },
@@ -37,59 +38,47 @@ export default function AutomotiveIndustryPage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-8">
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-surface p-8 shadow-md">
-              <h2 className="text-2xl font-semibold text-ink">Componentes essenciais</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-surface p-8 shadow-[var(--shadow-soft)]">
+              <h2 className="text-2xl font-semibold text-ink">Digital storefronts</h2>
               <p className="mt-3 text-sm text-muted">
-                Conectamos vitrines dinâmicas a
+                We connect dynamic showcases to{" "}
                 <Link
                   href="/modules/market-twin?utm_source=industries-automotive&utm_campaign=link"
-                  className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                  className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
                   Market Twin™
-                </Link>
-                , campanhas inteligentes com
-                <Link
-                  href="/services/marketing?utm_source=industries-automotive&utm_campaign=link"
-                  className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
-                >
-                  marketing CreAleph
-                </Link>
-                {" "}e follow-up automatizado via
-                <Link
-                  href="/modules/bridge?utm_source=industries-automotive&utm_campaign=link"
-                  className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
-                >
-                  Bridge
-                </Link>
-                .
+                </Link>{" "}
+                so pricing reflects real positioning. Automations trigger follow-up and booking flows with Bridge
+                keeping approvals visible.
               </p>
               <ul className="mt-4 space-y-2 text-sm text-muted">
-                <li>Catálogo com filtros por tipo, ano, quilometragem e faixa de preço.</li>
-                <li>Form hero Molly Maid adaptado para cotação ou reserva de test-drive.</li>
-                <li>Integração com CRM para follow-up automático e scoring.</li>
+                <li>Catalog with filters by type, year, mileage, and price range.</li>
+                <li>Molly Maid hero form adapted to quotes or test-drive booking.</li>
+                <li>CRM integration for automatic follow-up and scoring.</li>
               </ul>
             </div>
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md text-sm text-muted">
-              <h2 className="text-2xl font-semibold text-ink">Métricas monitoradas</h2>
-              <ul className="mt-4 space-y-2">
-                <li>Tempo médio de resposta por consultor (Bridge).</li>
-                <li>Giro de estoque por categoria (Market Twin™).</li>
-                <li>Taxa de aprovação X canal (Scout + InsightScore™).</li>
+            <div className="rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] text-sm text-muted">
+              <h2 className="text-2xl font-semibold text-ink">Metrics monitored</h2>
+              <ul className="mt-3 space-y-2">
+                <li>Average response time per consultant (Bridge).</li>
+                <li>Approval rate by channel (Scout + InsightScore™).</li>
+                <li>Price percentiles by region and vehicle type.</li>
+                <li>Inventory turnover and abandoned quotes.</li>
               </ul>
-              <CTAButton
-                href="/modules/market-twin?utm_source=industries-automotive&utm_campaign=cta-secondary"
-                label="Entender Market Twin™"
-                ariaLabel="Entender Market Twin"
-                variant="secondary"
-                source="industries-automotive-body"
-                campaign="cta-secondary"
-              />
             </div>
+            <CTAButton
+              href="/modules/bridge?utm_source=industries-automotive&utm_campaign=cta-secondary"
+              label="Bridge for inventory + billing"
+              ariaLabel="Bridge for inventory and billing"
+              variant="secondary"
+              source="industries-automotive-body"
+              campaign="cta-secondary"
+            />
           </div>
-          <MiniQuoteForm context="Briefing — Automotivo & Náutico" />
+          <MiniQuoteForm context="Briefing — Automotive & Marine" />
         </div>
       </section>
 
@@ -97,24 +86,24 @@ export default function AutomotiveIndustryPage() {
         source="industries-automotive-see-also"
         items={[
           {
-            title: "Pricing automotivo",
-            description: "Combine Market Twin™ com precificação regional.",
-            href: "/modules/pricing",
+            title: "Market Twin™",
+            description: "Combine Market Twin™ with Regional Pricing.",
+            href: "/modules/market-twin",
           },
           {
-            title: "Bridge",
-            description: "Integre ERPs de estoque e billing.",
-            href: "/modules/bridge",
+            title: "Operational automation",
+            description: "KPIs to track daily performance.",
+            href: "/services/automation",
           },
           {
-            title: "Marketing inteligente",
-            description: "Campanhas multicanal para venda de alto ticket.",
-            href: "/services/marketing",
+            title: "Developers",
+            description: "Bridge docs and examples.",
+            href: "/developers",
           },
           {
-            title: "Dashboard",
-            description: "KPIs para acompanhar performance diária.",
-            href: "/app",
+            title: "Contact",
+            description: "Talk to the automotive squad.",
+            href: "/contact",
           },
         ]}
       />

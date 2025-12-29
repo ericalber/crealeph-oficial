@@ -26,6 +26,72 @@ model Robot {
   status    String   @default("active")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  competitorProfiles      CompetitorProfile[]
+  robotFusions            RobotFusion[]
+  robotPlaybookV2s        RobotPlaybookV2[]
+  robotPlaybooks          RobotPlaybook[]
+  robotRuns               RobotRun[]
+  robotIdeas              RobotIdea[]
+  robotCopies             RobotCopy[]
+  marketTwinEntries       MarketTwinEntry[]
+  intelligenceLedgerEntries IntelligenceLedgerEntry[]
+}
+
+model CompetitorProfile {
+  id         String   @id @default(cuid())
+  robotId    String
+  name       String
+  url        String
+  reviewsUrl String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  robot      Robot              @relation(fields: [robotId], references: [id])
+  insights   CompetitorInsight[]
+}
+
+model CompetitorInsight {
+  id           String   @id @default(cuid())
+  competitorId String
+  summaryJson  Json
+  createdAt    DateTime @default(now())
+
+  competitor   CompetitorProfile @relation(fields: [competitorId], references: [id])
+}
+
+model RobotFusion {
+  id         String   @id @default(cuid())
+  robotId    String
+  name       String
+  summaryJson Json
+  createdAt  DateTime @default(now())
+
+  robot      Robot    @relation(fields: [robotId], references: [id])
+}
+
+model RobotPlaybookV2 {
+  id        String   @id @default(cuid())
+  robotId   String
+  type      String
+  title     String
+  structure Json
+  createdAt DateTime @default(now())
+
+  robot     Robot    @relation(fields: [robotId], references: [id])
+  tasks     PlaybookTask[]
+}
+
+model PlaybookTask {
+  id          String   @id @default(cuid())
+  playbookId  String
+  category    String
+  title       String
+  description String
+  priority    Int
+  createdAt   DateTime @default(now())
+
+  playbook    RobotPlaybookV2 @relation(fields: [playbookId], references: [id])
 }
 
 model Vertical {
@@ -35,6 +101,7 @@ model Vertical {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   templates AgentTemplate[]
+  templatePacks TemplatePack[]
 }
 
 model AgentTemplate {
@@ -98,6 +165,43 @@ model RobotPlaybook {
   createdAt DateTime @default(now())
   actions   Json
   robot     Robot    @relation(fields: [robotId], references: [id])
+}
+
+model IntelligenceLedgerEntry {
+  id        String   @id @default(cuid())
+  tenantId  String
+  robotId   String?
+  module    String
+  source    String
+  type      String
+  state     String
+  payload   Json
+  lineage   Json
+  createdAt DateTime @default(now())
+
+  robot     Robot?   @relation(fields: [robotId], references: [id])
+
+  @@index([tenantId])
+  @@index([tenantId, module, type, createdAt])
+  @@index([tenantId, robotId])
+}
+
+model IntelligenceLedgerFailure {
+  id           String   @id @default(cuid())
+  tenantId     String
+  robotId      String?
+  module       String
+  source       String
+  type         String
+  state        String?
+  payload      Json
+  lineage      Json?
+  errorMessage String
+  createdAt    DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([tenantId, module, type, createdAt])
+  @@index([tenantId, robotId])
 }
 
 enum Role {

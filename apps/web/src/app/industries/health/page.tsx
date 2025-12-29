@@ -1,8 +1,9 @@
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionSeparator } from "@/components/ui/SectionSeparator";
 import { CTAButton } from "@/components/ui/CTAButton";
-import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
 import { SeeAlso } from "@/components/ui/SeeAlso";
+import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
+import { Reveal } from "@/components/motion/Reveal";
 import Link from "next/link";
 
 export default function HealthIndustryPage() {
@@ -11,23 +12,23 @@ export default function HealthIndustryPage() {
       <PageHero
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Indústrias", href: "/industries" },
-          { label: "Saúde" },
+          { label: "Industries", href: "/industries" },
+          { label: "Health" },
         ]}
-        subtitle="Saúde"
-        title="Sites e jornadas para clínicas, laboratórios e healthtechs."
-        body="LGPD, compliance e empatia. Aplicamos AQUA para entender dúvidas dos pacientes, InsightScore™ para validar melhorias e Bridge para integrar sistemas de agendamento, faturamento e prontuário. Comunicamos autoridade com conteúdo educativo e provas sociais supervisionadas."
+        subtitle="Health"
+        title="Websites and journeys for clinics, labs, and healthtechs."
+        body="LGPD, compliance, and empathy. We apply AQUA to learn patient doubts, InsightScore™ to validate improvements, and Bridge to integrate scheduling, billing, and medical records. We communicate authority with educational content and vetted social proof."
         ctas={[
           {
-            label: "Solicitar avaliação LGPD",
+            label: "Request LGPD review",
             href: "/contact?utm_source=industries-health&utm_campaign=cta-primary",
-            ariaLabel: "Solicitar avaliação LGPD",
+            ariaLabel: "Request LGPD review",
             campaign: "cta-primary",
           },
           {
-            label: "Ver projetos de saúde",
+            label: "See health projects",
             href: "/projects?utm_source=industries-health&utm_campaign=cta-secondary",
-            ariaLabel: "Ver projetos de saúde",
+            ariaLabel: "See health projects",
             variant: "secondary",
             campaign: "cta-secondary",
           },
@@ -37,51 +38,51 @@ export default function HealthIndustryPage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-8">
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-surface p-8 shadow-md">
-              <h2 className="text-2xl font-semibold text-ink">Fluxos de confiança</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-surface p-8 shadow-[var(--shadow-soft)]">
+              <h2 className="text-2xl font-semibold text-ink">Trust flows</h2>
               <p className="mt-3 text-sm text-muted">
-                Conteúdo nasce do
+                Content comes from{" "}
                 <Link
                   href="/modules/aqua?utm_source=industries-health&utm_campaign=link"
-                  className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                  className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
-                  AQUA Insights
+                  AQUA
                 </Link>
-                , campanhas são otimizadas com
+                , campaigns are optimized with{" "}
                 <Link
-                  href="/services/marketing?utm_source=industries-health&utm_campaign=link"
-                  className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                  href="/modules/insightscore?utm_source=industries-health&utm_campaign=link"
+                  className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
-                  marketing inteligente
+                  InsightScore™
                 </Link>
-                {" "}e automações Bridge garantem lembretes e pós-consulta consistentes.
+                , and Bridge automations ensure consistent reminders and post-visit follow-up.
               </p>
               <ul className="mt-4 space-y-2 text-sm text-muted">
-                <li>Landing pages para especialidades com copy dedicada e Q&A.</li>
-                <li>Integração com sistemas de agendamento (iClinic, ZenFisio, Memed).</li>
-                <li>Automação de pós-consulta e programas de retenção.</li>
+                <li>Integration with scheduling systems (iClinic, ZenFisio, Memed).</li>
+                <li>Automation for post-visit and retention programs.</li>
+                <li>Personalized flows for specialties, labs, and telemedicine.</li>
               </ul>
             </div>
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md text-sm text-muted">
-              <h2 className="text-2xl font-semibold text-ink">Regulatório</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] text-sm text-muted">
+              <h2 className="text-2xl font-semibold text-ink">Regulatory</h2>
               <p className="mt-3">
-                Implementamos termos, políticas e logs conforme LGPD, CRM e conselhos específicos. Bridge garante trilha auditável de
-                dados e integrações com ERPs hospitalares.
+                We implement terms, policies, and logs following LGPD and specific councils. Bridge guarantees an
+                auditable trail of data and integrations with hospital ERPs.
               </p>
             </div>
             <CTAButton
               href="/modules/bridge?utm_source=industries-health&utm_campaign=cta-secondary"
-              label="Saiba mais sobre Bridge"
-              ariaLabel="Saiba mais sobre Bridge"
+              label="See Bridge for health"
+              ariaLabel="See Bridge for health"
               variant="secondary"
               source="industries-health-body"
               campaign="cta-secondary"
             />
           </div>
-          <MiniQuoteForm context="Briefing — Saúde" />
+          <MiniQuoteForm context="Briefing — Health" />
         </div>
       </section>
 
@@ -89,23 +90,23 @@ export default function HealthIndustryPage() {
         source="industries-health-see-also"
         items={[
           {
-            title: "Automação operacional",
-            description: "Fluxos de atendimento, faturamento e relacionamento.",
+            title: "Operational automation",
+            description: "Automations for scheduling, billing, and follow-up.",
             href: "/services/automation",
           },
           {
             title: "AQUA Insights",
-            description: "Mapeie dúvidas e objeções reais dos pacientes.",
+            description: "Map real patient doubts and objections.",
             href: "/modules/aqua",
           },
           {
-            title: "FAQ LGPD",
-            description: "Tire dúvidas sobre privacidade e segurança.",
-            href: "/resources/faq",
+            title: "Privacy & security",
+            description: "Clarify privacy and security questions.",
+            href: "/contact",
           },
           {
-            title: "Contato",
-            description: "Fale com o squad saúde da CreAleph.",
+            title: "Contact",
+            description: "Talk to the health squad at CreAleph.",
             href: "/contact",
           },
         ]}

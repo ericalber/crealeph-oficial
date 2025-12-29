@@ -101,7 +101,12 @@ export default function PipelinePage() {
   const [search, setSearch] = useState("");
   const [dateRange, setDateRange] = useState<{ from: Date | null; to: Date | null }>({ from: null, to: null });
 
-  const kpis = [
+  const kpis: Array<{
+    label: string;
+    value: string;
+    delta: string;
+    tone: "positive" | "negative" | "neutral";
+  }> = [
     { label: "Total Leads", value: "86", delta: "+12%", tone: "positive" },
     { label: "Qualified", value: "34", delta: "+5", tone: "positive" },
     { label: "Won Deals", value: "11", delta: "+2", tone: "positive" },

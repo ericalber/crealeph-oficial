@@ -1,8 +1,8 @@
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionSeparator } from "@/components/ui/SectionSeparator";
 import { CTAButton } from "@/components/ui/CTAButton";
-import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
 import { SeeAlso } from "@/components/ui/SeeAlso";
+import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
 import Link from "next/link";
 
 export default function MarinasIndustryPage() {
@@ -11,23 +11,23 @@ export default function MarinasIndustryPage() {
       <PageHero
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Indústrias", href: "/industries" },
-          { label: "Marinas & Charter" },
+          { label: "Industries", href: "/industries" },
+          { label: "Marinas & Marine" },
         ]}
-        subtitle="Marinas & Charter"
-        title="Experiência omnichannel para aluguel de embarcações e manutenção."
-        body="Integramos gestão de marina, reservas, manutenção e atendimento em um único fluxo. Websites exibem disponibilidade em tempo real, automações confirmam check-in/out e Bridge conecta faturamento. Market Twin™ compara tarifas por marina e Scout monitora promoções sazonais."
+        subtitle="Marinas & Marine"
+        title="Omnichannel experience for boat rentals and maintenance."
+        body="We integrate marina management, reservations, maintenance, and support in a single flow. Websites show real-time availability, automations confirm check-in/out, and Bridge connects billing. Market Twin™ compares rates by marina, and Scout monitors seasonal promotions."
         ctas={[
           {
-            label: "Ver case Marina Vox",
-            href: "/projects/case-marina-vox?utm_source=industries-marinas&utm_campaign=cta-primary",
-            ariaLabel: "Ver case Marina Vox",
+            label: "Request demo",
+            href: "/contact?utm_source=industries-marinas&utm_campaign=cta-primary",
+            ariaLabel: "Request marina demo",
             campaign: "cta-primary",
           },
           {
-            label: "Solicitar proposta",
-            href: "/contact?utm_source=industries-marinas&utm_campaign=cta-secondary",
-            ariaLabel: "Solicitar proposta para marinas",
+            label: "See marine projects",
+            href: "/projects?utm_source=industries-marinas&utm_campaign=cta-secondary",
+            ariaLabel: "See marine projects",
             variant: "secondary",
             campaign: "cta-secondary",
           },
@@ -37,48 +37,51 @@ export default function MarinasIndustryPage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-8">
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-surface p-8 shadow-md">
-              <h2 className="text-2xl font-semibold text-ink">Soluções principais</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-surface p-8 shadow-[var(--shadow-soft)]">
+              <h2 className="text-2xl font-semibold text-ink">Core solutions</h2>
               <p className="mt-3 text-sm text-muted">
-                Market Twin™ sugere tarifas por temporada, enquanto
-                <Link
-                  href="/services/automation?utm_source=industries-marinas&utm_campaign=link"
-                  className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
-                >
-                  automações CreAleph
-                </Link>
-                {" "}sincronizam reservas e manutenção. O
+                Websites synchronized with{" "}
                 <Link
                   href="/modules/bridge?utm_source=industries-marinas&utm_campaign=link"
-                  className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                  className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
                   Bridge
-                </Link>
-                {" "}integra faturamento e estoque em tempo real.
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/modules/market-twin?utm_source=industries-marinas&utm_campaign=link"
+                  className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                >
+                  Market Twin™
+                </Link>{" "}
+                keep availability, pricing, and approvals in sync.
               </p>
               <ul className="mt-4 space-y-2 text-sm text-muted">
-                <li>Portal com disponibilidade, fotos, especificações e precificação dinâmica.</li>
-                <li>Automação de reserva e cobrança com Bridge + ERPs náuticos.</li>
-                <li>Fluxos de manutenção preventiva com dashboards para times técnicos.</li>
+                <li>Portal with availability, photos, specs, and dynamic pricing.</li>
+                <li>Reservation and billing automation with Bridge + marine ERPs.</li>
+                <li>Preventive maintenance flows with dashboards for technical teams.</li>
               </ul>
+            </div>
+            <div className="rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] text-sm text-muted">
+              <h2 className="text-2xl font-semibold text-ink">Operations</h2>
+              <p className="mt-3">
+                We work alongside operations, marketing, and concierge teams to guarantee a consistent experience from
+                first click to post-trip.
+              </p>
             </div>
             <CTAButton
               href="/modules/market-twin?utm_source=industries-marinas&utm_campaign=cta-secondary"
-              label="Aplicar Market Twin™"
-              ariaLabel="Aplicar Market Twin nas marinas"
+              label="See Market Twin™ for marine"
+              ariaLabel="See Market Twin for marine"
               variant="secondary"
               source="industries-marinas-body"
               campaign="cta-secondary"
             />
-            <p className="text-sm text-muted">
-              Trabalhamos lado a lado com equipes de operações, marketing e concierge para garantir experiência
-              consistente do primeiro clique ao pós-viagem.
-            </p>
           </div>
-          <MiniQuoteForm context="Briefing — Marinas & Charter" />
+          <MiniQuoteForm context="Briefing — Marinas" />
         </div>
       </section>
 
@@ -87,22 +90,22 @@ export default function MarinasIndustryPage() {
         items={[
           {
             title: "Market Twin™",
-            description: "Compreenda percentis de preço por temporada.",
+            description: "Understand price percentiles by season.",
             href: "/modules/market-twin",
           },
           {
-            title: "Automação operacional",
-            description: "Fluxos para reservas, manutenção e billing.",
+            title: "Operational automation",
+            description: "Flows for reservations, maintenance, and billing.",
             href: "/services/automation",
           },
           {
-            title: "Projetos",
-            description: "Cases de turismo e hospitalidade premium.",
-            href: "/projects",
+            title: "Bridge + ERPs",
+            description: "Connect billing and approvals.",
+            href: "/modules/bridge",
           },
           {
-            title: "Contato",
-            description: "Converse com o squad náutico.",
+            title: "Contact",
+            description: "Talk to the marine squad.",
             href: "/contact",
           },
         ]}

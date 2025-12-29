@@ -1,24 +1,25 @@
+"use client";
+
+import { Reveal } from "@/components/motion/Reveal";
+
 const posts = [
   {
     category: "Campaign Magic",
-    title: "Discover – Understand Your Brand & Audience",
-    date: "27 July 2025",
-    excerpt:
-      "Refine os detalhes, teste com ciclos curtos e lance seu projeto com análises em tempo real.",
+    title: "Discover: know your audience before launching",
+    date: "July 27, 2025",
+    excerpt: "How we combine Parasite signals, AQUA research, and interviews to define angles before writing a single page.",
   },
   {
-    category: "Campaign Magic",
-    title: "Design Systems que escalam com a sua equipe",
-    date: "22 July 2025",
-    excerpt:
-      "Como padronizar tokens, componentes e automatizar handoffs entre design e código.",
+    category: "Systems",
+    title: "Design systems that scale squads",
+    date: "July 22, 2025",
+    excerpt: "Tokens, components, and automation that keep shipping consistent across vertical squads.",
   },
   {
-    category: "Campaign Magic",
-    title: "AI copilots para operações criativas",
-    date: "15 July 2025",
-    excerpt:
-      "Estudos de caso de automações que reduzem tempo de aprovação em até 35%.",
+    category: "Automation",
+    title: "AI copilots for creative ops",
+    date: "July 15, 2025",
+    excerpt: "Playbooks and automations that cut approval time by up to 35% with Bridge and Market Twin™.",
   },
 ];
 
@@ -32,7 +33,7 @@ export function BlogSection() {
               Insights & Ideas
             </span>
             <h2 className="text-h2 font-semibold text-ink">
-              Where Strategy Meets Imagination
+              Premium content for digital teams
             </h2>
           </div>
           <a
@@ -44,28 +45,29 @@ export function BlogSection() {
         </div>
 
         <div className="mt-12 grid gap-8 md:grid-cols-3">
-          {posts.map((post) => (
-            <article
-              key={post.title}
-              className="flex h-full flex-col rounded-[--radius] border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-            >
-              <span className="text-xs uppercase tracking-[0.3em] text-brand">
-                {post.category}
-              </span>
-              <h3 className="mt-4 text-xl font-semibold text-ink">
-                {post.title}
-              </h3>
-              <p className="mt-2 text-sm text-muted">{post.excerpt}</p>
-              <div className="mt-auto flex items-center justify-between pt-6 text-sm text-muted">
-                <span>{post.date}</span>
-                <a
-                  href="/blog"
-                  className="font-semibold text-brand transition hover:text-brand-600"
-                >
-                  Read more →
-                </a>
-              </div>
-            </article>
+          {posts.map((post, idx) => (
+            <Reveal key={post.title} variant="fadeInUp" delay={70 * idx}>
+              <article
+                className="flex h-full flex-col rounded-[var(--radius-card)] border border-line bg-white p-6 shadow-[var(--shadow-soft)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-elevated)]"
+              >
+                <span className="text-xs uppercase tracking-[0.3em] text-brand">
+                  {post.category}
+                </span>
+                <h3 className="mt-4 text-xl font-semibold text-ink">
+                  {post.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted">{post.excerpt}</p>
+                <div className="mt-auto flex items-center justify-between pt-6 text-sm text-muted">
+                  <span>{post.date}</span>
+                  <a
+                    href="/blog"
+                    className="font-semibold text-brand transition hover:text-brand-600"
+                  >
+                    Read more →
+                  </a>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>

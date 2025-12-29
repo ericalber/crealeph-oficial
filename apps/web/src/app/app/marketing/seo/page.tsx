@@ -24,7 +24,7 @@ function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
 
 export default function AppSEOPage() {
   const kpis = [
-    { label: "Tráfego Orgânico", value: "28.4k", delta: "+6.1%", tone: "positive" as const },
+    { label: "Organic Traffic", value: "28.4k", delta: "+6.1%", tone: "positive" as const },
     { label: "CWV Pass Rate", value: "72%", delta: "+2.3%", tone: "positive" as const },
     { label: "Keywords Top 3", value: "41", delta: "+4", tone: "positive" as const },
     { label: "Keywords Top 10", value: "128", delta: "+9", tone: "positive" as const },
@@ -33,7 +33,7 @@ export default function AppSEOPage() {
   const columns = [
     { key: "keyword", label: "Keyword" },
     { key: "ctr", label: "CTR" },
-    { key: "posicao", label: "Posição" },
+    { key: "posicao", label: "Position" },
     { key: "cwv", label: "CWV" },
   ];
 
@@ -50,11 +50,11 @@ export default function AppSEOPage() {
     <div className="space-y-6">
       <PageHeader
         title="SEO Performance"
-        subtitle="Tráfego orgânico, CWV, keywords e rotas"
+        subtitle="Organic traffic, CWV, keywords and routes"
         actions={
           <>
-            <GhostButton>Criar otimização</GhostButton>
-            <GhostButton>Exportar</GhostButton>
+            <GhostButton>Create optimization</GhostButton>
+            <GhostButton>Export</GhostButton>
           </>
         }
       />
@@ -66,18 +66,18 @@ export default function AppSEOPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <ChartCard title="Tráfego Orgânico (30 dias)">
-          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Gráfico em breve</span>}
+        <ChartCard title="Organic traffic (30 days)">
+          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Chart coming soon</span>}
         </ChartCard>
         <ChartCard title="CWV Compliance">
-          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Gráfico em breve</span>}
+          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Chart coming soon</span>}
         </ChartCard>
       </div>
 
       <SectionHeader
-        title="Palavras-chave"
-        description="Lista de keywords com CTR, posição e CWV"
-        actions={<GhostButton>Ver tudo</GhostButton>}
+        title="Keywords"
+        description="List of keywords with CTR, position and CWV"
+        actions={<GhostButton>View all</GhostButton>}
       />
 
       <FilterBar />
@@ -86,9 +86,9 @@ export default function AppSEOPage() {
         <Skeleton className="h-[200px] w-full rounded-[var(--radius-md)]" />
       ) : isEmpty ? (
         <EmptyState
-          title="Nenhuma keyword encontrada"
-          description="Conecte Google Search Console ou ajuste integrações no Bridge."
-          action={<GhostButton>Criar otimização</GhostButton>}
+          title="No keywords found"
+          description="Connect Google Search Console or adjust integrations in Bridge."
+          action={<GhostButton>Create optimization</GhostButton>}
         />
       ) : (
         <DataTable columns={columns} rows={rows} />
@@ -96,17 +96,17 @@ export default function AppSEOPage() {
 
       <Divider />
 
-      <SectionHeader title="Blocos secundários" description="Integrações com Paid, Builder e InsightScore" />
+      <SectionHeader title="Secondary blocks" description="Integrations with Paid, Builder and InsightScore" />
       <div className="grid gap-4 md:grid-cols-2">
         <DashboardCard>
           <p className="text-sm font-semibold text-[var(--ink)]">Cross-links</p>
           <ul className="mt-2 space-y-1 text-sm text-[var(--muted)]">
-            <li>Paid: alinhar copy e LPs para campanhas.</li>
-            <li>Builder: aplicar otimizações em templates e rotas.</li>
-            <li>InsightScore: priorizar hipóteses de SEO.</li>
+            <li>Paid: align copy and LPs for campaigns.</li>
+            <li>Builder: apply optimizations to templates and routes.</li>
+            <li>InsightScore: prioritize SEO hypotheses.</li>
           </ul>
         </DashboardCard>
-        <EmptyState title="Sem widgets adicionais" description="Inclua gráficos ou tabelas extras na próxima fase." />
+        <EmptyState title="No additional widgets" description="Include extra charts or tables in the next phase." />
       </div>
     </div>
   );

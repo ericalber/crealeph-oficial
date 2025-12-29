@@ -2,6 +2,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { SectionSeparator } from "@/components/ui/SectionSeparator";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { SeeAlso } from "@/components/ui/SeeAlso";
+import { Reveal } from "@/components/motion/Reveal";
 import Link from "next/link";
 
 export default function BridgeModulePage() {
@@ -10,23 +11,23 @@ export default function BridgeModulePage() {
       <PageHero
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Módulos", href: "/modules/aqua" },
+          { label: "Modules", href: "/modules" },
           { label: "Bridge" },
         ]}
-        subtitle="Módulo de integração"
-        title="CREALEPH Bridge: layer de integração e leitura financeira para squads digitais."
-        body="Bridge conecta plataformas de pagamento, ERPs, CRMs e ferramentas proprietárias sem tocar no dinheiro. Ele lê aprovações, recusas, reembolsos e tickets financeiros, transformando tudo em sinais para automações, dashboards e times internos. Ideal para quem precisa de confiabilidade, logs detalhados e governança com auditoria."
+        subtitle="Integration module"
+        title="CREALEPH Bridge: the integration and financial read layer for digital squads."
+        body="Bridge connects payment platforms, ERPs, CRMs, and proprietary tools without touching the money flow. It reads approvals, declines, refunds, and financial tickets, turning everything into signals for automations, dashboards, and internal teams. Ideal for reliability, detailed logs, and governance with audit trails."
         ctas={[
           {
-            label: "Abrir documentação",
+            label: "Open documentation",
             href: "/developers?utm_source=module-bridge&utm_campaign=cta-primary",
-            ariaLabel: "Abrir documentação Bridge",
+            ariaLabel: "Open Bridge documentation",
             campaign: "cta-primary",
           },
           {
-            label: "Falar com especialistas",
+            label: "Talk with specialists",
             href: "/contact?utm_source=module-bridge&utm_campaign=cta-secondary",
-            ariaLabel: "Falar com especialistas Bridge",
+            ariaLabel: "Talk with Bridge specialists",
             variant: "secondary",
             campaign: "cta-secondary",
           },
@@ -36,56 +37,57 @@ export default function BridgeModulePage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-8">
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-surface p-8 shadow-md">
-              <h2 className="text-2xl font-semibold text-ink">Conectores prontas</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-surface p-8 shadow-[var(--shadow-soft)]">
+              <h2 className="text-2xl font-semibold text-ink">Ready-made connectors</h2>
               <ul className="mt-4 space-y-2 text-sm text-muted">
                 <li>Stripe, PayPal, Pagar.me, Mercado Pago, Iugu.</li>
                 <li>HubSpot, Salesforce, RD Station, Pipefy.</li>
-                <li>SAP, Totvs, Omie, sistemas proprietários via webhooks.</li>
+                <li>SAP, Totvs, Omie, and proprietary systems via webhooks.</li>
               </ul>
-              <p className="mt-4">
-                Cada conector possui logs e dashboards específicos, além de alertas configuráveis.
+              <p className="mt-4 text-sm text-muted">
+                Each connector includes detailed logs and dashboards plus configurable alerts.
               </p>
             </div>
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md text-sm text-muted">
-              <h2 className="text-2xl font-semibold text-ink">Uso com automação e pricing</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] text-sm text-muted">
+              <h2 className="text-2xl font-semibold text-ink">Use with automation and pricing</h2>
               <p className="mt-3">
-                Quando conectado às automações de{" "}
+                When connected to{" "}
                 <Link
                   href="/services/automation?utm_source=module-bridge-body&utm_campaign=link"
                   className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
-                  jornada
+                  journey automations
                 </Link>{" "}
-                e à{" "}
+                and{" "}
                 <Link
                   href="/modules/pricing?utm_source=module-bridge-body&utm_campaign=link"
                   className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
-                  Precificação Regional
+                  Regional Pricing
                 </Link>
-                , Bridge permite ajustar ofertas automaticamente e pausar campanhas quando necessário.
+                , Bridge lets you adjust offers automatically and pause campaigns when necessary.
               </p>
               <CTAButton
                 href="/developers?utm_source=module-bridge&utm_campaign=cta-secondary"
-                label="Gerar API key"
-                ariaLabel="Gerar chave da API Bridge"
+                label="Generate API key"
+                ariaLabel="Generate Bridge API key"
                 variant="secondary"
                 source="module-bridge-body"
                 campaign="cta-secondary"
+                className="mt-6"
               />
             </div>
           </div>
-          <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md text-sm text-muted">
-            <h2 className="text-2xl font-semibold text-ink">Benefícios diretos</h2>
+          <div className="rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] text-sm text-muted">
+            <h2 className="text-2xl font-semibold text-ink">Direct benefits</h2>
             <ul className="mt-4 space-y-3">
-              <li>Economia acumulada estimada por evitar tentativas perdidas.</li>
-              <li>Tempo médio de aprovação por gateway ou método de pagamento.</li>
-              <li>Detecção de anomalias com alertas para squads técnicos.</li>
-              <li>Logs para auditoria com retenção de 12 meses.</li>
+              <li>Projected savings by avoiding failed attempts.</li>
+              <li>Average approval time by gateway or payment method.</li>
+              <li>Anomaly detection with alerts for technical squads.</li>
+              <li>Audit-ready logs with 12 months retention.</li>
             </ul>
           </div>
         </div>
@@ -96,22 +98,22 @@ export default function BridgeModulePage() {
         items={[
           {
             title: "Developers",
-            description: "Documentação, webhooks e exemplos em TypeScript.",
+            description: "Documentation, webhooks, and TypeScript examples.",
             href: "/developers",
           },
           {
-            title: "Automação operacional",
-            description: "Veja como squads acionam Bridge em tempo real.",
+            title: "Operational automation",
+            description: "See how squads trigger Bridge in real time.",
             href: "/services/automation",
           },
           {
-            title: "Cases B2B",
-            description: "Clientes que usam Bridge para métricas de aprovação.",
+            title: "B2B cases",
+            description: "Clients using Bridge for approval metrics.",
             href: "/projects/case-construtora-norte",
           },
           {
-            title: "Preços",
-            description: "Planos com Bridge incluso e suporte 24/7.",
+            title: "Pricing",
+            description: "Plans with Bridge included and 24/7 support.",
             href: "/pricing",
           },
         ]}

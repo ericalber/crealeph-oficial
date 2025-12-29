@@ -1,53 +1,45 @@
-export type CrealephEventType =
-  | "aqua.message.created"
-  | "aqua.message.applied"
-  | "scout.alert.created"
-  | "pricing.region.updated"
-  | "markettwin.region.updated"
-  | "insight.created"
-  | "insight.promoted"
-  | "bridge.integration.event"
-  | "pipeline.lead.created"
-  | "pipeline.stage.changed"
-  | "report.generated"
-  | "report.scheduled"
-  | "settings.security.updated"
-  | "settings.roles.updated"
-  | "developers.key.rotated"
-  | "developers.webhook.tested"
-  | "parasite.bot.created"
-  | "parasite.signal.detected"
-  | "parasite.scan.triggered"
-  | "parasite.experiment.suggested"
-  | "builder.page.published"
-  | "builder.template.used"
-  | "builder.draft.published"
-  | "custom";
+export type CrealephEventInput = {
+  type: string;
+  source: string;
+  payload?: Record<string, unknown>;
+};
 
-export type CrealephEvent = {
-  type: CrealephEventType;
-  source?: string;
-  payload?: any;
+export type CrealephEvent = CrealephEventInput & {
   timestamp: number;
 };
 
 type HandlerEntry = {
-  type: CrealephEventType;
+  type: string;
   handler: (event: CrealephEvent) => void;
 };
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
 
 class EventBus {
   private history: CrealephEvent[] = [];
   private handlers: HandlerEntry[] = [];
   private maxHistory = 500;
 
-  emit(type: CrealephEventType, payload?: any) {
-    const event: CrealephEvent = {
-      type,
-      payload,
-      source: payload?.source,
-      timestamp: Date.now(),
-    };
+  emit(event: CrealephEventInput): void;
+  emit(type: string, payload?: Record<string, unknown>): void;
+  emit(arg1: string | CrealephEventInput, payload?: Record<string, unknown>) {
+    const event: CrealephEvent =
+      typeof arg1 === "string"
+        ? {
+            type: arg1,
+            source:
+              isRecord(payload) && typeof payload.source === "string" ? payload.source : "unknown",
+            payload,
+            timestamp: Date.now(),
+          }
+        : {
+            type: arg1.type,
+            source: arg1.source,
+            payload: arg1.payload,
+            timestamp: Date.now(),
+          };
 
     this.history.push(event);
     if (this.history.length > this.maxHistory) {
@@ -55,7 +47,7 @@ class EventBus {
     }
 
     for (const entry of this.handlers) {
-      if (entry.type === type || entry.type === "custom") {
+      if (entry.type === event.type || entry.type === "custom") {
         try {
           entry.handler(event);
         } catch {
@@ -65,7 +57,7 @@ class EventBus {
     }
   }
 
-  on(type: CrealephEventType, handler: (event: CrealephEvent) => void): () => void {
+  on(type: string, handler: (event: CrealephEvent) => void): () => void {
     const entry: HandlerEntry = { type, handler };
     this.handlers.push(entry);
     return () => {
@@ -87,6 +79,6 @@ class EventBus {
 export const eventBus = new EventBus();
 
 // Helper kept for backward compatibility across modules
-export function publishEvent(type: CrealephEventType, payload?: any) {
-  eventBus.emit(type, payload);
+export function publishEvent(event: CrealephEventInput) {
+  eventBus.emit(event);
 }

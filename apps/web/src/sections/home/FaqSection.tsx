@@ -1,32 +1,28 @@
-'use client';
+"use client";
 
 import { useState } from "react";
+import { Reveal } from "@/components/motion/Reveal";
 
 const faqs = [
   {
-    question: "What industries have you worked most?",
-    answer:
-      "Atuamos com startups de tecnologia, SaaS, saúde, finanças e agências criativas. Adaptamos processos ao contexto de cada equipe para gerar impacto mensurável.",
+    question: "Which industries do you support most?",
+    answer: "We serve healthcare, education, mobility, local services, and B2B. Each robot specializes in a vertical while the platform keeps everything orchestrated.",
   },
   {
-    question: "Do you work solo or with a team?",
-    answer:
-      "Escalamos squads multidisciplinares conforme o escopo: estrategistas, designers de produto, engenheiros fullstack e especialistas em dados.",
+    question: "How do squads work?",
+    answer: "We scale multidisciplinary squads as needed: strategists, product designers, fullstack engineers, and data specialists. All linked to clear SLAs.",
   },
   {
     question: "How long does a typical project take?",
-    answer:
-      "Projetos rápidos de descoberta levam 2–4 semanas. Produtos completos variam entre 8–16 semanas, com entregas quinzenais e acompanhamento contínuo.",
+    answer: "Discovery sprints take 2–4 weeks. Full products range from 8–16 weeks with fortnightly releases and continuous iteration.",
   },
   {
     question: "Do you offer development services?",
-    answer:
-      "Sim. Construímos aplicações web e mobile com pipelines DevOps, testes automatizados e monitoramento contínuo após o lançamento.",
+    answer: "Yes. We build web and mobile apps with DevOps pipelines, automated testing, and post-launch observability through Bridge.",
   },
   {
-    question: "Can you help improve my design?",
-    answer:
-      "Oferecemos auditorias de UX, evoluções de design system e squads de sustentação para manter sua interface atualizada e consistente.",
+    question: "Can you improve my design system and UX?",
+    answer: "We run UX audits, evolve your design system, and provide sustainment squads to keep interfaces consistent and current.",
   },
 ];
 
@@ -41,11 +37,10 @@ export function FaqSection() {
             Frequently Asked Questions
           </span>
           <h2 className="text-h2 font-semibold text-ink">
-            Answers to Questions Ask Me
+            FAQ CreAleph
           </h2>
           <p className="text-base text-muted">
-            Se não encontrar o que precisa, fale direto com a gente. Respondemos
-            em até 24h úteis.
+            If you do not find what you need, talk to us directly. We respond within 24 business hours.
           </p>
         </div>
 
@@ -53,29 +48,30 @@ export function FaqSection() {
           {faqs.map((item, index) => {
             const open = openIndex === index;
             return (
-              <div
-                key={item.question}
-                className="overflow-hidden rounded-[--radius] border border-line bg-white shadow-sm"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(open ? null : index)}
-                  className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
-                  aria-expanded={open}
+              <Reveal key={item.question} variant="fadeInUp" delay={60 * index}>
+                <div
+                  className="overflow-hidden rounded-[var(--radius-card)] border border-line bg-white shadow-[var(--shadow-soft)] transition hover:-translate-y-[2px] hover:shadow-[var(--shadow-elevated)]"
                 >
-                  <span className="text-base font-semibold text-ink">
-                    {item.question}
-                  </span>
-                  <span className="text-brand">
-                    {open ? "−" : "+"}
-                  </span>
-                </button>
-                {open ? (
-                  <div className="border-t border-line/60 px-6 py-5 text-sm text-muted">
-                    {item.answer}
-                  </div>
-                ) : null}
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(open ? null : index)}
+                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                    aria-expanded={open}
+                  >
+                    <span className="text-base font-semibold text-ink">
+                      {item.question}
+                    </span>
+                    <span className="text-brand">
+                      {open ? "−" : "+"}
+                    </span>
+                  </button>
+                  {open ? (
+                    <div className="border-t border-line/60 px-6 py-5 text-sm text-muted">
+                      {item.answer}
+                    </div>
+                  ) : null}
+                </div>
+              </Reveal>
             );
           })}
         </div>

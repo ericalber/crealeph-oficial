@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@crealeph/db";
+import { getDevRobot, isDbConnectionError } from "@/lib/robots/devStore";
 
 function getTenantId() {
   return process.env.DEFAULT_TENANT_ID ?? "demo-tenant";
@@ -9,8 +8,16 @@ function getTenantId() {
 
 export async function GET(_request: Request, { params }: { params: { id: string } }) {
   const tenantId = getTenantId();
-  const robot = await prisma.robot.findFirst({
-    where: { id: params.id, tenantId },
-  });
-  return NextResponse.json({ ok: true, data: robot ?? null });
+  try {
+    const robot = await prisma.robot.findFirst({
+      where: { id: params.id, tenantId },
+    });
+    return NextResponse.json({ ok: true, data: robot ?? null });
+  } catch (error) {
+    if (isDbConnectionError(error)) {
+      const robot = getDevRobot(tenantId, params.id);
+      return NextResponse.json({ ok: true, data: robot ?? null, devMode: true });
+    }
+    throw error;
+  }
 }

@@ -24,16 +24,16 @@ function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
 
 export default function AppPaidPage() {
   const kpis = [
-    { label: "Spend", value: "R$ 6.900", delta: "+4.8%", tone: "positive" as const },
-    { label: "CPC", value: "R$ 1,10", delta: "-3.2%", tone: "positive" as const },
-    { label: "CTR", value: "2,8%", delta: "+0.6%", tone: "positive" as const },
-    { label: "CVR", value: "3,5%", delta: "-0.4%", tone: "negative" as const },
+    { label: "Spend", value: "USD 6,900", delta: "+4.8%", tone: "positive" as const },
+    { label: "CPC", value: "USD 1.10", delta: "-3.2%", tone: "positive" as const },
+    { label: "CTR", value: "2.8%", delta: "+0.6%", tone: "positive" as const },
+    { label: "CVR", value: "3.5%", delta: "-0.4%", tone: "negative" as const },
     { label: "ROAS", value: "2.2x", delta: "+0.3x", tone: "positive" as const },
   ];
 
   const columns = [
-    { key: "campanha", label: "Campanha" },
-    { key: "canal", label: "Canal" },
+    { key: "campanha", label: "Campaign" },
+    { key: "canal", label: "Channel" },
     { key: "spend", label: "Spend" },
     { key: "cpc", label: "CPC" },
     { key: "ctr", label: "CTR" },
@@ -43,9 +43,9 @@ export default function AppPaidPage() {
   ];
 
   const rows = [
-    { campanha: "Aquisição Lead Gen", canal: "Search", spend: "R$ 3.200", cpc: "R$ 1,20", ctr: "3,4%", cvr: "4,1%", cpl: "R$ 29", roas: "2.9x" },
-    { campanha: "Retargeting Q3", canal: "Social", spend: "R$ 2.600", cpc: "R$ 0,90", ctr: "1,9%", cvr: "2,3%", cpl: "R$ 33", roas: "1.8x" },
-    { campanha: "Display Awareness", canal: "Display", spend: "R$ 1.200", cpc: "R$ 0,40", ctr: "0,7%", cvr: "0,9%", cpl: "R$ 41", roas: "1.2x" },
+    { campanha: "Lead Gen Acquisition", canal: "Search", spend: "USD 3,200", cpc: "USD 1.20", ctr: "3.4%", cvr: "4.1%", cpl: "USD 29", roas: "2.9x" },
+    { campanha: "Q3 Retargeting", canal: "Social", spend: "USD 2,600", cpc: "USD 0.90", ctr: "1.9%", cvr: "2.3%", cpl: "USD 33", roas: "1.8x" },
+    { campanha: "Display Awareness", canal: "Display", spend: "USD 1,200", cpc: "USD 0.40", ctr: "0.7%", cvr: "0.9%", cpl: "USD 41", roas: "1.2x" },
   ];
 
   const isLoading = false;
@@ -58,8 +58,8 @@ export default function AppPaidPage() {
         subtitle="Spend, CPC, CTR, CVR, CPL, ROAS"
         actions={
           <>
-            <GhostButton>Criar campanha</GhostButton>
-            <GhostButton>Exportar</GhostButton>
+            <GhostButton>Create campaign</GhostButton>
+            <GhostButton>Export</GhostButton>
           </>
         }
       />
@@ -71,18 +71,18 @@ export default function AppPaidPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <ChartCard title="Spend vs ROAS" subtitle="Últimos 30 dias">
-          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Gráfico em breve</span>}
+        <ChartCard title="Spend vs ROAS" subtitle="Last 30 days">
+          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Chart coming soon</span>}
         </ChartCard>
-        <ChartCard title="Distribuição por Canal" subtitle="Channels mix">
-          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Gráfico em breve</span>}
+        <ChartCard title="Channel distribution" subtitle="Channels mix">
+          {isLoading ? <Skeleton className="h-[160px] w-full" /> : <span className="text-xs text-[var(--muted)]">Chart coming soon</span>}
         </ChartCard>
       </div>
 
       <SectionHeader
-        title="Campanhas"
-        description="Desempenho por canal e campanha"
-        actions={<GhostButton>Ver tudo</GhostButton>}
+        title="Campaigns"
+        description="Performance by channel and campaign"
+        actions={<GhostButton>View all</GhostButton>}
       />
 
       <FilterBar />
@@ -91,9 +91,9 @@ export default function AppPaidPage() {
         <Skeleton className="h-[200px] w-full rounded-[var(--radius-md)]" />
       ) : isEmpty ? (
         <EmptyState
-          title="Nenhuma campanha encontrada"
-          description="Crie uma nova campanha ou conecte integrações no Bridge."
-          action={<GhostButton>Criar campanha</GhostButton>}
+          title="No campaigns found"
+          description="Create a new campaign or connect integrations in Bridge."
+          action={<GhostButton>Create campaign</GhostButton>}
         />
       ) : (
         <DataTable columns={columns} rows={rows} />
@@ -101,17 +101,17 @@ export default function AppPaidPage() {
 
       <Divider />
 
-      <SectionHeader title="Blocos secundários" description="Pipeline, InsightScore e Bridge (texto somente)" />
+      <SectionHeader title="Secondary blocks" description="Pipeline, InsightScore and Bridge (text only)" />
       <div className="grid gap-4 md:grid-cols-2">
         <DashboardCard>
           <p className="text-sm font-semibold text-[var(--ink)]">Cross-links</p>
           <ul className="mt-2 space-y-1 text-sm text-[var(--muted)]">
-            <li>Pipeline: origem e conversão de leads de campanhas.</li>
-            <li>InsightScore: hipóteses e testes A/B derivados de Paid.</li>
-            <li>Bridge: billing e integrações para campanhas.</li>
+            <li>Pipeline: lead origin and conversion from campaigns.</li>
+            <li>InsightScore: hypotheses and A/B tests coming from Paid.</li>
+            <li>Bridge: billing and integrations for campaigns.</li>
           </ul>
         </DashboardCard>
-        <EmptyState title="Sem widgets adicionais" description="Adicione mais painéis na próxima fase." />
+        <EmptyState title="No additional widgets" description="Add more panels in the next phase." />
       </div>
     </div>
   );

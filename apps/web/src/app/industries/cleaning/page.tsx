@@ -3,7 +3,14 @@ import { SectionSeparator } from "@/components/ui/SectionSeparator";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { SeeAlso } from "@/components/ui/SeeAlso";
 import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
+import { Reveal } from "@/components/motion/Reveal";
 import Link from "next/link";
+
+const pillars = [
+  "Landing pages with social proof, price tables, and instant quote CTAs.",
+  "Local campaigns segmented by radius and specific keywords.",
+  "Scheduling automation routed to WhatsApp, phone, and email.",
+];
 
 export default function CleaningIndustryPage() {
   return (
@@ -11,23 +18,23 @@ export default function CleaningIndustryPage() {
       <PageHero
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Indústrias", href: "/industries" },
-          { label: "Negócios locais" },
+          { label: "Industries", href: "/industries" },
+          { label: "Local businesses" },
         ]}
-        subtitle="Negócios locais"
-        title="Playbook CREALEPH para limpeza, beleza e serviços recorrentes."
-        body="Sites com hero Molly Maid, formulários estilo budget, CTAs de agendamento e automações de follow-up. Com AQUA descobrimos promessas que convertem no bairro, Scout monitora concorrentes e Market Twin™ define preço ideal por região. Tudo integrado ao CRM e canais de atendimento."
+        subtitle="Local businesses"
+        title="CreAleph playbook for cleaning, beauty, and recurring services."
+        body="Websites with Molly Maid heroes, budget-style forms, scheduling CTAs, and follow-up automations. AQUA reveals the promises that convert in each neighborhood, Scout monitors competitors, and Market Twin™ sets the ideal price per region. Everything is integrated with CRM and service channels."
         ctas={[
           {
-            label: "Ver exemplos de sites",
+            label: "See website examples",
             href: "/projects?utm_source=industries-cleaning&utm_campaign=cta-primary",
-            ariaLabel: "Ver exemplos de sites para limpeza",
+            ariaLabel: "See website examples for cleaning",
             campaign: "cta-primary",
           },
           {
-            label: "Solicitar proposta",
+            label: "Request proposal",
             href: "/contact?utm_source=industries-cleaning&utm_campaign=cta-secondary",
-            ariaLabel: "Solicitar proposta para negócios locais",
+            ariaLabel: "Request proposal for local businesses",
             variant: "secondary",
             campaign: "cta-secondary",
           },
@@ -37,74 +44,79 @@ export default function CleaningIndustryPage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-8">
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-surface p-8 shadow-md">
-              <h2 className="text-2xl font-semibold text-ink">Pilares do playbook</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-surface p-8 shadow-[var(--shadow-soft)]">
+              <h2 className="text-2xl font-semibold text-ink">Playbook pillars</h2>
               <p className="mt-3 text-sm text-muted">
-                Combine o site modular com
+                Combine the modular site with
                 <Link
                   href="/services/marketing?utm_source=industries-cleaning&utm_campaign=link"
                   className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
-                  campanhas locais
+                  local campaigns
                 </Link>
-                , ajuste preços com
+                , adjust prices with
                 <Link
                   href="/modules/pricing?utm_source=industries-cleaning&utm_campaign=link"
                   className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
-                  Precificação Regional
+                  Regional Pricing
                 </Link>
-                {" "}e automatize follow-up usando
+                , and automate follow-up using
                 <Link
                   href="/services/automation?utm_source=industries-cleaning&utm_campaign=link"
                   className="ml-1 text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                 >
-                  automações CreAleph
+                  CreAleph automations
                 </Link>
                 .
               </p>
               <ul className="mt-4 space-y-2 text-sm text-muted">
-                <li>Landing pages com prova social, tabelas de preço e CTAs de orçamento instantâneo.</li>
-                <li>Campanhas locais segmentadas por raio e palavras-chave específicas.</li>
-                <li>Automação de agendamento com rotas para WhatsApp, telefone e e-mail.</li>
+                {pillars.map((item, idx) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-brand" />
+                    <Reveal as="span" variant="fadeInUp" delay={40 * idx}>
+                      {item}
+                    </Reveal>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md text-sm text-muted">
-              <h2 className="text-2xl font-semibold text-ink">Dores x soluções</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] text-sm text-muted">
+              <h2 className="text-2xl font-semibold text-ink">Pain points vs. solutions</h2>
               <table className="mt-3 min-w-full text-left">
                 <tbody>
                   <tr>
-                    <th className="border-b border-line px-3 py-2">Problema</th>
-                    <th className="border-b border-line px-3 py-2">Solução</th>
+                    <th className="border-b border-line px-3 py-2">Pain point</th>
+                    <th className="border-b border-line px-3 py-2">Solution</th>
                   </tr>
                   <tr>
-                    <td className="border-b border-line px-3 py-2">Leads frios sem retorno</td>
-                    <td className="border-b border-line px-3 py-2">Automação com Bridge + SMS/WhatsApp</td>
+                    <td className="border-b border-line px-3 py-2">Cold leads with no return</td>
+                    <td className="border-b border-line px-3 py-2">Automation with Bridge + SMS/WhatsApp</td>
                   </tr>
                   <tr>
-                    <td className="border-b border-line px-3 py-2">Preço desalinhado</td>
-                    <td className="border-b border-line px-3 py-2">Precificação Regional + Market Twin™</td>
+                    <td className="border-b border-line px-3 py-2">Misaligned pricing</td>
+                    <td className="border-b border-line px-3 py-2">Regional Pricing + Market Twin™</td>
                   </tr>
                   <tr>
-                    <td className="border-b border-line px-3 py-2">Descrições pouco atrativas</td>
-                    <td className="border-b border-line px-3 py-2">AQUA Insights atualizados mensalmente</td>
+                    <td className="border-b border-line px-3 py-2">Unappealing descriptions</td>
+                    <td className="border-b border-line px-3 py-2">Monthly AQUA Insights refresh</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <CTAButton
               href="/modules/aqua?utm_source=industries-cleaning&utm_campaign=cta-secondary"
-              label="Ver detalhes do AQUA"
-              ariaLabel="Ver detalhes do AQUA"
+              label="See AQUA details"
+              ariaLabel="See AQUA details"
               variant="secondary"
               source="industries-cleaning-body"
               campaign="cta-secondary"
             />
           </div>
-          <MiniQuoteForm context="Briefing — Limpeza & Locais" />
+          <MiniQuoteForm context="Briefing — Cleaning & Local" />
         </div>
       </section>
 
@@ -112,23 +124,23 @@ export default function CleaningIndustryPage() {
         source="industries-cleaning-see-also"
         items={[
           {
-            title: "Marketing inteligente",
-            description: "Campanhas locais e SEO que mantêm agenda cheia.",
+            title: "Intelligent marketing",
+            description: "Local campaigns and SEO that keep the calendar full.",
             href: "/services/marketing",
           },
           {
-            title: "Precificação Regional",
-            description: "Calibre sua oferta por bairro.",
+            title: "Regional Pricing",
+            description: "Calibrate your offer by neighborhood.",
             href: "/modules/pricing",
           },
           {
-            title: "Case Marina Vox",
-            description: "Exemplo de automação omnichannel.",
+            title: "Marina Vox case",
+            description: "Example of omnichannel automation.",
             href: "/projects/case-marina-vox",
           },
           {
-            title: "Contato",
-            description: "Fale com o time dedicado a negócios locais.",
+            title: "Contact",
+            description: "Talk to the squad dedicated to local businesses.",
             href: "/contact",
           },
         ]}

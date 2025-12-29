@@ -2,6 +2,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { SectionSeparator } from "@/components/ui/SectionSeparator";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { SeeAlso } from "@/components/ui/SeeAlso";
+import { Reveal } from "@/components/motion/Reveal";
 import Link from "next/link";
 
 export default function InsightScoreModulePage() {
@@ -10,23 +11,23 @@ export default function InsightScoreModulePage() {
       <PageHero
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Módulos", href: "/modules/aqua" },
+          { label: "Modules", href: "/modules" },
           { label: "InsightScore™" },
         ]}
-        subtitle="Módulo de inteligência"
-        title="InsightScore™: prioridade científica para cada insight ou hipótese."
-        body="O InsightScore™ analisa novidade, correlação, consistência, sazonalidade e impacto histórico. Cada insight vindo do AQUA, Scout, Market Twin™ ou squads internos recebe uma nota entre 0 e 100. Assim, definimos o que vai para execução agora, o que fica em observação e o que deve ser descartado. Transparente, explicável e conectado ao dashboard, o score elimina discussões subjetivas e acelera a criação de roadmap."
+        subtitle="Intelligence module"
+        title="InsightScore™: scientific priority for every insight or hypothesis."
+        body="InsightScore™ analyzes novelty, correlation, consistency, seasonality, and historic impact. Every insight coming from AQUA, Scout, Market Twin™, or internal squads receives a score from 0 to 100. It tells us what should go to execution now, what stays under observation, and what is discarded. Transparent, explainable, and connected to the dashboard, the score eliminates subjective debates and speeds up roadmaps."
         ctas={[
           {
-            label: "Ver metodologia",
+            label: "See methodology",
             href: "/resources/guides/insightscore?utm_source=module-insightscore&utm_campaign=cta-primary",
-            ariaLabel: "Ver metodologia InsightScore",
+            ariaLabel: "See InsightScore methodology",
             campaign: "cta-primary",
           },
           {
-            label: "Integrar com AQUA",
+            label: "Integrate with AQUA",
             href: "/modules/aqua?utm_source=module-insightscore&utm_campaign=cta-secondary",
-            ariaLabel: "Integrar InsightScore com AQUA",
+            ariaLabel: "Integrate InsightScore with AQUA",
             variant: "secondary",
             campaign: "cta-secondary",
           },
@@ -36,57 +37,57 @@ export default function InsightScoreModulePage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-8">
-            <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-surface p-8 shadow-md">
-              <h2 className="text-2xl font-semibold text-ink">Dimensões do score</h2>
+            <div className="rounded-[var(--radius-card)] border border-line bg-surface p-8 shadow-[var(--shadow-soft)]">
+              <h2 className="text-2xl font-semibold text-ink">Score dimensions</h2>
               <ul className="mt-4 space-y-2 text-sm text-muted">
                 <li>
-                  <strong>Novidade:</strong> Há quanto tempo algo semelhante apareceu? Quanto mais raro, maior o peso.
+                  <strong>Novelty:</strong> How rare is the pattern? The less frequent, the higher the weight.
                 </li>
                 <li>
-                  <strong>Correlação:</strong> O insight se conecta com dados do{" "}
+                  <strong>Correlation:</strong> Does the insight connect with data from{" "}
                   <Link
                     href="/modules/market-twin?utm_source=module-insightscore-body&utm_campaign=link"
                     className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
                   >
                     Market Twin™
                   </Link>{" "}
-                  ou resultados de campanhas?
+                  or campaign results?
                 </li>
                 <li>
-                  <strong>Consistência:</strong> Quantas fontes independentes reforçam o mesmo ponto?
+                  <strong>Consistency:</strong> How many independent sources reinforce the same point?
                 </li>
                 <li>
-                  <strong>Sazonalidade:</strong> Há impacto de época do ano ou eventos externos?
+                  <strong>Seasonality:</strong> Is there impact from the time of year or external events?
                 </li>
                 <li>
-                  <strong>Impacto:</strong> Qual o potencial de mover métricas de receita, MQL ou satisfação?
+                  <strong>Impact:</strong> What is the potential to move revenue, MQLs, or satisfaction metrics?
                 </li>
               </ul>
             </div>
             <CTAButton
               href="/app?utm_source=module-insightscore&utm_campaign=cta-secondary"
-              label="Ver ranking no dashboard"
-              ariaLabel="Ver ranking InsightScore no dashboard"
+              label="See ranking in the dashboard"
+              ariaLabel="See InsightScore ranking in the dashboard"
               variant="secondary"
               source="module-insightscore-body"
               campaign="cta-secondary"
             />
           </div>
-          <div className="rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md text-sm text-muted">
-            <h2 className="text-2xl font-semibold text-ink">Exemplo de output</h2>
+          <div className="rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] text-sm text-muted">
+            <h2 className="text-2xl font-semibold text-ink">Sample output</h2>
             <ul className="mt-4 space-y-3">
               <li>
-                #1 · Score 92 · “Testar CTA de orçamento instantâneo” — Alta novidade, forte correlação com dados de Scout,
-                prova social disponível. Encaminhar para squad de websites.
+                #1 · Score 92 · “Test instant quote CTA” — High novelty, strong correlation with Scout data, social proof
+                available. Send to the websites squad.
               </li>
               <li>
-                #4 · Score 68 · “Reduzir preço no combo premium” — Dados do Market Twin mostram elasticidade. Avaliar com pricing.
+                #4 · Score 68 · “Reduce price on premium bundle” — Market Twin shows elasticity. Evaluate with pricing.
               </li>
               <li>
-                #9 · Score 44 · “Campanha temática de inverno” — Insight sazonal com baixa consistência. Manter em observação.
+                #9 · Score 44 · “Winter themed campaign” — Seasonal insight with low consistency. Keep under observation.
               </li>
             </ul>
           </div>
@@ -98,22 +99,22 @@ export default function InsightScoreModulePage() {
         items={[
           {
             title: "AQUA Insights",
-            description: "Gere insumos ricos que alimentam o ranking automaticamente.",
+            description: "Generate rich signals that feed the ranking automatically.",
             href: "/modules/aqua",
           },
           {
             title: "Scout",
-            description: "Velocidade para detectar movimentos de concorrentes.",
+            description: "Speed to detect competitor moves.",
             href: "/modules/scout",
           },
           {
-            title: "Projetos",
-            description: "Veja cases que usam o InsightScore™ nos rituais semanais.",
+            title: "Projects",
+            description: "Cases that use InsightScore™ in weekly rituals.",
             href: "/projects",
           },
           {
-            title: "Guia InsightScore™",
-            description: "Artigo detalhado com metodologia e fórmulas.",
+            title: "InsightScore™ guide",
+            description: "Detailed article with methodology and formulas.",
             href: "/resources/guides/insightscore",
           },
         ]}

@@ -29,35 +29,35 @@ export default function AppOverviewPage() {
   const kpis = [
     { label: "Sessions", value: "12.8k", delta: "+5.2%", tone: "positive" as const },
     { label: "Leads", value: "482", delta: "+3.1%", tone: "positive" as const },
-    { label: "CPL", value: "R$ 19,20", delta: "-4.0%", tone: "positive" as const },
+    { label: "CPL", value: "USD 19.20", delta: "-4.0%", tone: "positive" as const },
     { label: "Approval", value: "37%", delta: "-1.2%", tone: "negative" as const },
     { label: "MQL/SQL", value: "62/31", delta: "=", tone: "neutral" as const },
   ];
 
   const columns = [
-    { key: "event", label: "Evento" },
-    { key: "module", label: "Módulo" },
+    { key: "event", label: "Event" },
+    { key: "module", label: "Module" },
     { key: "status", label: "Status" },
-    { key: "time", label: "Tempo" },
+    { key: "time", label: "Time" },
   ];
 
   const rows = [
-    { event: "Nova variação de preço aplicada", module: "Pricing", status: "Sucesso", time: "Há 12m" },
-    { event: "Insight aprovado para LP", module: "InsightScore", status: "Aguardando", time: "Há 35m" },
-    { event: "Alerta Scout: concorrente X", module: "Scout", status: "Novo", time: "Há 1h" },
-    { event: "Webhook Bridge processado", module: "Bridge", status: "Sucesso", time: "Há 2h" },
+    { event: "New price variation applied", module: "Pricing", status: "Success", time: "12m ago" },
+    { event: "Insight approved for LP", module: "InsightScore", status: "Pending", time: "35m ago" },
+    { event: "Scout alert: competitor X", module: "Scout", status: "New", time: "1h ago" },
+    { event: "Bridge webhook processed", module: "Bridge", status: "Success", time: "2h ago" },
   ];
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Overview"
-        subtitle={`Visão integrada. Role atual: ${role}.`}
+        subtitle={`Integrated view. Current role: ${role}.`}
         actions={
           <>
-            <GhostButton>Exportar</GhostButton>
-            <GhostButton>Criar insight</GhostButton>
-            <GhostButton>Convidar time</GhostButton>
+            <GhostButton>Export</GhostButton>
+            <GhostButton>Create insight</GhostButton>
+            <GhostButton>Invite team</GhostButton>
           </>
         }
       />
@@ -69,15 +69,15 @@ export default function AppOverviewPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <ChartCard title="Spend vs ROAS" subtitle="Últimos 30 dias">
+        <ChartCard title="Spend vs ROAS" subtitle="Last 30 days">
           <Skeleton className="h-[160px] w-full" />
         </ChartCard>
-        <ChartCard title="Alertas por dia" subtitle="Scout / Bridge / AQUA">
+        <ChartCard title="Alerts per day" subtitle="Scout / Bridge / AQUA">
           <Skeleton className="h-[160px] w-full" />
         </ChartCard>
       </div>
 
-      <SectionHeader title="Eventos recentes" description="Atividades de pricing, inteligência e automação" actions={<GhostButton>Ver tudo</GhostButton>} />
+      <SectionHeader title="Recent events" description="Pricing, intelligence, and automation activity" actions={<GhostButton>View all</GhostButton>} />
       <FilterBar />
       <DataTable
         columns={columns}
@@ -96,13 +96,13 @@ export default function AppOverviewPage() {
 
       <Divider />
 
-      <SectionHeader title="Blocos secundários" description="Use este espaço para métricas auxiliares" />
+      <SectionHeader title="Secondary blocks" description="Use this space for supporting metrics" />
       <div className="grid gap-4 md:grid-cols-2">
         <DashboardCard>
-          <p className="text-sm font-semibold text-[var(--ink)]">Resumo de saúde</p>
-          <p className="mt-2 text-sm text-[var(--muted)]">Placeholder para indicadores adicionais de Bridge e Pipeline.</p>
+          <p className="text-sm font-semibold text-[var(--ink)]">Health summary</p>
+          <p className="mt-2 text-sm text-[var(--muted)]">Placeholder for additional Bridge and Pipeline indicators.</p>
         </DashboardCard>
-        <EmptyState title="Nenhum item adicional" description="Adicione widgets ou cards secundários conforme a evolução da fase 2." />
+        <EmptyState title="No additional items" description="Add widgets or secondary cards in the next phase." />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -43,17 +44,37 @@ const modulesSub = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  if (pathname?.startsWith("/app")) return null;
-
+  const isDashboard = pathname?.startsWith("/app");
+  if (pathname?.startsWith("/app")) {
+    return (
+      <header
+        className={clsx(
+          "sticky top-0 z-[1000] w-full border-b border-white/10 backdrop-blur-xl transition-colors duration-300",
+          "bg-[#0F0F12]/85"
+        )}
+      >
+        <div className="mx-auto flex h-[72px] max-w-[1300px] items-center justify-between px-6">
+          <Link href="/app" className="flex items-center gap-2">
+            <Image src="/CreAleph.PNG" alt="CreAleph" width={32} height={32} className="h-8 w-8 rounded-full object-cover" priority />
+          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/auth/sign-out"
+              className="rounded-full bg-[#D62828] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#B91C1C] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Sign out
+            </Link>
+          </div>
+        </div>
+      </header>
+    );
+  }
   return (
     <header
-      className="
-        sticky top-0 z-[1000]
-        w-full
-        bg-[#0B0B0E]
-        backdrop-blur-xl
-        border-b border-white/10
-      "
+      className={clsx(
+        "sticky top-0 z-[1000] w-full border-b border-white/10 backdrop-blur-xl transition-colors duration-300",
+        "bg-[#0F0F12]/85"
+      )}
     >
       <div className="mx-auto max-w-[1300px] px-6 flex items-center justify-between h-[72px]">
         <Link href="/" className="flex items-center gap-2">
@@ -74,16 +95,17 @@ export function Header() {
                   <div
                     className="
                       absolute top-full left-0 mt-3
-                      opacity-0 invisible
-                      group-hover:opacity-100 group-hover:visible
-                      transition
-                      z-[2000]
+                      opacity-0 invisible translate-y-1
+                      group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+                      transition-all duration-150
+                      z-[60]
                       bg-[#0B0B0E]
                       border border-white/10
                       rounded-xl
                       shadow-xl
                       w-56
                       py-3
+                      pointer-events-auto
                     "
                   >
                     <div className="flex flex-col gap-2">
@@ -113,16 +135,17 @@ export function Header() {
                   <div
                     className="
                       absolute top-full left-0 mt-3
-                      opacity-0 invisible
-                      group-hover:opacity-100 group-hover:visible
-                      transition
-                      z-[2000]
+                      opacity-0 invisible translate-y-1
+                      group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+                      transition-all duration-150
+                      z-[60]
                       bg-[#0B0B0E]
                       border border-white/10
                       rounded-xl
                       shadow-xl
                       w-56
                       py-3
+                      pointer-events-auto
                     "
                   >
                     <div className="flex flex-col gap-2">
@@ -154,6 +177,12 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-3">
           <Link
+            href="/sign-in"
+            className="text-sm font-semibold text-white/85 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            Sign in
+          </Link>
+          <Link
             href="/pricing"
             className="
               rounded-full
@@ -161,10 +190,11 @@ export function Header() {
               hover:bg-[#B91C1C]
               px-5 py-2
               text-sm font-semibold
+              text-white
               transition
             "
           >
-            View Plans
+            View plans
           </Link>
         </div>
 
@@ -192,6 +222,13 @@ export function Header() {
               </Link>
             ))}
             <Link
+              href="/sign-in"
+              className="rounded-md px-2 py-2 transition hover:bg-white/10 hover:text-white"
+              onClick={() => setOpen(false)}
+            >
+              Sign in
+            </Link>
+            <Link
               href="/pricing"
               className="
                 mt-3
@@ -206,7 +243,7 @@ export function Header() {
               "
               onClick={() => setOpen(false)}
             >
-              View Plans
+              View plans
             </Link>
           </nav>
         </div>

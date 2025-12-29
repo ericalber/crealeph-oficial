@@ -5,6 +5,7 @@ import { MiniQuoteForm } from "@/components/forms/MiniQuoteForm";
 import { SeeAlso } from "@/components/ui/SeeAlso";
 import Link from "next/link";
 import { Monitor, Megaphone, Workflow } from "lucide-react";
+import { Reveal } from "@/components/motion/Reveal";
 
 const serviceStacks = [
   {
@@ -73,75 +74,74 @@ export default function ServicesPage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
-        <div className="mx-auto grid max-w-screen-xl gap-12 lg:px-8">
+      <section className="px-4 py-24">
+        <div className="mx-auto grid max-w-screen-xl gap-10 lg:px-8">
           {serviceStacks.map((stack, index) => (
-            <div
-              key={`${stack.title}-${index}`}
-              className="group grid gap-8 rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md md:grid-cols-[1.2fr_0.8fr]"
-            >
-              <div className="relative space-y-4">
-                <div className="absolute -left-1 -top-1 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand ring-1 ring-brand/20 transition group-hover:shadow-[var(--glow)] group-hover:bg-brand/20">
-                  {stack.title.includes("Website") ? (
-                    <Monitor size={22} />
-                  ) : stack.title.includes("Marketing") ? (
-                    <Megaphone size={22} />
-                  ) : (
-                    <Workflow size={22} />
-                  )}
+            <Reveal key={`${stack.title}-${index}`} variant="fadeInUp" delay={40 * index}>
+              <div className="group grid gap-8 rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-elevated)] md:grid-cols-[1.2fr_0.8fr]">
+                <div className="relative space-y-4">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand ring-1 ring-brand/20 transition group-hover:shadow-[var(--glow)] group-hover:bg-brand/20">
+                    {stack.title.includes("Website") ? (
+                      <Monitor size={22} />
+                    ) : stack.title.includes("Marketing") ? (
+                      <Megaphone size={22} />
+                    ) : (
+                      <Workflow size={22} />
+                    )}
+                  </div>
+                  <h2 className="text-2xl font-semibold text-ink">{stack.title}</h2>
+                  <p className="text-sm text-muted">
+                    {stack.description} See how we use{" "}
+                    <Link
+                      href="/modules/aqua?utm_source=services-body&utm_campaign=link"
+                      className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                    >
+                      AQUA Insights
+                    </Link>
+                    , the percentiles from{" "}
+                    <Link
+                      href="/modules/market-twin?utm_source=services-body&utm_campaign=link"
+                      className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                    >
+                      Market Twin™
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      href="/services/automation?utm_source=services-body&utm_campaign=link"
+                      className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
+                    >
+                      tailored automations
+                    </Link>{" "}
+                    for each sector.
+                  </p>
+                  <ul className="space-y-2 text-sm text-muted">
+                    {stack.bullets.map((bullet, idx) => (
+                      <li key={`${stack.title}-${idx}`} className="flex items-start gap-2">
+                        <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-brand" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <CTAButton
+                    href={stack.href}
+                    label="View details"
+                    ariaLabel={`View details for service ${stack.title}`}
+                    variant="secondary"
+                    source="services-stack"
+                    campaign="cta-secondary"
+                  />
                 </div>
-                <h2 className="text-2xl font-semibold text-ink">{stack.title}</h2>
-                <p className="text-sm text-muted">
-                  {stack.description} See how we use{" "}
-                  <Link
-                    href="/modules/aqua?utm_source=services-body&utm_campaign=link"
-                    className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
-                  >
-                    AQUA Insights
-                  </Link>
-                  , os percentis do{" "}
-                  <Link
-                    href="/modules/market-twin?utm_source=services-body&utm_campaign=link"
-                    className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
-                  >
-                    Market Twin™
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/services/automation?utm_source=services-body&utm_campaign=link"
-                    className="text-brand underline-offset-4 transition hover:text-brand-600 hover:underline"
-                  >
-                    tailored automations
-                  </Link>{" "}
-                  for each sector.
-                </p>
-                <ul className="space-y-2 text-sm text-muted">
-                  {stack.bullets.map((bullet, index) => (
-                    <li key={`${stack.title}-${index}`} className="flex items-start gap-2">
-                      <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-brand" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-                <CTAButton
-                  href={stack.href}
-                  label="View details"
-                  ariaLabel={`View details for service ${stack.title}`}
-                  variant="secondary"
-                  source="services-stack"
-                  campaign="cta-secondary"
-                />
+                <MiniQuoteForm context={`Quick quote • ${index + 1}`} />
               </div>
-              <MiniQuoteForm context={`Quick quote • ${index + 1}`} />
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-screen-xl space-y-6 rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md lg:px-12">
+      <section className="px-4 py-24">
+        <div className="mx-auto max-w-screen-xl space-y-6 rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] lg:px-12">
           <h2 className="text-2xl font-semibold text-ink">
             Connected operation from briefing to performance
           </h2>

@@ -2,7 +2,7 @@ import { eventBus, type CrealephEvent } from "./event-bus";
 
 export function bootstrapListeners() {
   eventBus.on("bridge.integration.event", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[BRIDGE] integration event", {
       provider: payload.provider,
       status: payload.status,
@@ -13,7 +13,7 @@ export function bootstrapListeners() {
   });
 
   eventBus.on("pipeline.lead.created", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[PIPELINE] lead created", {
       source: payload.source,
       region: payload.region,
@@ -23,7 +23,7 @@ export function bootstrapListeners() {
   });
 
   eventBus.on("pipeline.stage.changed", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[PIPELINE] stage changed", {
       from: payload.from,
       to: payload.to,
@@ -33,7 +33,7 @@ export function bootstrapListeners() {
   });
 
   eventBus.on("report.generated", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[REPORT] generated", {
       module: payload.module,
       title: payload.title,
@@ -42,7 +42,7 @@ export function bootstrapListeners() {
   });
 
   eventBus.on("report.scheduled", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[REPORT] scheduled", {
       module: payload.module,
       title: payload.title,
@@ -51,7 +51,7 @@ export function bootstrapListeners() {
   });
 
   eventBus.on("builder.page.published", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[BUILDER] page published", {
       page: payload.page,
       template: payload.template,
@@ -60,7 +60,7 @@ export function bootstrapListeners() {
   });
 
   eventBus.on("builder.template.used", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[BUILDER] template used", {
       template: payload.template,
       action: payload.action,
@@ -69,7 +69,7 @@ export function bootstrapListeners() {
   });
 
   eventBus.on("builder.draft.published", (event: CrealephEvent) => {
-    const payload = event.payload || {};
+    const payload: Record<string, unknown> = event.payload ?? {};
     console.log("[BUILDER] draft published", {
       draft: payload.draft,
       event,

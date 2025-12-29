@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@crealeph/db";
 
 function getTenantId() {
   return process.env.DEFAULT_TENANT_ID ?? "demo-tenant";

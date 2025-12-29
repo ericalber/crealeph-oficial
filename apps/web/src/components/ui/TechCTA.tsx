@@ -10,7 +10,7 @@ type TechCTAProps = {
   source: string;
   campaign: string;
   className?: string;
-  variant?: "accent" | "brand";
+  variant?: "accent" | "brand" | "secondary";
 };
 
 export function TechCTA({ href, label, ariaLabel, source, campaign, className, variant = "accent" }: TechCTAProps) {

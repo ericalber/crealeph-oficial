@@ -37,10 +37,10 @@ export default function AutomationServicePage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-12">
-            <div className="space-y-3">
+            <div className="space-y-3 rounded-[var(--radius-card)] border border-line bg-white p-6 shadow-[var(--shadow-soft)]">
               <h2 className="text-2xl font-semibold text-ink">Complete flows for sales and service</h2>
               <p className="text-sm text-muted">
                 We build playbooks with clear stages, triggers, and ownership. Each automation links to website forms
@@ -68,7 +68,7 @@ export default function AutomationServicePage() {
                 </li>
               </ul>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3 rounded-[var(--radius-card)] border border-line bg-surface p-6 shadow-[var(--shadow-soft)]">
               <h2 className="text-2xl font-semibold text-ink">CREALEPH Bridge</h2>
               <p className="text-sm text-muted">
                 Bridge is our read-only integration layer with connectors for Stripe, PayPal, regional ERPs, and banking gateways.
@@ -83,7 +83,7 @@ export default function AutomationServicePage() {
                 campaign="cta-secondary"
               />
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3 rounded-[var(--radius-card)] border border-line bg-white p-6 shadow-[var(--shadow-soft)]">
               <h2 className="text-2xl font-semibold text-ink">KPIs tracked</h2>
               <ul className="space-y-2 text-sm text-muted">
                 <li>Average response time by channel.</li>

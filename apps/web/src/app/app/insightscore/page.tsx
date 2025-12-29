@@ -1,3 +1,5 @@
+"use client";
+
 import { ButtonHTMLAttributes, useMemo, useState } from "react";
 import { PageHeader } from "@/components/dashboard/layout/PageHeader";
 import { SectionHeader } from "@/components/dashboard/layout/SectionHeader";
@@ -9,8 +11,6 @@ import { Divider } from "@/components/dashboard/sections/Divider";
 import { DashboardCard } from "@/components/dashboard/cards/DashboardCard";
 import { EmptyState } from "@/components/dashboard/feedback/EmptyState";
 import { Skeleton } from "@/components/dashboard/feedback/Skeleton";
-
-export const metadata = { robots: { index: false, follow: false } } as const;
 
 function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (

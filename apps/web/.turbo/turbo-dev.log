@@ -7,26 +7,5 @@
   - Environments: .env
 
  [32m[1m✓[22m[39m Starting...
- [32m[1m✓[22m[39m Ready in 1623ms
- [37m[1m○[22m[39m Compiling / ...
- [32m[1m✓[22m[39m Compiled / in 2.8s (3957 modules)
- GET / [32m200[39m in 3064ms
- [37m[1m○[22m[39m Compiling /_not-found ...
- [32m[1m✓[22m[39m Compiled /_not-found in 3.1s (3960 modules)
- GET /brand/robo.png [33m404[39m in 3221ms
- GET /brand/-Pngtree-robotic%20cyberpunk%20artwork_16198298.png [33m404[39m in 21ms
- GET /brand/Pngtree-robotic%20cyberpunk%20artwork_16198298.png [33m404[39m in 19ms
- GET /brand/robotic%20cyberpunk%20artwork_16198298.png [33m404[39m in 18ms
- GET / [32m200[39m in 138ms
- GET /brand/robo.png [33m404[39m in 40ms
- [37m[1m○[22m[39m Compiling /app ...
- [32m[1m✓[22m[39m Compiled /app in 1219ms (3997 modules)
- GET /app [32m200[39m in 432ms
- [37m[1m○[22m[39m Compiling /app/marketplace ...
- [32m[1m✓[22m[39m Compiled /app/marketplace in 1268ms (4007 modules)
- [32m[1m✓[22m[39m Compiled /api/marketplace/templates in 455ms (2076 modules)
- GET /api/marketplace/templates [32m200[39m in 1326ms
- GET /api/marketplace/templates [32m200[39m in 1327ms
- [37m[1m○[22m[39m Compiling /app/robots/parasite/create ...
- [32m[1m✓[22m[39m Compiled /app/robots/parasite/create in 844ms (4042 modules)
+ [32m[1m✓[22m[39m Ready in 1833ms
 [?25h

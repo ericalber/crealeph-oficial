@@ -8,7 +8,7 @@ type Column = {
 
 type DataTableProps = {
   columns: Column[];
-  rows: Record<string, ReactNode>[];
+  rows: Record<string, ReactNode | string | number | Date>[];
 };
 
 export function DataTable({ columns, rows }: DataTableProps) {
@@ -42,11 +42,20 @@ export function DataTable({ columns, rows }: DataTableProps) {
                 className="border-t transition hover:bg-[var(--surface-muted)]"
                 style={{ borderColor: "var(--line)" }}
               >
-                {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3 text-[var(--ink)]" style={{ textAlign: col.align ?? "left" }}>
-                    {row[col.key]}
-                  </td>
-                ))}
+                {columns.map((col) => {
+                  const cellValue = row[col.key];
+                  const displayValue =
+                    cellValue instanceof Date ? cellValue.toLocaleDateString() : cellValue;
+                  return (
+                    <td
+                      key={col.key}
+                      className="px-4 py-3 text-[var(--ink)]"
+                      style={{ textAlign: col.align ?? "left" }}
+                    >
+                      {displayValue}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

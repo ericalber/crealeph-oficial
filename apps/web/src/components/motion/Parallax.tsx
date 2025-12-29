@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 type ParallaxProps = {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ type ParallaxProps = {
   axis?: "y" | "x";
 };
 
+// Legacy imperative parallax (kept for compatibility)
 export function Parallax({ children, strength = 0.15, className, axis = "y" }: ParallaxProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -49,3 +51,23 @@ export function Parallax({ children, strength = 0.15, className, axis = "y" }: P
   );
 }
 
+type ParallaxLayerProps = {
+  children: React.ReactNode;
+  speed?: number; // px of travel through viewport
+  className?: string;
+};
+
+export function ParallaxLayer({ children, speed = 40, className }: ParallaxLayerProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [speed, -speed]);
+
+  return (
+    <motion.div ref={ref} style={{ y, willChange: "transform" }} className={className}>
+      {children}
+    </motion.div>
+  );
+}

@@ -2,6 +2,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { SectionSeparator } from "@/components/ui/SectionSeparator";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { SeeAlso } from "@/components/ui/SeeAlso";
+import { Reveal } from "@/components/motion/Reveal";
 import Link from "next/link";
 
 const clusters = [
@@ -62,32 +63,31 @@ export default function IndustriesPage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-6 lg:grid-cols-2 lg:px-8">
-          {clusters.map((cluster) => (
-            <div
-              key={`${cluster.href}-${cluster.title}`}
-              className="flex h-full flex-col justify-between rounded-[calc(var(--radius)*1.5)] border border-line bg-surface p-8 shadow-md transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="space-y-4">
-                <h2 className="text-2xl font-semibold text-ink">{cluster.title}</h2>
-                <p className="text-sm text-muted">{cluster.description}</p>
+          {clusters.map((cluster, idx) => (
+            <Reveal key={`${cluster.href}-${cluster.title}`} variant="fadeInUp" delay={60 * idx}>
+              <div className="flex h-full flex-col justify-between rounded-[var(--radius-card)] border border-line bg-surface p-8 shadow-[var(--shadow-soft)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-elevated)]">
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-semibold text-ink">{cluster.title}</h2>
+                  <p className="text-sm text-muted">{cluster.description}</p>
+                </div>
+                <CTAButton
+                  href={cluster.href}
+                  label="View details"
+                  ariaLabel={`View details for ${cluster.title}`}
+                  variant="secondary"
+                  source="industries-grid"
+                  campaign="cta-secondary"
+                />
               </div>
-              <CTAButton
-                href={cluster.href}
-                label="Ver detalhes"
-                ariaLabel={`Ver detalhes do cluster ${cluster.title}`}
-                variant="secondary"
-                source="industries-grid"
-                campaign="cta-secondary"
-              />
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="bg-surface px-4 py-16">
-        <div className="mx-auto max-w-screen-xl space-y-6 rounded-[calc(var(--radius)*1.5)] border border-line bg-white p-8 shadow-md lg:px-12">
+      <section className="bg-surface px-4 py-24">
+        <div className="mx-auto max-w-screen-xl space-y-6 rounded-[var(--radius-card)] border border-line bg-white p-8 shadow-[var(--shadow-soft)] lg:px-12">
           <h2 className="text-2xl font-semibold text-ink">Recurring pain points vs. solutions</h2>
           <div className="overflow-x-auto text-sm text-muted">
             <table className="min-w-full text-left">

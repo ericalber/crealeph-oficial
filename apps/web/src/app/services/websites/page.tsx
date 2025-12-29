@@ -37,7 +37,7 @@ export default function WebsitesServicePage() {
 
       <SectionSeparator />
 
-      <section className="px-4 py-16">
+      <section className="px-4 py-24">
         <div className="mx-auto grid max-w-screen-xl gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
           <div className="space-y-10">
             <div className="space-y-3">

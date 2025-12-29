@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@crealeph/db";
 
 function getTenantId() {
   return process.env.DEFAULT_TENANT_ID ?? "demo-tenant";
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 export async function GET(
@@ -18,7 +20,9 @@ export async function GET(
   const robot = await prisma.robot.findFirst({ where: { id: robotId, tenantId } });
   if (!robot) return NextResponse.json({ ok: false, message: "not found" }, { status: 404 });
 
-  const isCleaning = (robot.config as any)?.niche?.toLowerCase?.() === "cleaning";
+  const niche =
+    isRecord(robot.config) && typeof robot.config.niche === "string" ? robot.config.niche : "";
+  const isCleaning = niche.toLowerCase() === "cleaning";
   if (!isCleaning) {
     return NextResponse.json({
       ok: true,
@@ -39,7 +43,7 @@ export async function GET(
     orderBy: { createdAt: "desc" },
   });
 
-  const result = (run?.result as any) ?? {};
+  const result = isRecord(run?.result) ? run.result : {};
 
   return NextResponse.json({
     ok: true,

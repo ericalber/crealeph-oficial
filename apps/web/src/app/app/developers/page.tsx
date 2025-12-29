@@ -11,7 +11,7 @@ import { Divider } from "@/components/dashboard/sections/Divider";
 import { DashboardCard } from "@/components/dashboard/cards/DashboardCard";
 import { EmptyState } from "@/components/dashboard/feedback/EmptyState";
 import { Skeleton } from "@/components/dashboard/feedback/Skeleton";
-import { eventBus } from "@/lib/crealeph/event-bus";
+import { eventBus, publishEvent } from "@/lib/crealeph/event-bus";
 
 function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
