@@ -1,6 +1,7 @@
- "use client";
+"use client";
 
-import { ButtonHTMLAttributes, useMemo, useState } from "react";
+import { ButtonHTMLAttributes, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { PageHeader } from "@/components/dashboard/layout/PageHeader";
 import { SectionHeader } from "@/components/dashboard/layout/SectionHeader";
 import { KPICard } from "@/components/dashboard/cards/KPICard";
@@ -12,12 +13,22 @@ import { DashboardCard } from "@/components/dashboard/cards/DashboardCard";
 import { EmptyState } from "@/components/dashboard/feedback/EmptyState";
 import { Skeleton } from "@/components/dashboard/feedback/Skeleton";
 import { eventBus } from "@/lib/crealeph/event-bus";
+import type { ExecutionVisibilityOutput } from "@/lib/contracts/execution-visibility";
 
-function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+type GhostButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { hint?: string };
+
+function GhostButton(props: GhostButtonProps) {
+  const { hint, disabled, onClick, className, title, ...rest } = props;
+  const resolvedTitle = disabled ? hint : title;
+  const resolvedClick = disabled ? undefined : onClick;
+
   return (
     <button
-      {...props}
-      className="inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]"
+      {...rest}
+      title={resolvedTitle}
+      disabled={disabled}
+      onClick={resolvedClick}
+      className={`inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)] ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className ?? ""}`}
       style={{ borderColor: "var(--line)" }}
     />
   );
@@ -117,6 +128,9 @@ function statusColor(status: AquaRow["status"]) {
 }
 
 export default function AquaInsightsPage() {
+  const searchParams = useSearchParams();
+  const robotId = searchParams.get("robotId") ?? "";
+  const missingRobotId = robotId.length === 0;
   const [chips, setChips] = useState<FilterChip[]>([
     { id: "highImpact", label: "High Impact", active: false },
     { id: "aiGenerated", label: "AI Generated", active: false },
@@ -129,6 +143,150 @@ export default function AquaInsightsPage() {
     from: null,
     to: null,
   });
+  const [visibility, setVisibility] = useState<ExecutionVisibilityOutput | null>(null);
+  const [isLoadingVisibility, setIsLoadingVisibility] = useState(false);
+  const [visibilityUnavailable, setVisibilityUnavailable] = useState(false);
+  const [uiIntentMessage, setUiIntentMessage] = useState<string | null>(null);
+  const DEBUG_UI_INTENT_LOG = false;
+  const UI_INTENT_MESSAGE = "UI intent recorded — no execution in this build";
+
+  const recordUiIntent = () => {
+    if (DEBUG_UI_INTENT_LOG) {
+      console.info(UI_INTENT_MESSAGE);
+    }
+    setUiIntentMessage(UI_INTENT_MESSAGE);
+  };
+
+  useEffect(() => {
+    if (missingRobotId) {
+      setVisibility(null);
+      setVisibilityUnavailable(false);
+      setIsLoadingVisibility(false);
+      setUiIntentMessage(null);
+      return;
+    }
+
+    let active = true;
+    setIsLoadingVisibility(true);
+    setVisibilityUnavailable(false);
+
+    fetch(`/api/robots/${encodeURIComponent(robotId)}/visibility`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error("visibility");
+        const data = (await response.json()) as ExecutionVisibilityOutput;
+        if (!data?.ok) throw new Error("visibility");
+        if (active) {
+          setVisibility(data);
+          setVisibilityUnavailable(false);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setVisibility(null);
+          setVisibilityUnavailable(true);
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setIsLoadingVisibility(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [missingRobotId, robotId]);
+
+  type AquaActionKey = ExecutionVisibilityOutput["nextActions"][number]["action"];
+  type AquaGateKey = ExecutionVisibilityOutput["gates"][number]["gateType"];
+  type AquaModuleKey = keyof ExecutionVisibilityOutput["lastExecutionByModule"];
+
+  const visibilityStatusMessage = missingRobotId
+    ? "Select a robot to view execution state"
+    : isLoadingVisibility
+      ? "Loading execution state..."
+      : "Execution state unavailable";
+
+  const resolveAquaActionHint = (actionKey: AquaActionKey) => {
+    if (missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility) {
+      return { enabled: false, message: visibilityStatusMessage };
+    }
+
+    const recommendation = visibility.nextActions.find((item) => item.action === actionKey);
+    if (recommendation) {
+      return { enabled: true, message: recommendation.rationale };
+    }
+
+    const mapping: Record<AquaActionKey, { module: AquaModuleKey; gate?: AquaGateKey }> = {
+      "robots.run": { module: "robots", gate: "robots_run_gate" },
+      "competitors.run_insights": { module: "competitors" },
+      "fusion.run": { module: "fusion", gate: "fusion_gate" },
+      "ideator.run": { module: "ideator", gate: "ideator_gate" },
+      "copywriter.run": { module: "copywriter", gate: "copywriter_gate" },
+      "market_twin.run": { module: "market_twin", gate: "market_twin_gate" },
+      "playbooks.v1.run": { module: "playbooks_v1", gate: "playbooks_v1_gate" },
+      "playbooks.v2.run": { module: "playbooks_v2", gate: "playbooks_v2_gate" },
+      "builder.run": { module: "builder" },
+    };
+
+    const { module, gate } = mapping[actionKey];
+    if (gate) {
+      const gateEntry = visibility.gates.find((entry) => entry.gateType === gate);
+      if (gateEntry) {
+        return { enabled: false, message: `Blocked by Policy: ${gateEntry.message}` };
+      }
+    }
+
+    const last = visibility.lastExecutionByModule[module];
+    if (last?.status === "failed") {
+      return { enabled: true, message: `Last run failed: ${last.lastReason ?? "unknown"}` };
+    }
+    if (last?.status === "cancelled") {
+      return { enabled: true, message: `Last run cancelled: ${last.lastReason ?? "unknown"}` };
+    }
+
+    if (actionKey === "builder.run") {
+      if (visibility.builderReadiness?.blockedReason) {
+        return { enabled: false, message: `Blocked: ${visibility.builderReadiness.blockedReason}` };
+      }
+      if (visibility.builderReadiness?.requiredMissing?.length) {
+        return {
+          enabled: false,
+          message: `Missing required artifact: ${visibility.builderReadiness.requiredMissing.join(", ")}`,
+        };
+      }
+    }
+
+    return { enabled: false, message: "Not recommended right now" };
+  };
+
+  const createInsightHint = resolveAquaActionHint("ideator.run");
+  const builderHint = resolveAquaActionHint("builder.run");
+
+  const insightScoreRecommendation =
+    visibility?.nextActions.find((item) => item.action === "ideator.run" || item.action === "copywriter.run") ?? null;
+  const insightScoreHint =
+    missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility
+      ? { enabled: false, message: visibilityStatusMessage }
+      : insightScoreRecommendation
+        ? { enabled: true, message: insightScoreRecommendation.rationale }
+        : { enabled: false, message: "InsightScore is UI-only in this build" };
+
+  const paidRecommendation = visibility?.nextActions.find((item) =>
+    item.action === "builder.run" || item.action === "playbooks.v1.run" || item.action === "playbooks.v2.run");
+  const paidHint =
+    missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility
+      ? { enabled: false, message: visibilityStatusMessage }
+      : paidRecommendation
+        ? { enabled: true, message: `Paid execution is not enabled. ${paidRecommendation.rationale}` }
+        : { enabled: false, message: "Paid execution is not enabled. Not recommended right now" };
+
+  const cmsHint =
+    missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility
+      ? { enabled: false, message: visibilityStatusMessage }
+      : paidRecommendation
+        ? { enabled: true, message: `CMS connector is not enabled. ${paidRecommendation.rationale}` }
+        : { enabled: false, message: "CMS connector is not enabled. Not recommended right now" };
 
   const kpis = [
     { label: "Active Messages", value: "34", delta: "+6%", tone: "positive" as const },
@@ -200,41 +358,70 @@ export default function AquaInsightsPage() {
         title="AQUA Insights"
         subtitle="Language insights by city, theme and impact — ready to turn into pages, campaigns and experiments."
         actions={
-          <>
-            <GhostButton
-              onClick={() =>
-                eventBus.emit("insight.created", {
-                  source: "AQUA",
-                  pattern: "high_impact_cluster",
-                  modules: ["Scout", "Pricing"],
-                })
-              }
-            >
-              Create Insight
-            </GhostButton>
-            <GhostButton
-              onClick={() =>
-                eventBus.emit("report.generated", {
-                  source: "AQUA",
-                  action: "export_to_cms",
-                })
-              }
-            >
-              Export to CMS
-            </GhostButton>
-            <GhostButton
-              onClick={() =>
-                eventBus.emit("builder.page.published", {
-                  source: "AQUA",
-                  action: "apply_copy_to_builder",
-                })
-              }
-            >
-              Apply to Builder
-            </GhostButton>
-          </>
+          <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={!createInsightHint.enabled}
+                hint={createInsightHint.message}
+                onClick={() =>
+                  {
+                    recordUiIntent();
+                    eventBus.emit("insight.created", {
+                      source: "AQUA",
+                      pattern: "high_impact_cluster",
+                      modules: ["Scout", "Pricing"],
+                    });
+                  }
+                }
+              >
+                Create Insight
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{createInsightHint.message}</span>
+            </div>
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={!cmsHint.enabled}
+                hint={cmsHint.message}
+                onClick={() =>
+                  {
+                    recordUiIntent();
+                    eventBus.emit("report.generated", {
+                      source: "AQUA",
+                      action: "export_to_cms",
+                    });
+                  }
+                }
+              >
+                Export to CMS
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{cmsHint.message}</span>
+            </div>
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={!builderHint.enabled}
+                hint={builderHint.message}
+                onClick={() =>
+                  {
+                    recordUiIntent();
+                    eventBus.emit("builder.page.published", {
+                      source: "AQUA",
+                      action: "apply_copy_to_builder",
+                    });
+                  }
+                }
+              >
+                Apply to Builder
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{builderHint.message}</span>
+            </div>
+          </div>
         }
       />
+
+      {(missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility) && (
+        <p className="text-xs font-medium text-[var(--muted)]">{visibilityStatusMessage}</p>
+      )}
+      {uiIntentMessage && <p className="text-xs font-medium text-[var(--muted)]">{uiIntentMessage}</p>}
 
       <DashboardCard>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -244,38 +431,62 @@ export default function AquaInsightsPage() {
               AI detected clusters of high-impact messages in SF and NY from Scout and Pricing. Consider pushing to Builder, Paid and InsightScore.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <GhostButton
-              onClick={() =>
-                eventBus.emit("insight.created", {
-                  source: "AQUA",
-                  type: "high_impact_cluster",
-                  origins: ["Scout", "Pricing"],
-                })
-              }
-            >
-              Send to InsightScore
-            </GhostButton>
-            <GhostButton
-              onClick={() =>
-                eventBus.emit("builder.template.used", {
-                  source: "AQUA",
-                  action: "apply_ai_copy",
-                })
-              }
-            >
-              Apply AQUA Copy in Builder
-            </GhostButton>
-            <GhostButton
-              onClick={() =>
-                eventBus.emit("custom", {
-                  source: "AQUA",
-                  action: "test_headlines_in_paid",
-                })
-              }
-            >
-              Test in Paid
-            </GhostButton>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap gap-2">
+              <GhostButton
+                disabled={!insightScoreHint.enabled}
+                hint={insightScoreHint.message}
+                onClick={() =>
+                  {
+                    recordUiIntent();
+                    eventBus.emit("insight.created", {
+                      source: "AQUA",
+                      type: "high_impact_cluster",
+                      origins: ["Scout", "Pricing"],
+                    });
+                  }
+                }
+              >
+                Send to InsightScore
+              </GhostButton>
+              <GhostButton
+                disabled={!builderHint.enabled}
+                hint={builderHint.message}
+                onClick={() =>
+                  {
+                    recordUiIntent();
+                    eventBus.emit("builder.template.used", {
+                      source: "AQUA",
+                      action: "apply_ai_copy",
+                    });
+                  }
+                }
+              >
+                Apply AQUA Copy in Builder
+              </GhostButton>
+              <GhostButton
+                disabled={!paidHint.enabled}
+                hint={paidHint.message}
+                onClick={() =>
+                  {
+                    recordUiIntent();
+                    eventBus.emit("custom", {
+                      source: "AQUA",
+                      action: "test_headlines_in_paid",
+                    });
+                  }
+                }
+              >
+                Test in Paid
+              </GhostButton>
+            </div>
+            <div className="text-xs text-[var(--muted)]">
+              <span>Send to InsightScore: {insightScoreHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Apply AQUA Copy in Builder: {builderHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Test in Paid: {paidHint.message}</span>
+            </div>
           </div>
         </div>
       </DashboardCard>
@@ -321,16 +532,24 @@ export default function AquaInsightsPage() {
           },
         ]}
         extra={
-          <GhostButton
-            onClick={() =>
-              eventBus.emit("insight.created", {
-                source: "AQUA",
-                action: "create_from_filter",
-              })
-            }
-          >
-            Create Insight
-          </GhostButton>
+          <div className="flex flex-col items-start gap-1">
+            <GhostButton
+              disabled={!createInsightHint.enabled}
+              hint={createInsightHint.message}
+              onClick={() =>
+                {
+                  recordUiIntent();
+                  eventBus.emit("insight.created", {
+                    source: "AQUA",
+                    action: "create_from_filter",
+                  });
+                }
+              }
+            >
+              Create Insight
+            </GhostButton>
+            <span className="text-xs text-[var(--muted)]">{createInsightHint.message}</span>
+          </div>
         }
         onClear={handleClear}
       />
@@ -342,16 +561,24 @@ export default function AquaInsightsPage() {
           title="No messages found"
           description="Adjust filters or add new data sources."
           action={
-            <GhostButton
-              onClick={() =>
-                eventBus.emit("aqua.message.created", {
-                  source: "AQUA",
-                  action: "empty_state_create",
-                })
-              }
-            >
-              Create Insight
-            </GhostButton>
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={!createInsightHint.enabled}
+                hint={createInsightHint.message}
+                onClick={() =>
+                  {
+                    recordUiIntent();
+                    eventBus.emit("aqua.message.created", {
+                      source: "AQUA",
+                      action: "empty_state_create",
+                    });
+                  }
+                }
+              >
+                Create Insight
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{createInsightHint.message}</span>
+            </div>
           }
         />
       ) : (
@@ -376,47 +603,71 @@ export default function AquaInsightsPage() {
               </span>
             ),
             actions: (
-              <div className="flex flex-wrap items-center justify-end gap-2">
-                <GhostButton
-                  aria-label="Create Insight"
-                  onClick={() =>
-                    eventBus.emit("insight.created", {
-                      source: "AQUA",
-                      origin: row.origin,
-                      city: row.city,
-                      theme: row.theme,
-                      impact: row.impact,
-                      message: row.message,
-                    })
-                  }
-                >
-                  Create Insight
-                </GhostButton>
-                <GhostButton
-                  aria-label="Apply in Builder"
-                  onClick={() =>
-                    eventBus.emit("aqua.message.applied", {
-                      source: "AQUA",
-                      city: row.city,
-                      message: row.message,
-                    })
-                  }
-                >
-                  Apply in Builder
-                </GhostButton>
-                <GhostButton
-                  aria-label="Test in Paid"
-                  onClick={() =>
-                    eventBus.emit("custom", {
-                      source: "AQUA",
-                      action: "test_in_paid",
-                      message: row.message,
-                      city: row.city,
-                    })
-                  }
-                >
-                  Test in Paid
-                </GhostButton>
+              <div className="flex flex-col items-end gap-1">
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <GhostButton
+                    aria-label="Create Insight"
+                    disabled={!createInsightHint.enabled}
+                    hint={createInsightHint.message}
+                    onClick={() =>
+                      {
+                        recordUiIntent();
+                        eventBus.emit("insight.created", {
+                          source: "AQUA",
+                          origin: row.origin,
+                          city: row.city,
+                          theme: row.theme,
+                          impact: row.impact,
+                          message: row.message,
+                        });
+                      }
+                    }
+                  >
+                    Create Insight
+                  </GhostButton>
+                  <GhostButton
+                    aria-label="Apply in Builder"
+                    disabled={!builderHint.enabled}
+                    hint={builderHint.message}
+                    onClick={() =>
+                      {
+                        recordUiIntent();
+                        eventBus.emit("aqua.message.applied", {
+                          source: "AQUA",
+                          city: row.city,
+                          message: row.message,
+                        });
+                      }
+                    }
+                  >
+                    Apply in Builder
+                  </GhostButton>
+                  <GhostButton
+                    aria-label="Test in Paid"
+                    disabled={!paidHint.enabled}
+                    hint={paidHint.message}
+                    onClick={() =>
+                      {
+                        recordUiIntent();
+                        eventBus.emit("custom", {
+                          source: "AQUA",
+                          action: "test_in_paid",
+                          message: row.message,
+                          city: row.city,
+                        });
+                      }
+                    }
+                  >
+                    Test in Paid
+                  </GhostButton>
+                </div>
+                <div className="text-[10px] text-[var(--muted)] text-right">
+                  <span>Create Insight: {createInsightHint.message}</span>
+                  <span className="mx-2">•</span>
+                  <span>Apply in Builder: {builderHint.message}</span>
+                  <span className="mx-2">•</span>
+                  <span>Test in Paid: {paidHint.message}</span>
+                </div>
               </div>
             ),
             key: `${row.message}-${index}`,

@@ -1,6 +1,7 @@
 "use client";
 
-import { ButtonHTMLAttributes, useMemo, useState } from "react";
+import { ButtonHTMLAttributes, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { PageHeader } from "@/components/dashboard/layout/PageHeader";
 import { SectionHeader } from "@/components/dashboard/layout/SectionHeader";
 import { KPICard } from "@/components/dashboard/cards/KPICard";
@@ -12,12 +13,22 @@ import { DashboardCard } from "@/components/dashboard/cards/DashboardCard";
 import { EmptyState } from "@/components/dashboard/feedback/EmptyState";
 import { Skeleton } from "@/components/dashboard/feedback/Skeleton";
 import { eventBus } from "@/lib/crealeph/event-bus";
+import type { ExecutionVisibilityOutput } from "@/lib/contracts/execution-visibility";
 
-function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+type GhostButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { hint?: string };
+
+function GhostButton(props: GhostButtonProps) {
+  const { hint, disabled, onClick, className, title, ...rest } = props;
+  const resolvedTitle = disabled ? hint : title;
+  const resolvedClick = disabled ? undefined : onClick;
+
   return (
     <button
-      {...props}
-      className="inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]"
+      {...rest}
+      title={resolvedTitle}
+      disabled={disabled}
+      onClick={resolvedClick}
+      className={`inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)] ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className ?? ""}`}
       style={{ borderColor: "var(--line)" }}
     />
   );
@@ -109,6 +120,96 @@ function statusColor(status: MarketTwinRow["status"]) {
 }
 
 export default function MarketTwinPage() {
+  const searchParams = useSearchParams();
+  const robotId = searchParams.get("robotId") ?? "";
+  const missingRobotId = robotId.length === 0;
+  const [visibility, setVisibility] = useState<ExecutionVisibilityOutput | null>(null);
+  const [isLoadingVisibility, setIsLoadingVisibility] = useState(false);
+  const [visibilityUnavailable, setVisibilityUnavailable] = useState(false);
+  const [uiIntentMessage, setUiIntentMessage] = useState<string | null>(null);
+  const DEBUG_UI_INTENT_LOG = false;
+  const UI_INTENT_MESSAGE = "UI intent recorded — no execution in this build";
+
+  const recordUiIntent = () => {
+    if (DEBUG_UI_INTENT_LOG) {
+      console.info(UI_INTENT_MESSAGE);
+    }
+    setUiIntentMessage(UI_INTENT_MESSAGE);
+  };
+
+  useEffect(() => {
+    if (missingRobotId) {
+      setVisibility(null);
+      setVisibilityUnavailable(false);
+      setIsLoadingVisibility(false);
+      setUiIntentMessage(null);
+      return;
+    }
+
+    let active = true;
+    setIsLoadingVisibility(true);
+    setVisibilityUnavailable(false);
+
+    fetch(`/api/robots/${encodeURIComponent(robotId)}/visibility`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error("visibility");
+        const data = (await response.json()) as ExecutionVisibilityOutput;
+        if (!data?.ok) throw new Error("visibility");
+        if (active) {
+          setVisibility(data);
+          setVisibilityUnavailable(false);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setVisibility(null);
+          setVisibilityUnavailable(true);
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setIsLoadingVisibility(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [missingRobotId, robotId]);
+
+  const visibilityStatusMessage = missingRobotId
+    ? "Select a robot to view execution state"
+    : isLoadingVisibility
+      ? "Loading execution state..."
+      : "Execution state unavailable";
+
+  const resolveMarketTwinActionHint = () => {
+    if (missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility) {
+      return { enabled: false, message: visibilityStatusMessage };
+    }
+
+    const recommendation = visibility.nextActions.find((item) => item.action === "market_twin.run");
+    if (recommendation) {
+      return { enabled: true, message: recommendation.rationale };
+    }
+
+    const gateEntry = visibility.gates.find((entry) => entry.gateType === "market_twin_gate");
+    if (gateEntry) {
+      return { enabled: false, message: `Blocked by Policy: ${gateEntry.message}` };
+    }
+
+    const last = visibility.lastExecutionByModule.market_twin;
+    if (last?.status === "failed") {
+      return { enabled: true, message: `Last run failed: ${last.lastReason ?? "unknown"}` };
+    }
+    if (last?.status === "cancelled") {
+      return { enabled: true, message: `Last run cancelled: ${last.lastReason ?? "unknown"}` };
+    }
+
+    return { enabled: false, message: "Not recommended right now" };
+  };
+
+  const marketTwinHint = resolveMarketTwinActionHint();
   const [chips, setChips] = useState<FilterChip[]>([
     { id: "highApproval", label: "High approval", active: false },
     { id: "lowApproval", label: "Low approval", active: false },
@@ -204,19 +305,54 @@ export default function MarketTwinPage() {
         title="Market Twin"
         subtitle="Regional leadership map with price ranges, Share of Voice and approval for each US market."
         actions={
-          <>
-            <GhostButton onClick={() => eventBus.emit("report.generated", { source: "MarketTwin", action: "export_csv" })}>
-              Export CSV
-            </GhostButton>
-            <GhostButton onClick={() => eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "simulate_header" })}>
-              Simulate Range
-            </GhostButton>
-            <GhostButton onClick={() => eventBus.emit("builder.template.used", { source: "MarketTwin", action: "apply_builder_header" })}>
-              Apply in Builder
-            </GhostButton>
-          </>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap gap-2">
+              <GhostButton
+                disabled={!marketTwinHint.enabled}
+                hint={marketTwinHint.message}
+                onClick={() => {
+                  recordUiIntent();
+                  eventBus.emit("report.generated", { source: "MarketTwin", action: "export_csv" });
+                }}
+              >
+                Export CSV
+              </GhostButton>
+              <GhostButton
+                disabled={!marketTwinHint.enabled}
+                hint={marketTwinHint.message}
+                onClick={() => {
+                  recordUiIntent();
+                  eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "simulate_header" });
+                }}
+              >
+                Simulate Range
+              </GhostButton>
+              <GhostButton
+                disabled={!marketTwinHint.enabled}
+                hint={marketTwinHint.message}
+                onClick={() => {
+                  recordUiIntent();
+                  eventBus.emit("builder.template.used", { source: "MarketTwin", action: "apply_builder_header" });
+                }}
+              >
+                Apply in Builder
+              </GhostButton>
+            </div>
+            <div className="text-xs text-[var(--muted)]">
+              <span>Export CSV: {marketTwinHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Simulate Range: {marketTwinHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Apply in Builder: {marketTwinHint.message}</span>
+            </div>
+          </div>
         }
       />
+
+      {(missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility) && (
+        <p className="text-xs font-medium text-[var(--muted)]">{visibilityStatusMessage}</p>
+      )}
+      {uiIntentMessage && <p className="text-xs font-medium text-[var(--muted)]">{uiIntentMessage}</p>}
 
       <DashboardCard>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -227,16 +363,46 @@ export default function MarketTwinPage() {
               lower approval with similar price ranges. Consider positioning tests and pricing experiments.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <GhostButton onClick={() => eventBus.emit("insight.created", { source: "MarketTwin", pattern: "positioning_cluster" })}>
-              Generate insight
-            </GhostButton>
-            <GhostButton onClick={() => eventBus.emit("pricing.region.updated", { source: "MarketTwin", pattern: "align_bands" })}>
-              Align with Pricing
-            </GhostButton>
-            <GhostButton onClick={() => eventBus.emit("custom", { source: "MarketTwin", pattern: "campaign_focus" })}>
-              Focus Paid campaigns
-            </GhostButton>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap gap-2">
+              <GhostButton
+                disabled={!marketTwinHint.enabled}
+                hint={marketTwinHint.message}
+                onClick={() => {
+                  recordUiIntent();
+                  eventBus.emit("insight.created", { source: "MarketTwin", pattern: "positioning_cluster" });
+                }}
+              >
+                Generate insight
+              </GhostButton>
+              <GhostButton
+                disabled={!marketTwinHint.enabled}
+                hint={marketTwinHint.message}
+                onClick={() => {
+                  recordUiIntent();
+                  eventBus.emit("pricing.region.updated", { source: "MarketTwin", pattern: "align_bands" });
+                }}
+              >
+                Align with Pricing
+              </GhostButton>
+              <GhostButton
+                disabled={!marketTwinHint.enabled}
+                hint={marketTwinHint.message}
+                onClick={() => {
+                  recordUiIntent();
+                  eventBus.emit("custom", { source: "MarketTwin", pattern: "campaign_focus" });
+                }}
+              >
+                Focus Paid campaigns
+              </GhostButton>
+            </div>
+            <div className="text-xs text-[var(--muted)]">
+              <span>Generate insight: {marketTwinHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Align with Pricing: {marketTwinHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Focus Paid campaigns: {marketTwinHint.message}</span>
+            </div>
           </div>
         </div>
       </DashboardCard>
@@ -273,9 +439,19 @@ export default function MarketTwinPage() {
         title="Leaders by region"
         description="Price ranges, Share of Voice and approval for each monitored area."
         actions={
-          <GhostButton onClick={() => eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "compare_regions" })}>
-            Compare regions
-          </GhostButton>
+          <div className="flex flex-col items-start gap-1">
+            <GhostButton
+              disabled={!marketTwinHint.enabled}
+              hint={marketTwinHint.message}
+              onClick={() => {
+                recordUiIntent();
+                eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "compare_regions" });
+              }}
+            >
+              Compare regions
+            </GhostButton>
+            <span className="text-xs text-[var(--muted)]">{marketTwinHint.message}</span>
+          </div>
         }
       />
 
@@ -305,9 +481,19 @@ export default function MarketTwinPage() {
           },
         ]}
         extra={
-          <GhostButton onClick={() => eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "add_region" })}>
-            Add region
-          </GhostButton>
+          <div className="flex flex-col items-start gap-1">
+            <GhostButton
+              disabled={!marketTwinHint.enabled}
+              hint={marketTwinHint.message}
+              onClick={() => {
+                recordUiIntent();
+                eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "add_region" });
+              }}
+            >
+              Add region
+            </GhostButton>
+            <span className="text-xs text-[var(--muted)]">{marketTwinHint.message}</span>
+          </div>
         }
         onClear={handleClear}
       />
@@ -318,7 +504,21 @@ export default function MarketTwinPage() {
         <EmptyState
           title="No regions found"
           description="Adjust filters or add new regions."
-          action={<GhostButton onClick={() => eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "add_region" })}>Add region</GhostButton>}
+          action={
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={!marketTwinHint.enabled}
+                hint={marketTwinHint.message}
+                onClick={() => {
+                  recordUiIntent();
+                  eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "add_region" });
+                }}
+              >
+                Add region
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{marketTwinHint.message}</span>
+            </div>
+          }
         />
       ) : (
         <DataTable
@@ -337,25 +537,49 @@ export default function MarketTwinPage() {
               </span>
             ),
             actions: (
-              <div className="flex flex-wrap items-center justify-end gap-2">
-                <GhostButton
-                  aria-label="Simulate"
-                  onClick={() => eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "simulate_row", row })}
-                >
-                  Simulate
-                </GhostButton>
-                <GhostButton
-                  aria-label="Details"
-                  onClick={() => eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "details_row", row })}
-                >
-                  Details
-                </GhostButton>
-                <GhostButton
-                  aria-label="Apply in Builder"
-                  onClick={() => eventBus.emit("builder.template.used", { source: "MarketTwin", action: "apply_row_builder", row })}
-                >
-                  Apply in Builder
-                </GhostButton>
+              <div className="flex flex-col items-end gap-1">
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <GhostButton
+                    aria-label="Simulate"
+                    disabled={!marketTwinHint.enabled}
+                    hint={marketTwinHint.message}
+                    onClick={() => {
+                      recordUiIntent();
+                      eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "simulate_row", row });
+                    }}
+                  >
+                    Simulate
+                  </GhostButton>
+                  <GhostButton
+                    aria-label="Details"
+                    disabled={!marketTwinHint.enabled}
+                    hint={marketTwinHint.message}
+                    onClick={() => {
+                      recordUiIntent();
+                      eventBus.emit("markettwin.region.updated", { source: "MarketTwin", action: "details_row", row });
+                    }}
+                  >
+                    Details
+                  </GhostButton>
+                  <GhostButton
+                    aria-label="Apply in Builder"
+                    disabled={!marketTwinHint.enabled}
+                    hint={marketTwinHint.message}
+                    onClick={() => {
+                      recordUiIntent();
+                      eventBus.emit("builder.template.used", { source: "MarketTwin", action: "apply_row_builder", row });
+                    }}
+                  >
+                    Apply in Builder
+                  </GhostButton>
+                </div>
+                <div className="text-[10px] text-[var(--muted)] text-right">
+                  <span>Simulate: {marketTwinHint.message}</span>
+                  <span className="mx-2">•</span>
+                  <span>Details: {marketTwinHint.message}</span>
+                  <span className="mx-2">•</span>
+                  <span>Apply in Builder: {marketTwinHint.message}</span>
+                </div>
               </div>
             ),
             key: `${row.region}-${row.leader}-${index}`,

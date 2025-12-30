@@ -1,6 +1,7 @@
 "use client";
 
-import { ButtonHTMLAttributes, useMemo, useState } from "react";
+import { ButtonHTMLAttributes, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { PageHeader } from "@/components/dashboard/layout/PageHeader";
 import { SectionHeader } from "@/components/dashboard/layout/SectionHeader";
 import { KPICard } from "@/components/dashboard/cards/KPICard";
@@ -12,12 +13,20 @@ import { DashboardCard } from "@/components/dashboard/cards/DashboardCard";
 import { EmptyState } from "@/components/dashboard/feedback/EmptyState";
 import { Skeleton } from "@/components/dashboard/feedback/Skeleton";
 import { eventBus, publishEvent } from "@/lib/crealeph/event-bus";
+import type { ExecutionVisibilityOutput } from "@/lib/contracts/execution-visibility";
 
-function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+type GhostButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { hint?: string };
+
+function GhostButton(props: GhostButtonProps) {
+  const { hint, disabled, className, title, ...rest } = props;
+  const resolvedTitle = disabled ? hint : title;
+
   return (
     <button
-      {...props}
-      className="inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]"
+      {...rest}
+      disabled={disabled}
+      title={resolvedTitle}
+      className={`inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border px-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)] ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className ?? ""}`}
       style={{ borderColor: "var(--line)" }}
     />
   );
@@ -154,6 +163,51 @@ export default function SiteBuilderPage() {
   const [search, setSearch] = useState("");
   const [dateRange, setDateRange] = useState<{ from: Date | null; to: Date | null }>({ from: null, to: null });
   const [previewDevice, setPreviewDevice] = useState<"Desktop" | "Mobile">("Desktop");
+  const searchParams = useSearchParams();
+  const robotId = searchParams.get("robotId") ?? "";
+  const missingRobotId = robotId.length === 0;
+  const [visibility, setVisibility] = useState<ExecutionVisibilityOutput | null>(null);
+  const [isLoadingVisibility, setIsLoadingVisibility] = useState(false);
+  const [visibilityUnavailable, setVisibilityUnavailable] = useState(false);
+
+  useEffect(() => {
+    if (missingRobotId) {
+      setVisibility(null);
+      setVisibilityUnavailable(false);
+      setIsLoadingVisibility(false);
+      return;
+    }
+
+    let active = true;
+    setIsLoadingVisibility(true);
+    setVisibilityUnavailable(false);
+
+    fetch(`/api/robots/${encodeURIComponent(robotId)}/visibility`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error("visibility");
+        const data = (await response.json()) as ExecutionVisibilityOutput;
+        if (!data?.ok) throw new Error("visibility");
+        if (active) {
+          setVisibility(data);
+          setVisibilityUnavailable(false);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setVisibility(null);
+          setVisibilityUnavailable(true);
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setIsLoadingVisibility(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [missingRobotId, robotId]);
 
   const kpis = [
     { label: "Live Pages", value: "18", delta: "+3", tone: "positive" as const },
@@ -203,6 +257,83 @@ export default function SiteBuilderPage() {
   const isLoading = false;
   const emptyTemplates = filteredTemplates.length === 0;
 
+  type SiteBuilderActionKey = ExecutionVisibilityOutput["nextActions"][number]["action"];
+  type SiteBuilderGateKey = ExecutionVisibilityOutput["gates"][number]["gateType"];
+  type SiteBuilderModuleKey = keyof ExecutionVisibilityOutput["lastExecutionByModule"];
+
+  const visibilityStatusMessage = missingRobotId
+    ? "Select a robot to view execution state"
+    : isLoadingVisibility
+      ? "Loading execution state..."
+      : "Execution state unavailable";
+
+  const resolveSiteBuilderActionHint = (
+    actionKey: SiteBuilderActionKey,
+    options: {
+      module?: SiteBuilderModuleKey;
+      gate?: SiteBuilderGateKey;
+      useBuilderReadiness?: boolean;
+      uiOnlyMessage?: string;
+    } = {}
+  ) => {
+    if (missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility) {
+      return { enabled: false, message: visibilityStatusMessage };
+    }
+
+    const recommendation = visibility.nextActions.find((item) => item.action === actionKey);
+    if (recommendation) {
+      return { enabled: true, message: recommendation.rationale };
+    }
+
+    if (options.gate) {
+      const gateEntry = visibility.gates.find((entry) => entry.gateType === options.gate);
+      if (gateEntry) {
+        return { enabled: false, message: `Blocked by Policy: ${gateEntry.message}` };
+      }
+    }
+
+    if (options.module) {
+      const last = visibility.lastExecutionByModule[options.module];
+      if (last?.status === "failed") {
+        return { enabled: true, message: `Last run failed: ${last.lastReason ?? "unknown"}` };
+      }
+      if (last?.status === "cancelled") {
+        return { enabled: true, message: `Last run cancelled: ${last.lastReason ?? "unknown"}` };
+      }
+    }
+
+    if (actionKey === "builder.run" && options.useBuilderReadiness) {
+      if (visibility.builderReadiness?.blockedReason) {
+        return { enabled: false, message: `Blocked: ${visibility.builderReadiness.blockedReason}` };
+      }
+      if (visibility.builderReadiness?.requiredMissing?.length) {
+        return {
+          enabled: false,
+          message: `Missing required artifact: ${visibility.builderReadiness.requiredMissing.join(", ")}`,
+        };
+      }
+    }
+
+    return {
+      enabled: false,
+      message: options.uiOnlyMessage ?? "UI intent only - no execution in this build",
+    };
+  };
+
+  const builderIntentHint = resolveSiteBuilderActionHint("builder.run", {
+    module: "builder",
+    useBuilderReadiness: true,
+  });
+  const builderUiHint = resolveSiteBuilderActionHint("builder.run", {
+    module: "builder",
+    uiOnlyMessage: "UI intent only - no execution in this build",
+  });
+  const marketTwinHint = resolveSiteBuilderActionHint("market_twin.run", {
+    module: "market_twin",
+    gate: "market_twin_gate",
+    uiOnlyMessage: "UI intent only - no execution in this build",
+  });
+
   const handleClearFilters = () => {
     setChips((prev) => prev.map((c) => ({ ...c, active: false })));
     setCategory("All");
@@ -214,16 +345,34 @@ export default function SiteBuilderPage() {
   const draftsRows = drafts.map((draft, index) => ({
     ...draft,
     actions: (
-      <div className="flex flex-wrap items-center justify-end gap-2">
-        <GhostButton aria-label="Continue Editing" onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "draft_continue", draft } })}>
-          Continue Editing
-        </GhostButton>
-        <GhostButton aria-label="Publish Draft" onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "draft_publish", draft } })}>
-          Publish
-        </GhostButton>
-        <GhostButton aria-label="Delete Draft" onClick={() => publishEvent({ type: "custom", source: "site-builder", payload: { action: "draft_delete", draft } })}>
-          Delete
-        </GhostButton>
+      <div className="flex flex-col items-end gap-1">
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <GhostButton
+            disabled={missingRobotId}
+            hint={builderIntentHint.message}
+            aria-label="Continue Editing"
+            onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "draft_continue", draft } })}
+          >
+            Continue Editing
+          </GhostButton>
+          <GhostButton
+            disabled={missingRobotId}
+            hint={builderIntentHint.message}
+            aria-label="Publish Draft"
+            onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "draft_publish", draft } })}
+          >
+            Publish
+          </GhostButton>
+          <GhostButton
+            disabled={missingRobotId}
+            hint={builderIntentHint.message}
+            aria-label="Delete Draft"
+            onClick={() => publishEvent({ type: "custom", source: "site-builder", payload: { action: "draft_delete", draft } })}
+          >
+            Delete
+          </GhostButton>
+        </div>
+        <span className="text-[10px] text-[var(--muted)]">{builderIntentHint.message}</span>
       </div>
     ),
     key: `${draft.draftName}-${index}`,
@@ -240,13 +389,26 @@ export default function SiteBuilderPage() {
       </span>
     ),
     actions: (
-      <div className="flex flex-wrap items-center justify-end gap-2">
-        <GhostButton aria-label="View Logs" onClick={() => publishEvent({ type: "report.generated", source: "site-builder", payload: { action: "view_logs", item } })}>
-          View Logs
-        </GhostButton>
-        <GhostButton aria-label="Revert" onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "revert_publish", item } })}>
-          Revert
-        </GhostButton>
+      <div className="flex flex-col items-end gap-1">
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <GhostButton
+            disabled={missingRobotId}
+            hint={builderUiHint.message}
+            aria-label="View Logs"
+            onClick={() => publishEvent({ type: "report.generated", source: "site-builder", payload: { action: "view_logs", item } })}
+          >
+            View Logs
+          </GhostButton>
+          <GhostButton
+            disabled={missingRobotId}
+            hint={builderUiHint.message}
+            aria-label="Revert"
+            onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "revert_publish", item } })}
+          >
+            Revert
+          </GhostButton>
+        </div>
+        <span className="text-[10px] text-[var(--muted)]">{builderUiHint.message}</span>
       </div>
     ),
     key: `${item.page}-${index}`,
@@ -262,19 +424,44 @@ export default function SiteBuilderPage() {
         title="Site Builder"
         subtitle="Modular page creation with templates, blocks and AI-assisted publishing."
         actions={
-          <>
-            <GhostButton onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "create_page" } })}>
-              Create Page
-            </GhostButton>
-            <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "new_template" } })}>
-              New Template
-            </GhostButton>
-            <GhostButton onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "publish_changes" } })}>
-              Publish Changes
-            </GhostButton>
-          </>
+          <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "create_page" } })}
+              >
+                Create Page
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{builderIntentHint.message}</span>
+            </div>
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "new_template" } })}
+              >
+                New Template
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{builderIntentHint.message}</span>
+            </div>
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "publish_changes" } })}
+              >
+                Publish Changes
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{builderIntentHint.message}</span>
+            </div>
+          </div>
         }
       />
+
+      {(missingRobotId || isLoadingVisibility || visibilityUnavailable || !visibility) && (
+        <p className="text-xs font-medium text-[var(--muted)]">{visibilityStatusMessage}</p>
+      )}
 
       <DashboardCard>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -284,16 +471,37 @@ export default function SiteBuilderPage() {
               AI detected that templates using AQUA-based copy and Bay Area targeting increased CTR by +12%. Consider applying these patterns to new pages and testing in Paid/SEO.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "apply_aqua_copy" } })}>
-              Apply AQUA Copy
-            </GhostButton>
-            <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "generate_template_variant" } })}>
-              Generate Template Variant
-            </GhostButton>
-            <GhostButton onClick={() => publishEvent({ type: "markettwin.region.updated", source: "site-builder", payload: { action: "compare_regions" } })}>
-              Compare Regions
-            </GhostButton>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap gap-2">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "apply_aqua_copy" } })}
+              >
+                Apply AQUA Copy
+              </GhostButton>
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "generate_template_variant" } })}
+              >
+                Generate Template Variant
+              </GhostButton>
+              <GhostButton
+                disabled={missingRobotId}
+                hint={marketTwinHint.message}
+                onClick={() => publishEvent({ type: "markettwin.region.updated", source: "site-builder", payload: { action: "compare_regions" } })}
+              >
+                Compare Regions
+              </GhostButton>
+            </div>
+            <div className="text-[10px] text-[var(--muted)]">
+              <span>Apply AQUA Copy: {builderIntentHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Generate Template Variant: {builderIntentHint.message}</span>
+              <span className="mx-2">•</span>
+              <span>Compare Regions: {marketTwinHint.message}</span>
+            </div>
           </div>
         </div>
       </DashboardCard>
@@ -328,12 +536,26 @@ export default function SiteBuilderPage() {
         description="Modular templates, components and blocks ready for cross-channel experiments."
         actions={
           <div className="flex flex-wrap gap-2">
-            <GhostButton onClick={() => publishEvent({ type: "custom", source: "site-builder", payload: { action: "new_category" } })}>
-              New Category
-            </GhostButton>
-            <GhostButton onClick={() => publishEvent({ type: "custom", source: "site-builder", payload: { action: "import_template_pack" } })}>
-              Import Template Pack
-            </GhostButton>
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "custom", source: "site-builder", payload: { action: "new_category" } })}
+              >
+                New Category
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{builderIntentHint.message}</span>
+            </div>
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "custom", source: "site-builder", payload: { action: "import_template_pack" } })}
+              >
+                Import Template Pack
+              </GhostButton>
+              <span className="text-xs text-[var(--muted)]">{builderIntentHint.message}</span>
+            </div>
           </div>
         }
       />
@@ -361,7 +583,18 @@ export default function SiteBuilderPage() {
             onChange: setDevice,
           },
         ]}
-        extra={<GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "create_template" } })}>Create Template</GhostButton>}
+        extra={
+          <div className="flex flex-col items-start gap-1">
+            <GhostButton
+              disabled={missingRobotId}
+              hint={builderIntentHint.message}
+              onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "create_template" } })}
+            >
+              Create Template
+            </GhostButton>
+            <span className="text-[10px] text-[var(--muted)]">{builderIntentHint.message}</span>
+          </div>
+        }
         onClear={handleClearFilters}
       />
 
@@ -371,7 +604,18 @@ export default function SiteBuilderPage() {
         <EmptyState
           title="No templates found"
           description="Try a different filter or create your first template."
-          action={<GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "create_template" } })}>Create Template</GhostButton>}
+          action={
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "create_template" } })}
+              >
+                Create Template
+              </GhostButton>
+              <span className="text-[10px] text-[var(--muted)]">{builderIntentHint.message}</span>
+            </div>
+          }
         />
       ) : (
         <div
@@ -401,10 +645,31 @@ export default function SiteBuilderPage() {
                   </span>
                 ) : null}
               </div>
-              <div className="flex flex-wrap gap-2">
-                <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "edit_template", tpl } })}>Edit</GhostButton>
-                <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "duplicate_template", tpl } })}>Duplicate</GhostButton>
-                <GhostButton onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "publish_template", tpl } })}>Publish</GhostButton>
+              <div className="flex flex-col gap-1">
+                <div className="flex flex-wrap gap-2">
+                  <GhostButton
+                    disabled={missingRobotId}
+                    hint={builderIntentHint.message}
+                    onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "edit_template", tpl } })}
+                  >
+                    Edit
+                  </GhostButton>
+                  <GhostButton
+                    disabled={missingRobotId}
+                    hint={builderIntentHint.message}
+                    onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "duplicate_template", tpl } })}
+                  >
+                    Duplicate
+                  </GhostButton>
+                  <GhostButton
+                    disabled={missingRobotId}
+                    hint={builderIntentHint.message}
+                    onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "publish_template", tpl } })}
+                  >
+                    Publish
+                  </GhostButton>
+                </div>
+                <span className="text-[10px] text-[var(--muted)]">{builderIntentHint.message}</span>
               </div>
             </DashboardCard>
           ))}
@@ -426,19 +691,42 @@ export default function SiteBuilderPage() {
                 style={{ borderColor: "var(--line)" }}
               >
                 <span>{block}</span>
-                <div className="flex gap-2">
-                  <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_edit", block } })} aria-label="Edit">
-                    Edit
-                  </GhostButton>
-                  <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_move", block } })} aria-label="Move">
-                    Move
-                  </GhostButton>
-                  <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_replace", block } })} aria-label="Replace">
-                    Replace
-                  </GhostButton>
-                  <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_delete", block } })} aria-label="Delete">
-                    Delete
-                  </GhostButton>
+                <div className="flex flex-col items-end gap-1">
+                  <div className="flex gap-2">
+                    <GhostButton
+                      disabled={missingRobotId}
+                      hint={builderIntentHint.message}
+                      onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_edit", block } })}
+                      aria-label="Edit"
+                    >
+                      Edit
+                    </GhostButton>
+                    <GhostButton
+                      disabled={missingRobotId}
+                      hint={builderIntentHint.message}
+                      onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_move", block } })}
+                      aria-label="Move"
+                    >
+                      Move
+                    </GhostButton>
+                    <GhostButton
+                      disabled={missingRobotId}
+                      hint={builderIntentHint.message}
+                      onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_replace", block } })}
+                      aria-label="Replace"
+                    >
+                      Replace
+                    </GhostButton>
+                    <GhostButton
+                      disabled={missingRobotId}
+                      hint={builderIntentHint.message}
+                      onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "block_delete", block } })}
+                      aria-label="Delete"
+                    >
+                      Delete
+                    </GhostButton>
+                  </div>
+                  <span className="text-[10px] text-[var(--muted)]">{builderIntentHint.message}</span>
                 </div>
               </div>
             ))}
@@ -448,25 +736,32 @@ export default function SiteBuilderPage() {
         <DashboardCard>
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-[var(--ink)]">Preview</p>
-            <div className="flex gap-2">
-              <GhostButton
-                onClick={() => {
-                  setPreviewDevice("Desktop");
-                  publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "preview_desktop" } });
-                }}
-                aria-label="Desktop"
-              >
-                Desktop
-              </GhostButton>
-              <GhostButton
-                onClick={() => {
-                  setPreviewDevice("Mobile");
-                  publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "preview_mobile" } });
-                }}
-                aria-label="Mobile"
-              >
-                Mobile
-              </GhostButton>
+            <div className="flex flex-col items-end gap-1">
+              <div className="flex gap-2">
+                <GhostButton
+                  disabled={missingRobotId}
+                  hint={builderUiHint.message}
+                  onClick={() => {
+                    setPreviewDevice("Desktop");
+                    publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "preview_desktop" } });
+                  }}
+                  aria-label="Desktop"
+                >
+                  Desktop
+                </GhostButton>
+                <GhostButton
+                  disabled={missingRobotId}
+                  hint={builderUiHint.message}
+                  onClick={() => {
+                    setPreviewDevice("Mobile");
+                    publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "preview_mobile" } });
+                  }}
+                  aria-label="Mobile"
+                >
+                  Mobile
+                </GhostButton>
+              </div>
+              <span className="text-[10px] text-[var(--muted)]">{builderUiHint.message}</span>
             </div>
           </div>
           <div
@@ -476,16 +771,31 @@ export default function SiteBuilderPage() {
             <p className="text-sm text-[var(--muted)]">Preview ({previewDevice})</p>
             <div className="mt-2 h-40 rounded-[var(--radius-sm)] border border-dashed" style={{ borderColor: "var(--line)" }} />
           </div>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "apply_aqua_copy_preview" } })}>
-              Apply AQUA Copy
-            </GhostButton>
-            <GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "save_draft" } })}>
-              Save Draft
-            </GhostButton>
-            <GhostButton onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "publish_preview" } })}>
-              Publish
-            </GhostButton>
+          <div className="mt-3 flex flex-col gap-1">
+            <div className="flex flex-wrap gap-2">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "apply_aqua_copy_preview" } })}
+              >
+                Apply AQUA Copy
+              </GhostButton>
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "save_draft" } })}
+              >
+                Save Draft
+              </GhostButton>
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.page.published", source: "site-builder", payload: { action: "publish_preview" } })}
+              >
+                Publish
+              </GhostButton>
+            </div>
+            <span className="text-[10px] text-[var(--muted)]">{builderIntentHint.message}</span>
           </div>
         </DashboardCard>
       </div>
@@ -498,7 +808,18 @@ export default function SiteBuilderPage() {
         <EmptyState
           title="No drafts found"
           description="Try a different filter or create your first template."
-          action={<GhostButton onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "create_template" } })}>Create Template</GhostButton>}
+          action={
+            <div className="flex flex-col items-start gap-1">
+              <GhostButton
+                disabled={missingRobotId}
+                hint={builderIntentHint.message}
+                onClick={() => publishEvent({ type: "builder.template.used", source: "site-builder", payload: { action: "create_template" } })}
+              >
+                Create Template
+              </GhostButton>
+              <span className="text-[10px] text-[var(--muted)]">{builderIntentHint.message}</span>
+            </div>
+          }
         />
       ) : (
         <DataTable columns={templateColumns} rows={draftsRows} />
@@ -513,11 +834,51 @@ export default function SiteBuilderPage() {
       <DashboardCard>
         <p className="text-sm font-semibold text-[var(--ink)]">Cross-links CREALEPH</p>
         <ul className="mt-2 space-y-1 text-sm text-[var(--muted)]">
-          <li onClick={() => publishEvent({ type: "aqua.message.applied", source: "site-builder", payload: { action: "crosslink_aqua" } })}>AQUA → generate city-based copy</li>
-          <li onClick={() => publishEvent({ type: "scout.alert.created", source: "site-builder", payload: { action: "crosslink_scout" } })}>Scout → competitors changing landing pages</li>
-          <li onClick={() => publishEvent({ type: "pricing.region.updated", source: "site-builder", payload: { action: "crosslink_pricing" } })}>Pricing → update LP pricing automatically</li>
-          <li onClick={() => publishEvent({ type: "paid.campaign.updated", source: "site-builder", payload: { action: "crosslink_paid" } })}>Paid → connect campaigns to published LPs</li>
-          <li onClick={() => publishEvent({ type: "seo.keyword.updated", source: "site-builder", payload: { action: "crosslink_seo" } })}>SEO → apply CWV-friendly structure</li>
+          <li
+            className={`flex flex-col gap-1 ${missingRobotId ? "opacity-50 cursor-not-allowed" : ""}`}
+            aria-disabled={missingRobotId}
+            title={builderUiHint.message}
+            onClick={() => publishEvent({ type: "aqua.message.applied", source: "site-builder", payload: { action: "crosslink_aqua" } })}
+          >
+            <span>AQUA → generate city-based copy</span>
+            <span className="text-[10px] text-[var(--muted)]">{builderUiHint.message}</span>
+          </li>
+          <li
+            className={`flex flex-col gap-1 ${missingRobotId ? "opacity-50 cursor-not-allowed" : ""}`}
+            aria-disabled={missingRobotId}
+            title={builderUiHint.message}
+            onClick={() => publishEvent({ type: "scout.alert.created", source: "site-builder", payload: { action: "crosslink_scout" } })}
+          >
+            <span>Scout → competitors changing landing pages</span>
+            <span className="text-[10px] text-[var(--muted)]">{builderUiHint.message}</span>
+          </li>
+          <li
+            className={`flex flex-col gap-1 ${missingRobotId ? "opacity-50 cursor-not-allowed" : ""}`}
+            aria-disabled={missingRobotId}
+            title={builderUiHint.message}
+            onClick={() => publishEvent({ type: "pricing.region.updated", source: "site-builder", payload: { action: "crosslink_pricing" } })}
+          >
+            <span>Pricing → update LP pricing automatically</span>
+            <span className="text-[10px] text-[var(--muted)]">{builderUiHint.message}</span>
+          </li>
+          <li
+            className={`flex flex-col gap-1 ${missingRobotId ? "opacity-50 cursor-not-allowed" : ""}`}
+            aria-disabled={missingRobotId}
+            title={builderUiHint.message}
+            onClick={() => publishEvent({ type: "paid.campaign.updated", source: "site-builder", payload: { action: "crosslink_paid" } })}
+          >
+            <span>Paid → connect campaigns to published LPs</span>
+            <span className="text-[10px] text-[var(--muted)]">{builderUiHint.message}</span>
+          </li>
+          <li
+            className={`flex flex-col gap-1 ${missingRobotId ? "opacity-50 cursor-not-allowed" : ""}`}
+            aria-disabled={missingRobotId}
+            title={builderUiHint.message}
+            onClick={() => publishEvent({ type: "seo.keyword.updated", source: "site-builder", payload: { action: "crosslink_seo" } })}
+          >
+            <span>SEO → apply CWV-friendly structure</span>
+            <span className="text-[10px] text-[var(--muted)]">{builderUiHint.message}</span>
+          </li>
         </ul>
       </DashboardCard>
     </div>
