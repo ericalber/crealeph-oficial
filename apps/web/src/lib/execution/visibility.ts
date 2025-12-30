@@ -437,6 +437,7 @@ export async function resolveExecutionVisibility(
   const gateTypes = [
     "robots_run_gate",
     "market_twin_gate",
+    "competitors_insights_gate",
     "fusion_gate",
     "ideator_gate",
     "copywriter_gate",

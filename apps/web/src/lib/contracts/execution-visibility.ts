@@ -51,9 +51,11 @@ export type ExecutionVisibilityLastExecutionByModule = Record<
   ExecutionVisibilityModuleStatus
 >;
 
+// v1.1: add competitors_insights_gate.
 export type ExecutionVisibilityGateType =
   | "robots_run_gate"
   | "market_twin_gate"
+  | "competitors_insights_gate"
   | "fusion_gate"
   | "ideator_gate"
   | "copywriter_gate"
