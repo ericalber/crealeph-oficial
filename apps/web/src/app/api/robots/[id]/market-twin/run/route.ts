@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@crealeph/db";
 import OpenAI from "openai";
-import { appendLedgerEntry, getIntelligenceSnapshot, isJsonObject, type JsonObject } from "@/lib/ledger";
+import { appendLedgerEntry, getIntelligenceSnapshot, isJsonObject, latestLedgerEntry, type JsonObject } from "@/lib/ledger";
 import type { PolicyInput } from "@/lib/contracts/policy-engine";
 import { validatePolicyInput, validatePolicyOutput } from "@/lib/contracts/policy-engine-validate";
 import { evaluatePolicy } from "@/lib/policy/policy-engine";
@@ -125,14 +125,12 @@ export async function POST(
     return NextResponse.json({ ok: false, message: "POLICY_DEFERRED" }, { status: 409 });
   }
 
-  const latestRun = await prisma.robotRun.findFirst({
-    where: { robotId: robot.id },
-    orderBy: { createdAt: "desc" },
+  const signalEntry = await latestLedgerEntry(prisma, {
+    tenantId,
+    robotId: robot.id,
+    types: ["signal"],
+    module: "robots",
   });
-
-  if (!latestRun) {
-    return NextResponse.json({ ok: false, message: "no signals available" }, { status: 400 });
-  }
 
   const fallback: JsonObject = {
     pricePercentile: 50,
@@ -142,7 +140,13 @@ export async function POST(
     growthDirection: "flat",
   };
 
-  const signals = latestRun.result;
+  const snapshotSignals = isJsonObject(snapshot.signals) ? snapshot.signals : null;
+  const signalPayload = isJsonObject(signalEntry?.payload) ? signalEntry?.payload : null;
+  const signals = snapshotSignals ?? signalPayload;
+
+  if (!signalEntry || !signals) {
+    return NextResponse.json({ ok: false, message: "no signals available" }, { status: 400 });
+  }
 
   if (!process.env.OPENAI_API_KEY) {
     const entry = await prisma.marketTwinEntry.create({
@@ -155,7 +159,11 @@ export async function POST(
       type: "benchmark",
       state: "approved",
       payload: fallback,
-      lineage: { robotId: robot.id, marketTwinId: entry.id, dependsOnRunIds: [latestRun.id] },
+      lineage: {
+        robotId: robot.id,
+        marketTwinId: entry.id,
+        dependsOnLedgerIds: [signalEntry.id],
+      },
       robotId: robot.id,
     });
     return NextResponse.json({ ok: true, data: fallback });
@@ -188,7 +196,11 @@ export async function POST(
       type: "benchmark",
       state: "approved",
       payload: result,
-      lineage: { robotId: robot.id, marketTwinId: entry.id, dependsOnRunIds: [latestRun.id] },
+      lineage: {
+        robotId: robot.id,
+        marketTwinId: entry.id,
+        dependsOnLedgerIds: [signalEntry.id],
+      },
       robotId: robot.id,
     });
 
@@ -204,7 +216,11 @@ export async function POST(
       type: "benchmark",
       state: "approved",
       payload: fallback,
-      lineage: { robotId: robot.id, marketTwinId: entry.id, dependsOnRunIds: [latestRun.id] },
+      lineage: {
+        robotId: robot.id,
+        marketTwinId: entry.id,
+        dependsOnLedgerIds: [signalEntry.id],
+      },
       robotId: robot.id,
     });
     return NextResponse.json({ ok: true, data: fallback });

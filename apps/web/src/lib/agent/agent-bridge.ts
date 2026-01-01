@@ -11,14 +11,14 @@ const openai = new OpenAI({
 
 function assertValidAgentInput(input: AgentInput): void {
   const validation = validateAgentInput(input);
-  if (!validation.ok) {
+  if (validation.ok === false) {
     throw new Error(validation.error.message);
   }
 }
 
 function assertValidAgentOutput(output: unknown, input: AgentInput): asserts output is AgentOutput {
   const validation = validateAgentOutput(output, input);
-  if (!validation.ok) {
+  if (validation.ok === false) {
     throw new Error(validation.error.message);
   }
 }

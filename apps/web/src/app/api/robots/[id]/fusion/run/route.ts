@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@crealeph/db";
 import { fuseInsights } from "@/lib/robots/fusion";
-import { appendLedgerEntry, getIntelligenceSnapshot, type JsonObject } from "@/lib/ledger";
+import { appendLedgerEntry, getIntelligenceSnapshot, isJsonObject, latestLedgerEntry, type JsonObject } from "@/lib/ledger";
 import type { PolicyInput } from "@/lib/contracts/policy-engine";
 import { validatePolicyInput, validatePolicyOutput } from "@/lib/contracts/policy-engine-validate";
 import { evaluatePolicy } from "@/lib/policy/policy-engine";
@@ -137,6 +137,21 @@ export async function POST(
       return NextResponse.json({ ok: false, message: "POLICY_DEFERRED" }, { status: 409 });
     }
 
+    const signalEntry = await latestLedgerEntry(prisma, {
+      tenantId,
+      robotId,
+      module: "robots",
+      types: ["signal"],
+    });
+
+    const snapshotSignals = isJsonObject(snapshot.signals) ? snapshot.signals : null;
+    const signalPayload = isJsonObject(signalEntry?.payload) ? signalEntry?.payload : null;
+    const signals = snapshotSignals ?? signalPayload;
+
+    if (!signalEntry || !signals) {
+      return NextResponse.json({ ok: false, message: "no signals available" }, { status: 400 });
+    }
+
     const insights = await prisma.competitorInsight.findMany({
       where: {
         competitor: {
@@ -153,9 +168,10 @@ export async function POST(
       );
     }
 
-    const fusedSummary = fuseInsights(
-      insights.map((insight) => (isRecord(insight.summaryJson) ? insight.summaryJson : {})),
+    const insightPayloads = insights.map((insight) =>
+      isRecord(insight.summaryJson) ? insight.summaryJson : {},
     );
+    const fusedSummary = fuseInsights([signals, ...insightPayloads]);
 
     const fusion = await prisma.robotFusion.create({
       data: {
@@ -176,6 +192,7 @@ export async function POST(
         robotId,
         fusionId: fusion.id,
         dependsOnInsightIds: insights.map((i) => i.id),
+        dependsOnLedgerIds: [signalEntry.id],
       },
       robotId,
     });

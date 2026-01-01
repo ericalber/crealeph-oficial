@@ -132,7 +132,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: "VALIDATION_ERROR" }, { status: 400 });
   }
 
-  if (policyOutput.decision === "BLOCK") {
+  const isDev = process.env.NODE_ENV !== "production";
+  const shouldOverrideDefer = isDev && policyOutput.decision === "DEFER";
+  const effectiveDecision = shouldOverrideDefer ? "ALLOW" : policyOutput.decision;
+
+  if (shouldOverrideDefer) {
+    await appendLedgerEntry(prisma, {
+      tenantId,
+      module: "policy",
+      source: "policy-override",
+      type: "policy_override",
+      state: "applied",
+      payload: {
+        reason: "dev_override",
+        originalDecision: "DEFER",
+      },
+      lineage: { robotId: robot.id },
+      robotId: robot.id,
+    });
+  }
+
+  if (effectiveDecision === "BLOCK") {
     await appendLedgerEntry(prisma, {
       tenantId,
       module: "robots",
@@ -155,7 +175,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: "COHERENCE_BLOCKED" }, { status: 403 });
   }
 
-  if (policyOutput.decision === "DEFER") {
+  if (effectiveDecision === "DEFER") {
     await appendLedgerEntry(prisma, {
       tenantId,
       module: "robots",

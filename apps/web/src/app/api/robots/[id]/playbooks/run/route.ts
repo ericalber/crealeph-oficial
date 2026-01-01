@@ -12,7 +12,6 @@ const openai = new OpenAI({
 
 type JsonPrimitive = string | number | boolean | null;
 type JsonValue = JsonPrimitive | JsonObject | JsonArray;
-type JsonObject = { [key: string]: JsonValue };
 type JsonArray = JsonValue[];
 
 function isRecord(value: unknown): value is Record<string, unknown> {

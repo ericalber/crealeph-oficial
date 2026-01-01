@@ -1,4 +1,5 @@
 import type {
+  JsonObject,
   PolicyActionType,
   PolicyInput,
   PolicyOutput,
@@ -118,7 +119,7 @@ function buildReason(
     ruleId,
     message,
     severity,
-    evidence: evidence as Record<string, unknown>,
+    evidence: evidence as unknown as JsonObject,
   };
 }
 

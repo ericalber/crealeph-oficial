@@ -161,12 +161,11 @@ export function validateExecutionVisibilityInput(input: unknown): ValidationOk |
   if (input.includeHistory !== undefined && !isBoolean(input.includeHistory)) {
     return fail("includeHistory invalid");
   }
-  if (input.historyLimit !== undefined && !isInteger(input.historyLimit)) {
-    return fail("historyLimit invalid");
-  }
-  if (input.historyLimit !== undefined) {
+  const historyLimit = input.historyLimit;
+  if (historyLimit !== undefined) {
+    if (!isInteger(historyLimit)) return fail("historyLimit invalid");
     if (input.includeHistory !== true) return fail("historyLimit requires includeHistory");
-    if (input.historyLimit < 1 || input.historyLimit > 200) return fail("historyLimit out of range");
+    if (historyLimit < 1 || historyLimit > 200) return fail("historyLimit out of range");
   }
 
   return { ok: true };

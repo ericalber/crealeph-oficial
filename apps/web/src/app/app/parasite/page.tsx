@@ -50,7 +50,7 @@ type GhostButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { hint?:
 
 function GhostButton(props: GhostButtonProps) {
   const { hint, disabled, onClick, className, title, ...rest } = props;
-  const resolvedTitle = disabled ? hint : title;
+  const resolvedTitle = hint ?? title;
   const resolvedClick = disabled ? undefined : onClick;
 
   return (

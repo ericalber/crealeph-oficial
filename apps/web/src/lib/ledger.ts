@@ -6,6 +6,29 @@ export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 export type JsonObject = { [key: string]: JsonValue };
 export type JsonArray = JsonValue[];
+export type SnapshotTimestamps = {
+  signalsAt?: string | null;
+  fusionAt?: string | null;
+  ideaAt?: string | null;
+  copyAt?: string | null;
+  benchmarkAt?: string | null;
+  playbookAt?: string | null;
+};
+export type IntelligenceSnapshot = {
+  robotId: string;
+  tenantId: string;
+  signals: JsonObject | null;
+  fusion: JsonObject | null;
+  idea: JsonObject | null;
+  copy: JsonObject | null;
+  benchmark: JsonObject | null;
+  playbook: JsonObject | null;
+  tasks: Array<{ id: string; payload: JsonValue; lineage: JsonValue; createdAt: Date }>;
+  playbooks: Array<{ id: string; payload: JsonValue; lineage: JsonValue; createdAt: Date }>;
+  lineage: JsonObject;
+  timestamps: SnapshotTimestamps;
+  coherence: { status: "coherent" | "partial" | "stale"; outdated: string[]; reason: string };
+};
 
 type AppendLedgerInput = {
   tenantId: string;
@@ -145,7 +168,10 @@ export async function latestLedgerEntry(prisma: PrismaClient, input: ListLedgerI
 
 type SnapshotInput = { tenantId: string; robotId: string };
 
-export async function getIntelligenceSnapshot(prisma: PrismaClient, input: SnapshotInput) {
+export async function getIntelligenceSnapshot(
+  prisma: PrismaClient,
+  input: SnapshotInput,
+): Promise<IntelligenceSnapshot> {
   const { tenantId, robotId } = input;
   const entries = await prisma.intelligenceLedgerEntry.findMany({
     where: { tenantId, robotId },
@@ -304,15 +330,30 @@ export async function getIntelligenceSnapshot(prisma: PrismaClient, input: Snaps
     coherenceReason = `Missing artifacts or lineage data for ${partialList.join(", ")}; coherence cannot be fully verified.`;
   }
 
+  const toIso = (value: Date | string | null | undefined) => {
+    if (!value) return null;
+    const date = value instanceof Date ? value : new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date.toISOString();
+  };
+
+  const timestamps: SnapshotTimestamps = {
+    signalsAt: toIso(latestByType["signal"]?.createdAt ?? null),
+    fusionAt: toIso(latestByType["fusion"]?.createdAt ?? null),
+    ideaAt: toIso(latestByType["idea"]?.createdAt ?? null),
+    copyAt: toIso(latestByType["copy"]?.createdAt ?? null),
+    benchmarkAt: toIso(latestByType["benchmark"]?.createdAt ?? null),
+    playbookAt: toIso(latestByType["playbook"]?.createdAt ?? null),
+  };
+
   const snapshot = {
     robotId,
     tenantId,
-    signals: pickPayload("signal"),
-    fusion: pickPayload("fusion"),
-    idea: pickPayload("idea"),
-    copy: pickPayload("copy"),
-    benchmark: pickPayload("benchmark"),
-    playbook: pickPayload("playbook"),
+    signals: pickPayload("signal") as JsonObject | null,
+    fusion: pickPayload("fusion") as JsonObject | null,
+    idea: pickPayload("idea") as JsonObject | null,
+    copy: pickPayload("copy") as JsonObject | null,
+    benchmark: pickPayload("benchmark") as JsonObject | null,
+    playbook: pickPayload("playbook") as JsonObject | null,
     tasks: tasks.map((t) => ({
       id: t.id,
       payload: t.payload,
@@ -333,14 +374,7 @@ export async function getIntelligenceSnapshot(prisma: PrismaClient, input: Snaps
       benchmark: latestByType["benchmark"]?.lineage ?? null,
       playbook: latestByType["playbook"]?.lineage ?? null,
     },
-    timestamps: {
-      signalsAt: latestByType["signal"]?.createdAt ?? null,
-      fusionAt: latestByType["fusion"]?.createdAt ?? null,
-      ideaAt: latestByType["idea"]?.createdAt ?? null,
-      copyAt: latestByType["copy"]?.createdAt ?? null,
-      benchmarkAt: latestByType["benchmark"]?.createdAt ?? null,
-      playbookAt: latestByType["playbook"]?.createdAt ?? null,
-    },
+    timestamps,
     coherence: {
       status: coherenceStatus,
       outdated: outdatedList,
